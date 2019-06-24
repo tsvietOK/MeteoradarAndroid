@@ -206,8 +206,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static Bitmap getBitmapFromServer(String url) throws IOException {
 
-        //BufferedReader inputStream = null;
-
         URL bitmapUrl = new URL(url);
         URLConnection dc = bitmapUrl.openConnection();
 
@@ -215,8 +213,6 @@ public class MainActivity extends AppCompatActivity {
         dc.setReadTimeout(5000);
         dc.connect();
 
-        //inputStream = new BufferedReader(new InputStreamReader(
-        //dc.getInputStream()));
         return BitmapFactory.decodeStream(dc.getInputStream());
     }
 
