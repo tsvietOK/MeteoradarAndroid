@@ -1,0 +1,30 @@
+<resources>
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
+        <item name="colorPrimary">?attr/colorSurface</item>
+        <item name="colorPrimaryDark">?attr/colorSurface</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="android:fontFamily">@font/productsans</item>
+    </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents"/>
+    <style name="AppTheme.PopupOverlay" parent="Theme.MaterialComponents.DayNight"/>
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="android:topLeftRadius">8dp</item>
+        <item name="android:topRightRadius">8dp</item>
+        <item name="android:bottomRightRadius">8dp</item>
+        <item name="android:bottomLeftRadius">8dp</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="rippleColor">@color/colorAccent</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

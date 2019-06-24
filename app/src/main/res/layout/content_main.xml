@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <ImageView
+        android:id="@+id/ForegroundMap"
+        android:layout_width="match_parent"
+        android:layout_height="312.6dp"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/TimeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ForegroundMap"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/productsans"
+        android:text=""
+        android:textSize="20sp" />
+
+    <SeekBar
+        android:id="@+id/TimeLine"
+        style="@android:style/Widget.Material.SeekBar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TimeText"
+        android:layout_marginTop="20dp"
+        android:max="9"
+        android:min="0"
+        android:progress="9"
+        android:tickMark="@drawable/tickmark"
+        android:tickMarkTint="#888888"
+        android:tickMarkTintMode="add" />
+
+    <TextView
+        android:id="@+id/StatusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TimeLine"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/status_radar_off"
+        android:textColor="@color/radarOffTextColor"
+        android:textSize="16sp"
+        android:visibility="invisible" />
+
+    <ProgressBar
+        android:id="@+id/UpdateProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="100dp"
+        android:visibility="invisible" />
+
+</RelativeLayout>
