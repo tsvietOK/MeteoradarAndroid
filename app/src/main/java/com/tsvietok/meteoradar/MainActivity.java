@@ -84,10 +84,12 @@ public class MainActivity extends AppCompatActivity {
         // Always call the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(savedInstanceState);
     }
+
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         TimeLine.setProgress(savedInstanceState.getInt("TimeLinePosition"));
     }
+
     public void GetData(boolean firstStart) throws ExecutionException, InterruptedException {
         GetJsonAsync jsonTask = new GetJsonAsync();
         jsonTask.execute();
@@ -251,13 +253,7 @@ public class MainActivity extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,
                                                     int id) {
-
                                     SwitchTheme(GetIntSetting(SelectedThemeKey));
-                                    Toast.makeText(
-                                            getApplicationContext(),
-                                            "Selected theme:"
-                                                    + listItems[GetIntSetting(SelectedThemeKey)],
-                                            Toast.LENGTH_SHORT).show();
                                 }
                             });
             AlertDialog alert = builder.create();
