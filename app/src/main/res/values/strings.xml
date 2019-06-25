@@ -3,6 +3,7 @@
     <string name="menu_item_theme">Theme</string>
     <string name="menu_item_exit">Exit</string>
     <string name="updated">Updated</string>
+    <string name="update">Update</string>
     <string name="no_internet_connection">Internet connection is not available</string>
     <string name="status_radar_off">Currently radar is not working</string>
     <string name="follow_system_theme">Folow system theme</string>

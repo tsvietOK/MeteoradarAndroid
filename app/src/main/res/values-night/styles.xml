@@ -6,7 +6,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>
-        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="materialAlertDialogTheme">@style/MaterialAlertDialog</item>
         <item name="android:fontFamily">@font/productsans</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
@@ -20,7 +20,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="Theme.MaterialComponents.DayNight" />
 
-    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+    <style name="MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
         <item name="android:topLeftRadius">8dp</item>
         <item name="android:topRightRadius">8dp</item>
@@ -38,4 +38,5 @@
         <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
+
 </resources>

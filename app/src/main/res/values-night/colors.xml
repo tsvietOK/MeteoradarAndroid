@@ -7,4 +7,5 @@
     <color name="fabRipple">#80050505</color>
     <color name="colorBlack">#ff010101</color>
     <color name="radarOffTextColor">#EF5350</color>
+    <color name="colorWhite">#fff</color>
 </resources>

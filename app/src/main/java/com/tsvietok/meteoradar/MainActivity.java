@@ -20,7 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -30,7 +31,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.concurrent.ExecutionException;
 
-import static androidx.appcompat.app.AlertDialog.Builder;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             null, null, null, null, null};
     public RadarTime data = new RadarTime();
 
-    FloatingActionButton UpdateFab;
+    ExtendedFloatingActionButton UpdateFab;
     SeekBar TimeLine;
     TextView StatusText;
     ImageView ForegroundMap;
@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
                     getString(R.string.follow_system_theme),
                     getString(R.string.light_theme),
                     getString(R.string.dark_theme)};
-            Builder builder = new Builder(MainActivity.this);
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MainActivity.this);
             builder.setTitle(R.string.choose_theme)
                     .setCancelable(false)
                     .setSingleChoiceItems(listItems, SelectedTheme,
