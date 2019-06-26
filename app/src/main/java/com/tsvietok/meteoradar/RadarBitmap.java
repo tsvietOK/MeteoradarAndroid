@@ -11,21 +11,24 @@ import java.util.Date;
 class RadarBitmap {
     private Bitmap image;
     private Bitmap nightImage;
+    private Bitmap backgroundImage;
     private String time;
+    private int timestamp;
 
-    RadarBitmap(Bitmap image, int time, Bitmap _backgroundMap) {
-        Bitmap _map;
-        Date _time = new Date((long) time * 1000);
-        this.time = new SimpleDateFormat("dd.MM HH:mm").format(_time);
-        _backgroundMap = Bitmap.createScaledBitmap(_backgroundMap, 654, 479, true);
-        _map = RemoveColor(image);
-        _map = OverlayBitmap(_backgroundMap, _map);
-        this.nightImage = InvertBitmap(_map);
-        this.image = _map;
+    RadarBitmap() {
     }
 
     Bitmap getImage() {
         return image;
+    }
+
+    void setImage(Bitmap image) {
+        this.image = OverlayBitmap(this.backgroundImage, RemoveColor(image));
+        this.nightImage = InvertBitmap(this.image);
+    }
+
+    void setBackgroundImage(Bitmap backgroundImage) {
+        this.backgroundImage = Bitmap.createScaledBitmap(backgroundImage, 654, 479, true);
     }
 
     Bitmap getNightImage() {
@@ -34,6 +37,16 @@ class RadarBitmap {
 
     String getTime() {
         return time;
+    }
+
+    Integer getTimestamp() {
+        return timestamp;
+    }
+
+    void setTime(int timestamp) {
+        this.timestamp = timestamp;
+        Date _time = new Date((long) timestamp * 1000);
+        this.time = new SimpleDateFormat("dd.MM HH:mm").format(_time);
     }
 
     private Bitmap RemoveColor(Bitmap source) {

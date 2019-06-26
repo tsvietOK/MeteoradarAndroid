@@ -8,17 +8,57 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <ImageView
-        android:id="@+id/ForegroundMap"
-        android:layout_width="match_parent"
-        android:layout_height="312.6dp"
-        android:layout_centerHorizontal="true" />
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/ForegroundCardContainer"
+        style="@style/Widget.MaterialComponents.CardView"
+        android:layout_width="wrap_content"
+        android:layout_height="470dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        app:cardElevation="2dp">
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:stretchColumns="*">
+
+            <TableRow android:minHeight="285dp">
+
+                <ImageView
+                    android:id="@+id/ForegroundMap"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:scaleType="centerCrop" />
+            </TableRow>
+
+            <TableRow>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:theme="@style/OverScrollCustomColor"
+                    android:visibility="visible">
+
+                    <include layout="@layout/info_list" />
+                </ScrollView>
+                <!--<com.google.android.material.button.MaterialButton-->
+                <!--android:layout_width="10dp"-->
+                <!--android:layout_height="10dp"-->
+                <!--/>-->
+            </TableRow>
+        </TableLayout>
+    </com.google.android.material.card.MaterialCardView>
+
 
     <TextView
         android:id="@+id/TimeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/InfoCard"
+        android:layout_below="@+id/ForegroundCardContainer"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:fontFamily="@font/productsans"
@@ -49,37 +89,6 @@
         android:text="@string/status_radar_off"
         android:textColor="@color/radarOffTextColor"
         android:textSize="16sp"
-        android:visibility="invisible" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/InfoCard"
-        style="@style/Widget.MaterialComponents.CardView"
-        android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:layout_below="@+id/ForegroundMap"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        app:cardElevation="2dp">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:theme="@style/OverScrollCustomColor">
-
-            <include layout="@layout/info_list" />
-        </ScrollView>
-    </com.google.android.material.card.MaterialCardView>
-
-    <ProgressBar
-        android:id="@+id/UpdateProgress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="bottom|center"
-        android:layout_marginBottom="100dp"
         android:visibility="invisible" />
 
 </RelativeLayout>
