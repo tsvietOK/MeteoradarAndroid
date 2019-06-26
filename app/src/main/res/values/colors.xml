@@ -8,4 +8,22 @@
     <color name="colorBlack">#ff010101</color>
     <color name="radarOffTextColor">#EF5350</color>
     <color name="colorWhite">#fff</color>
+    <color name="colorNoWeather">#cccecc</color>
+    <color name="colorLaminatedClouds">#fcfefc</color>
+    <color name="colorLightPrecipitation">#9cea8c</color>
+    <color name="colorMediumPrecipitation">#5cfe44</color>
+    <color name="colorStrongPrecipitation">#44c27c</color>
+    <color name="colorConvectiveClouds">#9ce2fc</color>
+    <color name="colorLightConvectiveRainfall">#4492fc</color>
+    <color name="colorMediumConvectiveRainfall">#0c5afc</color>
+    <color name="colorStrongConvectiveRainfall">#6452c4</color>
+    <color name="colorThunderstorm_30_70">#fc92a4</color>
+    <color name="colorThunderstorm_70_90">#fc3e34</color>
+    <color name="colorThunderstorm_90_100">#c40614</color>
+    <color name="colorLightHail">#fcea0c</color>
+    <color name="colorMediumHail">#fc9a14</color>
+    <color name="colorStrongHail">#ac4e04</color>
+    <color name="colorLightSquall">#dcaafc</color>
+    <color name="colorMediumSquall">#ec5afc</color>
+    <color name="colorStrongSquall">#bc1efc</color>
 </resources>

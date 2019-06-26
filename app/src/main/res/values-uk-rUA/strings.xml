@@ -10,4 +10,22 @@
     <string name="light_theme">Світла</string>
     <string name="dark_theme">Темна</string>
     <string name="choose_theme">Виберіть тему</string>
+    <string name="no_weather">Метеоявища відсутні</string>
+    <string name="laminated_clouds">Шарувата хмарність</string>
+    <string name="light_precipitation">Опади слабі</string>
+    <string name="medium_precipitation">Опади помірні</string>
+    <string name="strong_precipitation">Опади сильні</string>
+    <string name="convective_clouds">Конвективна хмарність</string>
+    <string name="light_convective_rainfall">Конвективні опади слабі</string>
+    <string name="medium_convective_rainfall">Конвективні опади помірні</string>
+    <string name="strong_convective_rainfall">Конвективні опади сильні</string>
+    <string name="thunderstorm_30_70">Гроза – ймовірність 30–70%</string>
+    <string name="thunderstorm_70_90">Гроза – ймовірність 70–90%</string>
+    <string name="thunderstorm_90_100">Гроза – ймовірність 90–100%</string>
+    <string name="light_hail">Град слабий</string>
+    <string name="medium_hail">Град помірний</string>
+    <string name="strong_hail">Град сильний</string>
+    <string name="light_squall">Шквал слабий</string>
+    <string name="medium_squall">Шквал помірний</string>
+    <string name="strong_squall">Шквал сильний</string>
 </resources>

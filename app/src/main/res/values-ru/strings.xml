@@ -10,4 +10,22 @@
     <string name="light_theme">Светлая</string>
     <string name="dark_theme">Тёмная</string>
     <string name="choose_theme">Выберите тему</string>
+    <string name="no_weather">Нет метеоявлений</string>
+    <string name="laminated_clouds">Слоистообразная облачность</string>
+    <string name="light_precipitation">Осадки слабые</string>
+    <string name="medium_precipitation">Осадки умеренные</string>
+    <string name="strong_precipitation">Осадки сильные</string>
+    <string name="convective_clouds">Конвективная облачность</string>
+    <string name="light_convective_rainfall">Конвективные осадки слабые</string>
+    <string name="medium_convective_rainfall">Конвективные осадки умеренные</string>
+    <string name="strong_convective_rainfall">Конвективные осадки сильные</string>
+    <string name="thunderstorm_30_70">Гроза – вероятность 30–70%</string>
+    <string name="thunderstorm_70_90">Гроза – вероятность 70–90%</string>
+    <string name="thunderstorm_90_100">Гроза – вероятность 90–100%</string>
+    <string name="light_hail">Град слабый</string>
+    <string name="medium_hail">Град умеренный</string>
+    <string name="strong_hail">Град сильный</string>
+    <string name="light_squall">Шквал слабый</string>
+    <string name="medium_squall">Шквал умеренный</string>
+    <string name="strong_squall">Шквал сильный</string>
 </resources>

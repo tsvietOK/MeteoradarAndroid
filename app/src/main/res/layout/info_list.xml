@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@color/colorNoWeather"
+            android:src="@drawable/image_border" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/no_weather" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@color/colorLaminatedClouds"
+            android:src="@drawable/image_border" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/laminated_clouds" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@color/colorLightPrecipitation"
+            android:src="@drawable/image_border" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/light_precipitation" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@color/colorMediumPrecipitation"
+            android:src="@drawable/image_border" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/medium_precipitation" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@color/colorStrongPrecipitation"
+            android:src="@drawable/image_border" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/strong_precipitation" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@color/colorConvectiveClouds"
+            android:src="@drawable/image_border" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/convective_clouds" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@color/colorLightConvectiveRainfall"
+            android:src="@drawable/image_border" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/light_convective_rainfall" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@color/colorMediumConvectiveRainfall"
+            android:src="@drawable/image_border" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/medium_convective_rainfall" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@color/colorStrongConvectiveRainfall"
+            android:src="@drawable/image_border" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/strong_convective_rainfall" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@color/colorThunderstorm_30_70"
+            android:src="@drawable/image_border" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/thunderstorm_30_70" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@color/colorThunderstorm_70_90"
+            android:src="@drawable/image_border" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/thunderstorm_70_90" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@color/colorThunderstorm_90_100"
+            android:src="@drawable/image_border" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/thunderstorm_90_100" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@color/colorLightHail"
+            android:src="@drawable/image_border" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/light_hail" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@color/colorMediumHail"
+            android:src="@drawable/image_border" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/medium_hail" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@color/colorStrongHail"
+            android:src="@drawable/image_border" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/strong_hail" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@color/colorLightSquall"
+            android:src="@drawable/image_border" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/light_squall" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@color/colorMediumSquall"
+            android:src="@drawable/image_border" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/medium_squall" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@color/colorStrongSquall"
+            android:src="@drawable/image_border" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/strong_squall" />
+    </TableRow>
+</TableLayout>

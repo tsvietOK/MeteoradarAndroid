@@ -18,9 +18,9 @@
         android:id="@+id/TimeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ForegroundMap"
+        android:layout_below="@+id/InfoCard"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:fontFamily="@font/productsans"
         android:text=""
         android:textSize="20sp" />
@@ -31,7 +31,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/TimeText"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:max="9"
         android:min="0"
         android:progress="9"
@@ -45,11 +45,32 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/TimeLine"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/status_radar_off"
         android:textColor="@color/radarOffTextColor"
         android:textSize="16sp"
         android:visibility="invisible" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/InfoCard"
+        style="@style/Widget.MaterialComponents.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:layout_below="@+id/ForegroundMap"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        app:cardElevation="2dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp">
+
+            <include layout="@layout/info_list" />
+        </ScrollView>
+    </com.google.android.material.card.MaterialCardView>
 
     <ProgressBar
         android:id="@+id/UpdateProgress"

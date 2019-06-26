@@ -10,4 +10,22 @@
     <string name="light_theme">Light</string>
     <string name="dark_theme">Dark</string>
     <string name="choose_theme">Choose theme</string>
+    <string name="no_weather">No weather</string>
+    <string name="laminated_clouds">Laminated clouds</string>
+    <string name="light_precipitation">Light precipitation</string>
+    <string name="medium_precipitation">Medium precipitation</string>
+    <string name="strong_precipitation">Strong precipitation</string>
+    <string name="convective_clouds">Convective clouds</string>
+    <string name="light_convective_rainfall">Light convective rainfall</string>
+    <string name="medium_convective_rainfall">Medium convective rainfall</string>
+    <string name="strong_convective_rainfall">Strong convective rainfall</string>
+    <string name="thunderstorm_30_70">Thunderstorm – probability 30–70%</string>
+    <string name="thunderstorm_70_90">Thunderstorm – probability 70–90%</string>
+    <string name="thunderstorm_90_100">Thunderstorm – probability 90–100%</string>
+    <string name="light_hail">Light hail</string>
+    <string name="medium_hail">Medium hail</string>
+    <string name="strong_hail">Strong hail</string>
+    <string name="light_squall">Light squall</string>
+    <string name="medium_squall">Medium squall</string>
+    <string name="strong_squall">Strong squall</string>
 </resources>
