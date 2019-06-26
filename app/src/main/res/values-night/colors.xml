@@ -9,7 +9,7 @@
     <color name="radarOffTextColor">#EF5350</color>
     <color name="colorWhite">#fff</color>
     <color name="colorNoWeather">#414141</color>
-    <color name="colorLaminatedClouds">#fcfefc</color>
+    <color name="colorLaminatedClouds">#000000</color>
     <color name="colorLightPrecipitation">#9cea8c</color>
     <color name="colorMediumPrecipitation">#5cfe44</color>
     <color name="colorStrongPrecipitation">#44c27c</color>

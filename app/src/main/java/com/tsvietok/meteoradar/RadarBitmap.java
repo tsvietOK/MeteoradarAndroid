@@ -71,12 +71,9 @@ class RadarBitmap {
             float green = color.green();
             float blue = color.blue();
             int threshold = 10;
-            if (red < 0.98f && green < 0.98f && blue < 0.98f) //filter rgb(252,254,251)
+            if (Math.abs(red - green) + Math.abs(green - blue) + Math.abs(red - blue) < threshold / 255.0) //filter shades of gray
             {
-                if (Math.abs(red - green) + Math.abs(green - blue) + Math.abs(red - blue) < threshold / 255.0) //filter shades of gray
-                {
-                    sourcePixels[i] = Color.argb(1, 1 - red, 1 - green, 1 - blue);
-                }
+                sourcePixels[i] = Color.argb(1, 1 - red, 1 - green, 1 - blue);
             }
         }
         return Bitmap.createBitmap(sourcePixels, sourceWidth, sourceHeight, Bitmap.Config.ARGB_8888);
