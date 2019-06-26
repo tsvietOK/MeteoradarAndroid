@@ -16,7 +16,8 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/no_weather" />
+            android:text="@string/no_weather"
+            android:textSize="@dimen/info_text_size" />
     </TableRow>
 
     <TableRow>
@@ -31,7 +32,8 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/laminated_clouds" />
+            android:text="@string/laminated_clouds"
+            android:textSize="@dimen/info_text_size" />
     </TableRow>
 
     <TableRow>
@@ -46,7 +48,8 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/light_precipitation" />
+            android:text="@string/light_precipitation"
+            android:textSize="@dimen/info_text_size" />
     </TableRow>
 
     <TableRow>
@@ -61,7 +64,8 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/medium_precipitation" />
+            android:text="@string/medium_precipitation"
+            android:textSize="@dimen/info_text_size" />
     </TableRow>
 
     <TableRow>
@@ -76,7 +80,8 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/strong_precipitation" />
+            android:text="@string/strong_precipitation"
+            android:textSize="@dimen/info_text_size" />
     </TableRow>
 
     <TableRow>
@@ -91,7 +96,8 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/convective_clouds" />
+            android:text="@string/convective_clouds"
+            android:textSize="@dimen/info_text_size" />
     </TableRow>
 
     <TableRow>
@@ -106,7 +112,8 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/light_convective_rainfall" />
+            android:text="@string/light_convective_rainfall"
+            android:textSize="@dimen/info_text_size" />
     </TableRow>
 
     <TableRow>
@@ -121,7 +128,8 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/medium_convective_rainfall" />
+            android:text="@string/medium_convective_rainfall"
+            android:textSize="@dimen/info_text_size" />
     </TableRow>
 
     <TableRow>
@@ -136,7 +144,8 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/strong_convective_rainfall" />
+            android:text="@string/strong_convective_rainfall"
+            android:textSize="@dimen/info_text_size" />
     </TableRow>
 
     <TableRow>
@@ -151,7 +160,8 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/thunderstorm_30_70" />
+            android:text="@string/thunderstorm_30_70"
+            android:textSize="@dimen/info_text_size" />
     </TableRow>
 
     <TableRow>
@@ -166,7 +176,8 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/thunderstorm_70_90" />
+            android:text="@string/thunderstorm_70_90"
+            android:textSize="@dimen/info_text_size" />
     </TableRow>
 
     <TableRow>
@@ -181,7 +192,8 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/thunderstorm_90_100" />
+            android:text="@string/thunderstorm_90_100"
+            android:textSize="@dimen/info_text_size" />
     </TableRow>
 
     <TableRow>
@@ -196,7 +208,8 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/light_hail" />
+            android:text="@string/light_hail"
+            android:textSize="@dimen/info_text_size" />
     </TableRow>
 
     <TableRow>
@@ -211,7 +224,8 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/medium_hail" />
+            android:text="@string/medium_hail"
+            android:textSize="@dimen/info_text_size" />
     </TableRow>
 
     <TableRow>
@@ -226,7 +240,8 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/strong_hail" />
+            android:text="@string/strong_hail"
+            android:textSize="@dimen/info_text_size" />
     </TableRow>
 
     <TableRow>
@@ -241,7 +256,8 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/light_squall" />
+            android:text="@string/light_squall"
+            android:textSize="@dimen/info_text_size" />
     </TableRow>
 
     <TableRow>
@@ -256,7 +272,8 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/medium_squall" />
+            android:text="@string/medium_squall"
+            android:textSize="@dimen/info_text_size" />
     </TableRow>
 
     <TableRow android:layout_marginBottom="20dp">
@@ -271,6 +288,7 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/strong_squall" />
+            android:text="@string/strong_squall"
+            android:textSize="@dimen/info_text_size" />
     </TableRow>
 </TableLayout>
