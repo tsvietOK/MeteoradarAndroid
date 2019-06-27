@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void getData() {
+    private void getData() {
         logDebug("getData()");
         StatusText = findViewById(R.id.StatusText);
         if (data.is_down)
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void showData(int number) {
+    private void showData(int number) {
         logDebug("showData()");
         ForegroundMap = findViewById(R.id.ForegroundMap);
         TimeText = findViewById(R.id.TimeText);
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class GetImageAsync extends AsyncTask<Integer, Void, Integer> {
+    private class GetImageAsync extends AsyncTask<Integer, Void, Integer> {
         Bitmap bmp;
 
         @Override
@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class GetJsonAsync extends AsyncTask<Void, Void, String> {
+    private class GetJsonAsync extends AsyncTask<Void, Void, String> {
         String jsonString;
         String url = "http://veg.by/meteoradar/kiev/update.json";
 
@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public String getJsonFromServer(String url) throws IOException {
+    private String getJsonFromServer(String url) throws IOException {
         logDebug("getJsonFromServer()");
 
         URL jsonUrl = new URL(url);
@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
         return inputStream.readLine();
     }
 
-    public Bitmap getBitmapFromServer(String url) throws IOException {
+    private Bitmap getBitmapFromServer(String url) throws IOException {
         logDebug("getBitmapFromServer()");
 
         URL bitmapUrl = new URL(url);
@@ -334,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void switchTheme(int key) {
+    private void switchTheme(int key) {
         logDebug("switchTheme()");
         switch (key) {
             case 0: //System theme
@@ -351,13 +351,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void saveIntSetting(String key, int value) {
+    private void saveIntSetting(String key, int value) {
         SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, 0).edit();
         editor.putInt(key, value);
         editor.commit();
     }
 
-    public int getIntSetting(String key) {
+    private int getIntSetting(String key) {
         SharedPreferences sharedPref = getSharedPreferences(PREFS_NAME, 0);
         return sharedPref.getInt(key, 0);
     }
