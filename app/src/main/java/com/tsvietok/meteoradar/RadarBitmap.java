@@ -39,14 +39,14 @@ class RadarBitmap {
         return time;
     }
 
-    Integer getTimestamp() {
-        return timestamp;
-    }
-
     void setTime(int timestamp) {
         this.timestamp = timestamp;
         Date _time = new Date((long) timestamp * 1000);
         this.time = new SimpleDateFormat("dd.MM HH:mm").format(_time);
+    }
+
+    Integer getTimestamp() {
+        return timestamp;
     }
 
     private Bitmap RemoveColor(Bitmap source) {
@@ -58,6 +58,9 @@ class RadarBitmap {
         for (int i = 0; i < sourceSize; i++) {
             if (sourcePixels[i] == Color.rgb(204, 206, 204) || sourcePixels[i] == Color.rgb(196, 194, 196) || sourcePixels[i] == Color.rgb(204, 202, 204)) {
                 sourcePixels[i] = Color.TRANSPARENT;
+            }
+            if (sourcePixels[i] == Color.rgb(252, 254, 252)) {
+                sourcePixels[i] = Color.rgb(222, 222, 222);
             }
         }
         return Bitmap.createBitmap(sourcePixels, sourceWidth, sourceHeight, Bitmap.Config.ARGB_8888);
