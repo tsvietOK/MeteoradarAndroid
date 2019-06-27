@@ -1,4 +1,4 @@
-package com.tsvietok.meteoradar;
+package com.tsvietok.meteoradar.dev;
 
 public class Radar {
     public RadarBitmap[] Maps;

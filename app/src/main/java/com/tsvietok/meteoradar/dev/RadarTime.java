@@ -1,4 +1,4 @@
-package com.tsvietok.meteoradar;
+package com.tsvietok.meteoradar.dev;
 
 public class RadarTime {
     public int timestamp;
