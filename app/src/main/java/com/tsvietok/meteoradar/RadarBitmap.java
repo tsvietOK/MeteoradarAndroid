@@ -25,7 +25,7 @@ class RadarBitmap {
     void setImage(Bitmap image) {
         image = RemoveColor(image);
         image = OverlayBitmap(this.backgroundImage, image);
-        this.image = CropBitmap(image, 2, 2, 650, 475);
+        this.image = Bitmap.createBitmap(image, 2, 2, 650, 475);
         this.nightImage = InvertBitmap(this.image);
     }
 
@@ -95,9 +95,5 @@ class RadarBitmap {
             }
         }
         return Bitmap.createBitmap(sourcePixels, sourceWidth, sourceHeight, Bitmap.Config.ARGB_8888);
-    }
-
-    private Bitmap CropBitmap(Bitmap image, int x, int y, int width, int height) {
-        return Bitmap.createBitmap(image, x, y, width, height);
     }
 }
