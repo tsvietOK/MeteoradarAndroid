@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Метеорадар</string>
+    <string name="app_name">Метеорадар Дев</string>
     <string name="menu_item_theme">Тема</string>
     <string name="menu_item_exit">Выход</string>
     <string name="updated">Обновлено</string>
