@@ -40,13 +40,13 @@
         android:layout_centerHorizontal="true"
         android:layout_gravity="bottom|center"
         android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@color/colorAccent"
-        app:rippleColor="@color/fabRipple"
-        app:icon="@android:drawable/ic_popup_sync"
-        app:iconTint="@color/colorWhite"
-        android:textColor="@color/colorWhite"
         android:text="@string/update"
         android:textAllCaps="false"
-        app:iconSize="17dp"/>
+        android:textColor="@color/colorWhite"
+        app:backgroundTint="@color/colorAccent"
+        app:icon="@android:drawable/ic_popup_sync"
+        app:iconSize="17dp"
+        app:iconTint="@color/colorWhite"
+        app:rippleColor="@color/fabRipple" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

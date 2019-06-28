@@ -40,8 +40,8 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_gravity="end|bottom"
-                        android:background="@drawable/rectangle"
-                        android:layout_margin="10dp" />
+                        android:layout_margin="10dp"
+                        android:background="@drawable/rectangle" />
                 </FrameLayout>
             </TableRow>
 
@@ -66,7 +66,6 @@
         android:layout_below="@+id/ForegroundCardContainer"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
-        android:text=""
         android:textSize="24sp" />
 
     <LinearLayout
@@ -74,10 +73,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/TimeText"
+        android:layout_marginStart="3dp"
         android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:layout_marginStart="3dp" />
+        android:orientation="horizontal" />
 
     <SeekBar
         android:id="@+id/TimeLine"
