@@ -12,7 +12,7 @@
         android:id="@+id/ForegroundCardContainer"
         style="@style/Widget.MaterialComponents.CardView"
         android:layout_width="wrap_content"
-        android:layout_height="470dp"
+        android:layout_height="400dp"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
@@ -24,12 +24,12 @@
             android:layout_height="match_parent"
             android:stretchColumns="*">
 
-            <TableRow android:minHeight="285dp">
+            <TableRow>
 
                 <ImageView
                     android:id="@+id/ForegroundMap"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="400dp"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:scaleType="centerCrop" />
@@ -52,7 +52,6 @@
             </TableRow>
         </TableLayout>
     </com.google.android.material.card.MaterialCardView>
-
 
     <TextView
         android:id="@+id/TimeText"
