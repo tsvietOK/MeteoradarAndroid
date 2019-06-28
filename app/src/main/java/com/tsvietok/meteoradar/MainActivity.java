@@ -306,16 +306,16 @@ public class MainActivity extends AppCompatActivity {
         TimeLayout = findViewById(R.id.TimeLayout);
         TimeLayout.removeAllViews();
         for (int i = 0; i < data.times.length; i++) {
-            TextView textView = new TextView(getApplicationContext());
-            textView.setText(data.getTime()[i]);
-            textView.setTextSize(12);
+            TextView timeLayoutText = new TextView(getApplicationContext());
+            timeLayoutText.setText(data.getTime()[i]);
+            timeLayoutText.setTextSize(12);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.setMargins(0, 0, getPixelValue(getApplicationContext(), getResources().getDimension(R.dimen.time_margin_end)), 0);
-            textView.setLayoutParams(params);
-            textView.setGravity(Gravity.CENTER);
-            textView.setTypeface(Typeface.MONOSPACE);
-            textView.setTextColor(getColor(R.color.colorTextDayNight));
-            TimeLayout.addView(textView);
+            timeLayoutText.setLayoutParams(params);
+            timeLayoutText.setGravity(Gravity.CENTER);
+            timeLayoutText.setTypeface(Typeface.MONOSPACE);
+            timeLayoutText.setTextColor(getColor(R.color.colorTextDayNight));
+            TimeLayout.addView(timeLayoutText);
         }
     }
 
