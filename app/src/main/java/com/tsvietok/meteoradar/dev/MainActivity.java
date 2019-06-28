@@ -114,8 +114,7 @@ public class MainActivity extends AppCompatActivity {
         ForegroundMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (ForegroundMap.getMeasuredHeight() == 1050) {
+                if (ForegroundMap.getMeasuredHeight() == 1024) {
                     ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getMeasuredHeight(), 600);
                     anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         @Override
@@ -129,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                     anim.setDuration(250);
                     anim.start();
                 } else {
-                    ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getMeasuredHeight(), 1050);
+                    ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getMeasuredHeight(), 1024);
                     anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         @Override
                         public void onAnimationUpdate(ValueAnimator valueAnimator) {
