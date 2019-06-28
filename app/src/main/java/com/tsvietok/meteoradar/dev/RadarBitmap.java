@@ -25,7 +25,7 @@ class RadarBitmap {
     void setImage(Bitmap image) {
         image = RemoveColor(image);
         image = OverlayBitmap(this.backgroundImage, image);
-        this.image = Bitmap.createBitmap(image, 2, 2, 650, 475);
+        this.image = Bitmap.createBitmap(image, 18, 2, 476, 476);
         this.nightImage = InvertBitmap(this.image);
     }
 
