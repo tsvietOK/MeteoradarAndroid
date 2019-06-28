@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -307,12 +308,12 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < data.times.length; i++) {
             TextView textView = new TextView(getApplicationContext());
             textView.setText(data.getTime()[i]);
-            textView.setTextSize(13);
+            textView.setTextSize(12);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.setMargins(0, 0, getPixelValue(getApplicationContext(), getResources().getDimension(R.dimen.time_margin_end)), 0);
             textView.setLayoutParams(params);
             textView.setGravity(Gravity.CENTER);
-            textView.setTypeface(getResources().getFont(R.font.productsans));
+            textView.setTypeface(Typeface.MONOSPACE);
             textView.setTextColor(getColor(R.color.colorTextDayNight));
             TimeLayout.addView(textView);
         }

@@ -66,7 +66,6 @@
         android:layout_below="@+id/ForegroundCardContainer"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:fontFamily="@font/productsans"
         android:text=""
         android:textSize="24sp" />
 
@@ -78,7 +77,7 @@
         android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
-        android:paddingStart="9dp" />
+        android:layout_marginStart="3dp" />
 
     <SeekBar
         android:id="@+id/TimeLine"
@@ -86,9 +85,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/TimeLayout"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="10dp"
         android:max="9"
         android:min="0"
         android:progress="9" />
