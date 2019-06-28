@@ -73,10 +73,7 @@
         android:layout_marginTop="10dp"
         android:max="9"
         android:min="0"
-        android:progress="9"
-        android:tickMark="@drawable/tickmark"
-        android:tickMarkTint="#888888"
-        android:tickMarkTintMode="add" />
+        android:progress="9" />
 
     <TextView
         android:id="@+id/StatusText"
