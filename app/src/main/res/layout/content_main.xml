@@ -64,13 +64,25 @@
         android:text=""
         android:textSize="24sp" />
 
+    <LinearLayout
+        android:id="@+id/TimeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TimeText"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingStart="9dp" />
+
     <SeekBar
         android:id="@+id/TimeLine"
         style="@android:style/Widget.Material.SeekBar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/TimeText"
-        android:layout_marginTop="10dp"
+        android:layout_below="@+id/TimeLayout"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
         android:max="9"
         android:min="0"
         android:progress="9" />
@@ -81,7 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/TimeLine"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:text="@string/status_radar_off"
         android:textColor="@color/radarOffTextColor"
         android:textSize="16sp"

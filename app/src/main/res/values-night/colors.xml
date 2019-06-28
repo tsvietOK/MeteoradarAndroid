@@ -25,4 +25,5 @@
     <color name="colorLightSquall">#dcaafc</color>
     <color name="colorMediumSquall">#ec5afc</color>
     <color name="colorStrongSquall">#bc1efc</color>
+    <color name="colorTextDayNight">#b8b8b8</color>
 </resources>
