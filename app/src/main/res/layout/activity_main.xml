@@ -46,6 +46,7 @@
         app:iconTint="@color/colorWhite"
         android:textColor="@color/colorWhite"
         android:text="@string/update"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false"
+        app:iconSize="17dp"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
