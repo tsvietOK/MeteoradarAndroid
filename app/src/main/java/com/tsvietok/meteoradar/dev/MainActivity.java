@@ -1,5 +1,6 @@
 package com.tsvietok.meteoradar.dev;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -100,6 +102,40 @@ public class MainActivity extends AppCompatActivity {
                     logError(getString(R.string.no_internet_connection));
                     NoInternetImage = findViewById(R.id.NoInternetImage);
                     NoInternetImage.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        ForegroundMap = findViewById(R.id.ForegroundMap);
+        ForegroundMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (ForegroundMap.getMeasuredHeight() == 1050) {
+                    ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getMeasuredHeight(), 600);
+                    anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                            int val = (Integer) valueAnimator.getAnimatedValue();
+                            ViewGroup.LayoutParams layoutParams = ForegroundMap.getLayoutParams();
+                            layoutParams.height = val;
+                            ForegroundMap.setLayoutParams(layoutParams);
+                        }
+                    });
+                    anim.setDuration(250);
+                    anim.start();
+                } else {
+                    ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getMeasuredHeight(), 1050);
+                    anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                            int val = (Integer) valueAnimator.getAnimatedValue();
+                            ViewGroup.LayoutParams layoutParams = ForegroundMap.getLayoutParams();
+                            layoutParams.height = val;
+                            ForegroundMap.setLayoutParams(layoutParams);
+                        }
+                    });
+                    anim.setDuration(250);
+                    anim.start();
                 }
             }
         });
