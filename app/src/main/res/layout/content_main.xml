@@ -26,13 +26,23 @@
 
             <TableRow>
 
-                <ImageView
-                    android:id="@+id/ForegroundMap"
-                    android:layout_width="match_parent"
-                    android:layout_height="390dp"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:scaleType="centerCrop" />
+                <FrameLayout>
+
+                    <ImageView
+                        android:id="@+id/ForegroundMap"
+                        android:layout_width="match_parent"
+                        android:layout_height="390dp"
+                        android:clickable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:scaleType="centerCrop" />
+
+                    <View
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="end|bottom"
+                        android:background="@drawable/rectangle"
+                        android:layout_margin="10dp" />
+                </FrameLayout>
             </TableRow>
 
             <TableRow>
