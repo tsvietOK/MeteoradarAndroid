@@ -45,10 +45,6 @@
 
                     <include layout="@layout/info_list" />
                 </ScrollView>
-                <!--<com.google.android.material.button.MaterialButton-->
-                <!--android:layout_width="10dp"-->
-                <!--android:layout_height="10dp"-->
-                <!--/>-->
             </TableRow>
         </TableLayout>
     </com.google.android.material.card.MaterialCardView>
