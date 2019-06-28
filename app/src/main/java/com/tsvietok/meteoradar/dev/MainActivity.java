@@ -5,17 +5,22 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView ForegroundMap;
     TextView TimeText;
     ImageView NoInternetImage;
+    LinearLayout TimeLayout;
 
 
     @Override
@@ -171,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
             data.timeout = savedInstanceState.getInt("timeout");
             data.timestamp = savedInstanceState.getInt("timestamp");
             last_image = savedInstanceState.getInt("TimeLinePosition");
+            ShowTime();
         }
         if (savedInstanceState.getBoolean("Maps_saved")) {
             Maps = new RadarBitmap[]{null, null, null, null, null,
@@ -291,8 +298,35 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             data = new Gson().fromJson(result, RadarTime.class);
+            ShowTime();
             getData();
         }
+    }
+
+    private void ShowTime() {
+        TimeLayout = findViewById(R.id.TimeLayout);
+        TimeLayout.removeAllViews();
+        for (int i = 0; i < data.times.length; i++) {
+            TextView textView = new TextView(getApplicationContext());
+            textView.setText(data.getTime()[i]);
+            textView.setTextSize(13);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0, 0, getPixelValue(getApplicationContext(), getResources().getDimension(R.dimen.time_margin_end)), 0);
+            textView.setLayoutParams(params);
+            textView.setGravity(Gravity.CENTER);
+            textView.setTypeface(getResources().getFont(R.font.productsans));
+            textView.setTextColor(getColor(R.color.colorTextDayNight));
+            TimeLayout.addView(textView);
+        }
+    }
+
+    private static int getPixelValue(Context context, float dimenId) {
+        Resources resources = context.getResources();
+        return (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dimenId,
+                resources.getDisplayMetrics()
+        );
     }
 
     private String getJsonFromServer(String url) throws IOException {
