@@ -378,20 +378,21 @@ public class MainActivity extends AppCompatActivity {
                     getString(R.string.dark_theme)};
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MainActivity.this);
             builder.setTitle(R.string.choose_theme)
-                    .setCancelable(false)
                     .setSingleChoiceItems(listItems, SelectedTheme,
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog,
                                                     int item) {
                                     saveIntSetting(SelectedThemeKey, item);
+                                    switchTheme(getIntSetting(SelectedThemeKey));
+                                    dialog.dismiss();
                                 }
                             })
-                    .setPositiveButton("ОК",
+                    .setNegativeButton(getString(R.string.cancel),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,
                                                     int id) {
-                                    switchTheme(getIntSetting(SelectedThemeKey));
+                                    dialog.cancel();
                                 }
                             });
             AlertDialog alert = builder.create();

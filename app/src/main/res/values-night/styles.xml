@@ -21,17 +21,17 @@
     <style name="AppTheme.PopupOverlay" parent="Theme.MaterialComponents.DayNight" />
 
     <style name="MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
         <item name="android:topLeftRadius">8dp</item>
         <item name="android:topRightRadius">8dp</item>
         <item name="android:bottomRightRadius">8dp</item>
         <item name="android:bottomLeftRadius">8dp</item>
     </style>
 
-    <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+    <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/colorAccent</item>
+        <item name="textAllCaps">false</item>
         <item name="rippleColor">@color/colorAccent</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="WindowAnimationTransition">
