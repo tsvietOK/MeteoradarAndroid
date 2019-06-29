@@ -28,4 +28,5 @@
     <color name="colorTextDayNight">#b8b8b8</color>
     <color name="colorInfoButtonBackground">#80000000</color>
     <color name="colorInfoButtonStroke">#4B7C7C7C</color>
+    <color name="colorInfoListStroke">#80000000</color>
 </resources>
