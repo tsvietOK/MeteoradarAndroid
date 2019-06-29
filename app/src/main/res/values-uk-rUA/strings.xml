@@ -28,4 +28,5 @@
     <string name="light_squall">Шквал слабий</string>
     <string name="medium_squall">Шквал помірний</string>
     <string name="strong_squall">Шквал сильний</string>
+    <string name="cancel">Скасувати</string>
 </resources>
