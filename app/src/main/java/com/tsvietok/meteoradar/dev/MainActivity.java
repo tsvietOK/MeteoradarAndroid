@@ -257,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
             RadarBitmap map = new RadarBitmap();
             map.setBackgroundImage(BitmapFactory.decodeResource(getResources(), R.drawable.background));
             try {
-                bmp = getBitmapFromServer("http://veg.by/meteoradar/data/ukbb/images/" + data.times[number[0]] + ".png");
+                bmp = getBitmapFromServer("http://radar.veg.by/data/ukbb/images/" + data.times[number[0]] + ".png");
             } catch (IOException e) {
                 e.printStackTrace();
                 logError("GetImageAsync(): Image " + data.times[number[0]] + " getting error.");
@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
 
     private class GetJsonAsync extends AsyncTask<Void, Void, String> {
         String jsonString;
-        String url = "http://veg.by/meteoradar/kiev/update.json";
+        String url = "http://radar.veg.by/kiev/update.json";
 
         @Override
         protected String doInBackground(Void... params) {
