@@ -1,7 +1,6 @@
 package com.tsvietok.meteoradar.dev;
 
 import android.animation.ValueAnimator;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,7 +20,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -35,6 +33,7 @@ import static com.tsvietok.meteoradar.utils.CustomLog.*;
 import static com.tsvietok.meteoradar.utils.DeviceUtils.getPixelValue;
 import static com.tsvietok.meteoradar.utils.NetUtils.*;
 import static com.tsvietok.meteoradar.utils.SettingsUtils.*;
+import static com.tsvietok.meteoradar.utils.ThemeUtils.switchTheme;
 
 public class MainActivity extends AppCompatActivity {
     public String selectedTheme = "Selected_theme";
@@ -49,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     TextView TimeText;
     ImageView NoConnectionBitmap;
     LinearLayout TimeLayout;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -332,22 +330,5 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void switchTheme(int key) {
-        logDebug("switchTheme()");
-        switch (key) {
-            case 0: //System theme
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-                break;
-            case 1: //Light theme
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                break;
-            case 2: //Dark theme
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                break;
-            default:
-                break;
-        }
     }
 }
