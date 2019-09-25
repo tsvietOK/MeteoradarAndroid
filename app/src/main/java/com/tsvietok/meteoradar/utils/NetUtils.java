@@ -1,7 +1,10 @@
-package com.tsvietok.meteoradar;
+package com.tsvietok.meteoradar.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,12 +12,12 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-import static com.tsvietok.meteoradar.CustomLog.*;
+import static com.tsvietok.meteoradar.utils.CustomLog.*;
 
-class NetUtils {
+public class NetUtils {
     private static final String JSON_URL = "http://radar.veg.by/kiev/update.json";
 
-    static String getJsonFromServer() throws IOException {
+    public static String getJsonFromServer() throws IOException {
         logDebug("getJsonFromServer()");
 
         URL jsonUrl = new URL(JSON_URL);
@@ -29,7 +32,7 @@ class NetUtils {
         return inputStream.readLine();
     }
 
-    static Bitmap getBitmapFromServer(String url) throws IOException {
+    public static Bitmap getBitmapFromServer(String url) throws IOException {
         logDebug("getBitmapFromServer()");
 
         URL bitmapUrl = new URL(url);
@@ -40,5 +43,15 @@ class NetUtils {
         connection.connect();
 
         return BitmapFactory.decodeStream(connection.getInputStream());
+    }
+
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities capabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
+        if (capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
+            return true;
+        }
+        return false;
     }
 }
