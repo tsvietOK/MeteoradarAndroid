@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     TextView StatusText;
     ImageView ForegroundMap;
     TextView TimeText;
-    ImageView NoInternetImage;
+    ImageView NoConnectionBitmap;
     LinearLayout TimeLayout;
 
 
@@ -77,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(getApplicationContext(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
                 logError(getString(R.string.no_internet_connection));
-                NoInternetImage = findViewById(R.id.NoInternetImage);
-                NoInternetImage.setVisibility(View.VISIBLE);
+                NoConnectionBitmap = findViewById(R.id.NoConnectionBitmap);
+                NoConnectionBitmap.setVisibility(View.VISIBLE);
             }
 
         } else {
@@ -97,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(getApplicationContext(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
                 logError(getString(R.string.no_internet_connection));
-                NoInternetImage = findViewById(R.id.NoInternetImage);
-                NoInternetImage.setVisibility(View.VISIBLE);
+                NoConnectionBitmap = findViewById(R.id.NoConnectionBitmap);
+                NoConnectionBitmap.setVisibility(View.VISIBLE);
             }
         });
         ForegroundMap = findViewById(R.id.ForegroundMap);
@@ -190,8 +190,8 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(getApplicationContext(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
                         logError(getString(R.string.no_internet_connection));
-                        NoInternetImage = findViewById(R.id.NoInternetImage);
-                        NoInternetImage.setVisibility(View.VISIBLE);
+                        NoConnectionBitmap = findViewById(R.id.NoConnectionBitmap);
+                        NoConnectionBitmap.setVisibility(View.VISIBLE);
                     }
                 } else {
                     showData(i);

@@ -7,7 +7,7 @@
     <color name="colorBlack">#ff010101</color>
     <color name="radarOffTextColor">#EF5350</color>
     <color name="colorWhite">#fff</color>
-    <color name="colorNoWeather">#FFF</color>
+    <color name="colorNoWeather">#CFCFCF</color>
     <color name="colorLaminatedClouds">#dedede</color>
     <color name="colorLightPrecipitation">#9cea8c</color>
     <color name="colorMediumPrecipitation">#5cfe44</color>
@@ -29,4 +29,5 @@
     <color name="colorInfoButtonBackground">#9AFFFFFF</color>
     <color name="colorInfoButtonStroke">#4BB4B4B4</color>
     <color name="colorInfoListStroke">#80868686</color>
+    <color name="colorCardBackground">#FFF</color>
 </resources>
