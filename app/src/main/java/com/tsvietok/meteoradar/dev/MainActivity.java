@@ -2,7 +2,6 @@ package com.tsvietok.meteoradar.dev;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -10,9 +9,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
@@ -34,21 +33,15 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.gson.Gson;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 
+import static com.tsvietok.meteoradar.CustomLog.*;
 
 public class MainActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "com.tsvietok.meteoradar.preferences";
-    public String SelectedThemeKey = "Selected_theme";
-    public RadarBitmap[] Maps = new RadarBitmap[]{null, null, null, null, null,
-            null, null, null, null, null};
+    public String selectedTheme = "Selected_theme";
+    public RadarBitmap[] Maps = new RadarBitmap[10];
     public RadarTime data = null;
-    public String LOG_TAG = "Meteoradar";
-    public Boolean DEBUG = true;
     public int last_image = 9;
 
     ExtendedFloatingActionButton UpdateFab;
@@ -63,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         logDebug("onCreate()");
-        switchTheme(getIntSetting(SelectedThemeKey));
+        switchTheme(getIntSetting(selectedTheme));
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -94,54 +87,42 @@ public class MainActivity extends AppCompatActivity {
         }
 
         UpdateFab = findViewById(R.id.UpdateFab);
-        UpdateFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isNetworkConnected()) {
-                    data = new RadarTime();
-                    GetJsonAsync jsonTask = new GetJsonAsync();
-                    jsonTask.execute();
-                    last_image = 9;
-                    Toast.makeText(getApplicationContext(), R.string.updated, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
-                    logError(getString(R.string.no_internet_connection));
-                    NoInternetImage = findViewById(R.id.NoInternetImage);
-                    NoInternetImage.setVisibility(View.VISIBLE);
-                }
+        UpdateFab.setOnClickListener(view -> {
+            if (isNetworkConnected()) {
+                data = new RadarTime();
+                GetJsonAsync jsonTask = new GetJsonAsync();
+                jsonTask.execute();
+                last_image = 9;
+                Toast.makeText(getApplicationContext(), R.string.updated, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
+                logError(getString(R.string.no_internet_connection));
+                NoInternetImage = findViewById(R.id.NoInternetImage);
+                NoInternetImage.setVisibility(View.VISIBLE);
             }
         });
         ForegroundMap = findViewById(R.id.ForegroundMap);
-        ForegroundMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ForegroundMap.getMeasuredHeight() == 1024) {
-                    ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getMeasuredHeight(), 600);
-                    anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                            int val = (Integer) valueAnimator.getAnimatedValue();
-                            ViewGroup.LayoutParams layoutParams = ForegroundMap.getLayoutParams();
-                            layoutParams.height = val;
-                            ForegroundMap.setLayoutParams(layoutParams);
-                        }
-                    });
-                    anim.setDuration(250);
-                    anim.start();
-                } else {
-                    ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getMeasuredHeight(), 1024);
-                    anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                            int val = (Integer) valueAnimator.getAnimatedValue();
-                            ViewGroup.LayoutParams layoutParams = ForegroundMap.getLayoutParams();
-                            layoutParams.height = val;
-                            ForegroundMap.setLayoutParams(layoutParams);
-                        }
-                    });
-                    anim.setDuration(250);
-                    anim.start();
-                }
+        ForegroundMap.setOnClickListener(v -> {
+            if (ForegroundMap.getMeasuredHeight() == 1024) {
+                ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getMeasuredHeight(), 600);
+                anim.addUpdateListener(valueAnimator -> {
+                    int val = (Integer) valueAnimator.getAnimatedValue();
+                    ViewGroup.LayoutParams layoutParams = ForegroundMap.getLayoutParams();
+                    layoutParams.height = val;
+                    ForegroundMap.setLayoutParams(layoutParams);
+                });
+                anim.setDuration(250);
+                anim.start();
+            } else {
+                ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getMeasuredHeight(), 1024);
+                anim.addUpdateListener(valueAnimator -> {
+                    int val = (Integer) valueAnimator.getAnimatedValue();
+                    ViewGroup.LayoutParams layoutParams = ForegroundMap.getLayoutParams();
+                    layoutParams.height = val;
+                    ForegroundMap.setLayoutParams(layoutParams);
+                });
+                anim.setDuration(250);
+                anim.start();
             }
         });
     }
@@ -150,11 +131,11 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         logDebug("onSaveInstanceState()");
         if (data != null) {
-            outState.putIntArray("times", data.times);
-            outState.putBoolean("is_down", data.is_down);
-            outState.putBoolean("locked", data.locked);
-            outState.putInt("timeout", data.timeout);
-            outState.putInt("timestamp", data.timestamp);
+            outState.putIntArray("times", data.getTimes());
+            outState.putBoolean("is_down", data.getMode());
+            outState.putBoolean("locked", data.getLockedState());
+            outState.putInt("timeout", data.getTimeout());
+            outState.putInt("timestamp", data.getTimestamp());
             TimeLine = findViewById(R.id.TimeLine);
             outState.putInt("TimeLinePosition", TimeLine.getProgress());
             outState.putBoolean("Data_saved", true);
@@ -170,17 +151,17 @@ public class MainActivity extends AppCompatActivity {
         logDebug("onRestoreInstanceState()");
         if (savedInstanceState.getBoolean("Data_saved")) {
             data = new RadarTime();
-            data.times = savedInstanceState.getIntArray("times");
-            data.is_down = savedInstanceState.getBoolean("is_down");
-            data.locked = savedInstanceState.getBoolean("locked");
-            data.timeout = savedInstanceState.getInt("timeout");
-            data.timestamp = savedInstanceState.getInt("timestamp");
+            data.setTimes(savedInstanceState.getIntArray("times"));
+            data.setMode(savedInstanceState.getBoolean("is_down"));
+            ;
+            data.setLockedState(savedInstanceState.getBoolean("locked"));
+            data.setTimeout(savedInstanceState.getInt("timeout"));
+            data.setTimestamp(savedInstanceState.getInt("timestamp"));
             last_image = savedInstanceState.getInt("TimeLinePosition");
             ShowTime();
         }
         if (savedInstanceState.getBoolean("Maps_saved")) {
-            Maps = new RadarBitmap[]{null, null, null, null, null,
-                    null, null, null, null, null};
+            Maps = new RadarBitmap[10];
             Maps = (RadarBitmap[]) savedInstanceState.getSerializable("Maps");
         }
     }
@@ -188,11 +169,8 @@ public class MainActivity extends AppCompatActivity {
     private void getData() {
         logDebug("getData()");
         StatusText = findViewById(R.id.StatusText);
-        if (data.is_down)
-            StatusText.setVisibility(View.VISIBLE);
-        else
-            StatusText.setVisibility(View.INVISIBLE);
-        if ((Maps[last_image] == null) || (Maps[last_image].getTimestamp() != data.times[last_image])) {
+        StatusText.setVisibility(data.getMode() ? View.VISIBLE : View.INVISIBLE);
+        if ((Maps[last_image] == null) || (Maps[last_image].getTimestamp() != data.getTime(last_image))) {
             GetImageAsync imageTask = new GetImageAsync();
             imageTask.execute(last_image);
         } else {
@@ -205,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 
-                if ((Maps[i] == null) || (Maps[i].getTimestamp() != data.times[i])) {
+                if ((Maps[i] == null) || (Maps[i].getTimestamp() != data.getTime(i))) {
                     if (isNetworkConnected()) {
                         GetImageAsync imageTask = new GetImageAsync();
                         imageTask.execute(i);
@@ -254,20 +232,21 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Integer doInBackground(Integer... number) {
+            int imageNumber = number[0];
             RadarBitmap map = new RadarBitmap();
             map.setBackgroundImage(BitmapFactory.decodeResource(getResources(), R.drawable.background));
             try {
-                bmp = getBitmapFromServer("http://radar.veg.by/data/ukbb/images/" + data.times[number[0]] + ".png");
+                bmp = NetUtils.getBitmapFromServer(data.getImageLink(imageNumber));
             } catch (IOException e) {
                 e.printStackTrace();
-                logError("GetImageAsync(): Image " + data.times[number[0]] + " getting error.");
+                logError("GetImageAsync(): Image " + data.getTime(imageNumber) + " getting error.");
                 return null;
             }
-            logDebug("GetImageAsync(): Image " + data.times[number[0]] + " has been loaded.");
+            logDebug("GetImageAsync(): Image " + data.getTime(imageNumber) + " has been loaded.");
             map.setImage(bmp);
-            map.setTime(data.times[number[0]]);
-            Maps[number[0]] = map;
-            return number[0];
+            map.setTime(data.getTime(imageNumber));
+            Maps[imageNumber] = map;
+            return imageNumber;
         }
 
         @Override
@@ -279,12 +258,11 @@ public class MainActivity extends AppCompatActivity {
 
     private class GetJsonAsync extends AsyncTask<Void, Void, String> {
         String jsonString;
-        String url = "http://radar.veg.by/kiev/update.json";
 
         @Override
         protected String doInBackground(Void... params) {
             try {
-                jsonString = getJsonFromServer(url);
+                jsonString = NetUtils.getJsonFromServer();
             } catch (IOException e) {
                 e.printStackTrace();
                 logError("GetJsonAsync(): Json config getting error.");
@@ -305,9 +283,9 @@ public class MainActivity extends AppCompatActivity {
     private void ShowTime() {
         TimeLayout = findViewById(R.id.TimeLayout);
         TimeLayout.removeAllViews();
-        for (int i = 0; i < data.times.length; i++) {
+        for (int i = 0; i < data.getTimes().length; i++) {
             TextView timeLayoutText = new TextView(getApplicationContext());
-            timeLayoutText.setText(data.getTime()[i]);
+            timeLayoutText.setText(data.getTimeString()[i]);
             timeLayoutText.setTextSize(12);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.setMargins(0, 0, getPixelValue(getApplicationContext(), getResources().getDimension(R.dimen.time_margin_end)), 0);
@@ -328,34 +306,6 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    private String getJsonFromServer(String url) throws IOException {
-        logDebug("getJsonFromServer()");
-
-        URL jsonUrl = new URL(url);
-        URLConnection dc = jsonUrl.openConnection();
-
-        dc.setConnectTimeout(5000);
-        dc.setReadTimeout(5000);
-
-        BufferedReader inputStream = new BufferedReader(new InputStreamReader(
-                dc.getInputStream()));
-
-        return inputStream.readLine();
-    }
-
-    private Bitmap getBitmapFromServer(String url) throws IOException {
-        logDebug("getBitmapFromServer()");
-
-        URL bitmapUrl = new URL(url);
-        URLConnection dc = bitmapUrl.openConnection();
-
-        dc.setConnectTimeout(5000);
-        dc.setReadTimeout(5000);
-        dc.connect();
-
-        return BitmapFactory.decodeStream(dc.getInputStream());
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -371,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_theme) {
-            final int SelectedTheme = getIntSetting(SelectedThemeKey);
+            final int SelectedTheme = getIntSetting(selectedTheme);
             final String[] listItems = {
                     getString(R.string.follow_system_theme),
                     getString(R.string.light_theme),
@@ -379,22 +329,13 @@ public class MainActivity extends AppCompatActivity {
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MainActivity.this);
             builder.setTitle(R.string.choose_theme)
                     .setSingleChoiceItems(listItems, SelectedTheme,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                                    int item) {
-                                    saveIntSetting(SelectedThemeKey, item);
-                                    switchTheme(getIntSetting(SelectedThemeKey));
-                                    dialog.dismiss();
-                                }
+                            (dialog, item1) -> {
+                                saveIntSetting(selectedTheme, item1);
+                                switchTheme(getIntSetting(selectedTheme));
+                                dialog.dismiss();
                             })
                     .setNegativeButton(getString(R.string.cancel),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,
-                                                    int id) {
-                                    dialog.cancel();
-                                }
-                            });
+                            (dialog, id1) -> dialog.cancel());
             AlertDialog alert = builder.create();
             alert.show();
         }
@@ -434,17 +375,13 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        return cm.getActiveNetworkInfo() != null;
+        NetworkCapabilities capabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
+        if (capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
+            return true;
+        }
+        return false;
     }
 
-    private void logError(String message) {
-        if (DEBUG)
-            Log.e(LOG_TAG, message);
-    }
 
-    private void logDebug(String message) {
-        if (DEBUG)
-            Log.d(LOG_TAG, message);
-    }
 }
