@@ -34,9 +34,9 @@ import java.io.IOException;
 import static com.tsvietok.meteoradar.utils.CustomLog.*;
 import static com.tsvietok.meteoradar.utils.DeviceUtils.getPixelValue;
 import static com.tsvietok.meteoradar.utils.NetUtils.*;
+import static com.tsvietok.meteoradar.utils.SettingsUtils.*;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String PREFS_NAME = "com.tsvietok.meteoradar.preferences";
     public String selectedTheme = "Selected_theme";
     public RadarBitmap[] Maps = new RadarBitmap[10];
     public RadarTime data = null;
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         logDebug("onCreate()");
-        switchTheme(getIntSetting(selectedTheme));
+        switchTheme(getIntSetting(getApplicationContext(), selectedTheme));
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -295,8 +295,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -312,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_theme) {
-            final int SelectedTheme = getIntSetting(selectedTheme);
+            final int SelectedTheme = getIntSetting(getApplicationContext(), selectedTheme);
             final String[] listItems = {
                     getString(R.string.follow_system_theme),
                     getString(R.string.light_theme),
@@ -321,8 +319,8 @@ public class MainActivity extends AppCompatActivity {
             builder.setTitle(R.string.choose_theme)
                     .setSingleChoiceItems(listItems, SelectedTheme,
                             (dialog, item1) -> {
-                                saveIntSetting(selectedTheme, item1);
-                                switchTheme(getIntSetting(selectedTheme));
+                                saveIntSetting(getApplicationContext(), selectedTheme, item1);
+                                switchTheme(getIntSetting(getApplicationContext(), selectedTheme));
                                 dialog.dismiss();
                             })
                     .setNegativeButton(getString(R.string.cancel),
@@ -352,17 +350,4 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-
-    private void saveIntSetting(String key, int value) {
-        SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, 0).edit();
-        editor.putInt(key, value);
-        editor.commit();
-    }
-
-    private int getIntSetting(String key) {
-        SharedPreferences sharedPref = getSharedPreferences(PREFS_NAME, 0);
-        return sharedPref.getInt(key, 0);
-    }
-
-
 }
