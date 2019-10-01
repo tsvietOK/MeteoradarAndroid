@@ -149,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
             data = new RadarTime();
             data.setTimes(savedInstanceState.getIntArray("times"));
             data.setMode(savedInstanceState.getBoolean("is_down"));
-            ;
             data.setLockedState(savedInstanceState.getBoolean("locked"));
             data.setTimeout(savedInstanceState.getInt("timeout"));
             data.setTimestamp(savedInstanceState.getInt("timestamp"));
