@@ -1,8 +1,8 @@
-package com.tsvietok.meteoradar.utils;
+package com.tsvietok.meteoradar.dev.utils;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
-import static com.tsvietok.meteoradar.utils.CustomLog.logDebug;
+import static com.tsvietok.meteoradar.dev.utils.CustomLog.logDebug;
 
 public class ThemeUtils {
     public static void switchTheme(int key) {

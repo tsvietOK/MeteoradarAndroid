@@ -1,4 +1,4 @@
-package com.tsvietok.meteoradar.utils;
+package com.tsvietok.meteoradar.dev.utils;
 
 import android.util.Log;
 

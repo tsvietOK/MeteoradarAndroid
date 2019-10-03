@@ -1,4 +1,4 @@
-package com.tsvietok.meteoradar.utils;
+package com.tsvietok.meteoradar.dev.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-import static com.tsvietok.meteoradar.utils.CustomLog.*;
+import static com.tsvietok.meteoradar.dev.utils.CustomLog.*;
 
 public class NetUtils {
     private static final String JSON_URL = "http://radar.veg.by/kiev/update.json";

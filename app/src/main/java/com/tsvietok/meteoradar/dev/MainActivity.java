@@ -25,15 +25,15 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.gson.Gson;
-import com.tsvietok.meteoradar.utils.NetUtils;
+import com.tsvietok.meteoradar.dev.utils.NetUtils;
 
 import java.io.IOException;
 
-import static com.tsvietok.meteoradar.utils.CustomLog.*;
-import static com.tsvietok.meteoradar.utils.DeviceUtils.getPixelValue;
-import static com.tsvietok.meteoradar.utils.NetUtils.*;
-import static com.tsvietok.meteoradar.utils.SettingsUtils.*;
-import static com.tsvietok.meteoradar.utils.ThemeUtils.switchTheme;
+import static com.tsvietok.meteoradar.dev.utils.CustomLog.*;
+import static com.tsvietok.meteoradar.dev.utils.DeviceUtils.getPixelValue;
+import static com.tsvietok.meteoradar.dev.utils.NetUtils.*;
+import static com.tsvietok.meteoradar.dev.utils.SettingsUtils.*;
+import static com.tsvietok.meteoradar.dev.utils.ThemeUtils.switchTheme;
 
 public class MainActivity extends AppCompatActivity {
     public String selectedTheme = "Selected_theme";
