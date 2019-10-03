@@ -1,18 +1,13 @@
 package com.tsvietok.meteoradar.dev;
 
 import android.animation.ValueAnimator;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.net.ConnectivityManager;
-import android.net.NetworkCapabilities;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,10 +27,13 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.gson.Gson;
+import com.tsvietok.meteoradar.utils.NetUtils;
 
 import java.io.IOException;
 
-import static com.tsvietok.meteoradar.CustomLog.*;
+import static com.tsvietok.meteoradar.utils.CustomLog.*;
+import static com.tsvietok.meteoradar.utils.DeviceUtils.getPixelValue;
+import static com.tsvietok.meteoradar.utils.NetUtils.*;
 
 public class MainActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "com.tsvietok.meteoradar.preferences";
@@ -69,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         logDebug("onResume()");
         if (data == null) {
-            if (isNetworkConnected()) {
+            if (isNetworkConnected(getApplicationContext())) {
                 data = new RadarTime();
                 logDebug("First start, getting Json...");
                 GetJsonAsync jsonTask = new GetJsonAsync();
@@ -88,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         UpdateFab = findViewById(R.id.UpdateFab);
         UpdateFab.setOnClickListener(view -> {
-            if (isNetworkConnected()) {
+            if (isNetworkConnected(getApplicationContext())) {
                 data = new RadarTime();
                 GetJsonAsync jsonTask = new GetJsonAsync();
                 jsonTask.execute();
@@ -184,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 
                 if ((Maps[i] == null) || (Maps[i].getTimestamp() != data.getTime(i))) {
-                    if (isNetworkConnected()) {
+                    if (isNetworkConnected(getApplicationContext())) {
                         GetImageAsync imageTask = new GetImageAsync();
                         imageTask.execute(i);
                     } else {
@@ -236,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
             RadarBitmap map = new RadarBitmap();
             map.setBackgroundImage(BitmapFactory.decodeResource(getResources(), R.drawable.background));
             try {
-                bmp = NetUtils.getBitmapFromServer(data.getImageLink(imageNumber));
+                bmp = getBitmapFromServer(data.getImageLink(imageNumber));
             } catch (IOException e) {
                 e.printStackTrace();
                 logError("GetImageAsync(): Image " + data.getTime(imageNumber) + " getting error.");
@@ -297,14 +295,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private static int getPixelValue(Context context, float dimenId) {
-        Resources resources = context.getResources();
-        return (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dimenId,
-                resources.getDisplayMetrics()
-        );
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -371,16 +362,6 @@ public class MainActivity extends AppCompatActivity {
     private int getIntSetting(String key) {
         SharedPreferences sharedPref = getSharedPreferences(PREFS_NAME, 0);
         return sharedPref.getInt(key, 0);
-    }
-
-    private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkCapabilities capabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
-        if (capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-                && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
-            return true;
-        }
-        return false;
     }
 
 
