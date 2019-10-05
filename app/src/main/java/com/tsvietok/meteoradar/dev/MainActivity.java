@@ -28,28 +28,27 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.gson.Gson;
 import com.tsvietok.meteoradar.dev.utils.NetUtils;
 
-import java.io.IOException;
-
 import static com.tsvietok.meteoradar.dev.utils.CustomLog.logDebug;
 import static com.tsvietok.meteoradar.dev.utils.CustomLog.logError;
 import static com.tsvietok.meteoradar.dev.utils.DeviceUtils.getPixelValue;
 import static com.tsvietok.meteoradar.dev.utils.NetUtils.getBitmapFromServer;
 import static com.tsvietok.meteoradar.dev.utils.NetUtils.isNetworkConnected;
+import static com.tsvietok.meteoradar.dev.utils.SettingsUtils.getBooleanSetting;
 import static com.tsvietok.meteoradar.dev.utils.SettingsUtils.getIntSetting;
+import static com.tsvietok.meteoradar.dev.utils.SettingsUtils.saveBooleanSetting;
 import static com.tsvietok.meteoradar.dev.utils.SettingsUtils.saveIntSetting;
+import static com.tsvietok.meteoradar.dev.utils.StorageUtils.getBitmapFromStorage;
+import static com.tsvietok.meteoradar.dev.utils.StorageUtils.getJsonFromStorage;
+import static com.tsvietok.meteoradar.dev.utils.StorageUtils.removeUnusedBitmap;
+import static com.tsvietok.meteoradar.dev.utils.StorageUtils.saveBitmapToStorage;
+import static com.tsvietok.meteoradar.dev.utils.StorageUtils.saveJsonToStorage;
 import static com.tsvietok.meteoradar.dev.utils.ThemeUtils.switchTheme;
 
 public class MainActivity extends AppCompatActivity {
     private static final String PREF_SELECTED_THEME_KEY = "selectedTheme";
-    private static final String PREF_TIMES_KEY = "times";
-    private static final String PREF_MODE_KEY = "isDown";
-    private static final String PREF_LOCKED_STATE_KEY = "locked";
-    private static final String PREF_TIMEOUT_KEY = "timeout";
-    private static final String PREF_TIMESTAMP_KEY = "timestamp";
     private static final String PREF_TIMELINE_POSITION_KEY = "timeLinePosition";
-    private static final String PREF_DATA_SAVED_KEY = "dataSaved";
-    private static final String PREF_MAPS_SAVED_KEY = "mapsSaved";
-    private static final String PREF_MAPS_KEY = "maps";
+    private static final String PREF_FIRST_RUN_KEY = "firstRun";
+    private static final String JSON_CONFIG_FILE_NAME = "config";
 
     ExtendedFloatingActionButton UpdateFab;
     SeekBar TimeLine;
@@ -59,50 +58,69 @@ public class MainActivity extends AppCompatActivity {
     ImageView NoConnectionBitmap;
     LinearLayout TimeLayout;
 
-    private RadarBitmap[] mMaps = new RadarBitmap[10];
-    private RadarTime mData = null;
-    private int mLastImageNumber = mMaps.length - 1;
+    private RadarBitmap[] mMaps;
+    private RadarTime mData;
+    private int mLastImageNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        logDebug("onCreate()");
-        switchTheme(getIntSetting(getApplicationContext(), PREF_SELECTED_THEME_KEY));
         super.onCreate(savedInstanceState);
+        logDebug("onCreate()");
+
+        switchTheme(getIntSetting(getApplicationContext(), PREF_SELECTED_THEME_KEY));
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mMaps = new RadarBitmap[10];
+        mLastImageNumber = mMaps.length - 1;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        logDebug("onDestroy()");
+
+        if (mData != null) removeUnusedBitmap(getApplicationContext(), mData.getTimes());
     }
 
     @Override
     public void onResume() {
         super.onResume();
         logDebug("onResume()");
-        if (mData == null) {
+
+        GetJsonAsync jsonTask;
+
+        if (getBooleanSetting(getApplicationContext(), PREF_FIRST_RUN_KEY)) {
             if (isNetworkConnected(getApplicationContext())) {
-                mData = new RadarTime();
-                logDebug("First start, getting Json...");
-                GetJsonAsync jsonTask = new GetJsonAsync();
+                jsonTask = new GetJsonAsync(true);
                 jsonTask.execute();
+
+                saveBooleanSetting(getApplicationContext(), PREF_FIRST_RUN_KEY, false);
             } else {
                 Toast.makeText(getApplicationContext(),
                         R.string.no_internet_connection,
                         Toast.LENGTH_SHORT).show();
-                logError(getString(R.string.no_internet_connection));
+
                 NoConnectionBitmap = findViewById(R.id.NoConnectionBitmap);
                 NoConnectionBitmap.setVisibility(View.VISIBLE);
-            }
 
+                logError("Internet connection is not available");
+            }
         } else {
-            logDebug("Json exists, showing mData...");
-            getData();
+            jsonTask = new GetJsonAsync(false);
+            jsonTask.execute();
         }
 
         UpdateFab = findViewById(R.id.UpdateFab);
         UpdateFab.setOnClickListener(view -> {
             if (isNetworkConnected(getApplicationContext())) {
-                GetJsonAsync jsonTask = new GetJsonAsync();
-                jsonTask.execute();
+                GetJsonAsync jsonTaskUpdate = new GetJsonAsync(true);
+                jsonTaskUpdate.execute();
+
+                mLastImageNumber = mMaps.length - 1;
+
                 Toast.makeText(getApplicationContext(),
                         R.string.updated,
                         Toast.LENGTH_SHORT).show();
@@ -110,9 +128,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         R.string.no_internet_connection,
                         Toast.LENGTH_SHORT).show();
-                logError(getString(R.string.no_internet_connection));
+
                 NoConnectionBitmap = findViewById(R.id.NoConnectionBitmap);
                 NoConnectionBitmap.setVisibility(View.VISIBLE);
+
+                logError("Internet connection is not available");
             }
         });
         ForegroundMap = findViewById(R.id.ForegroundMap);
@@ -141,48 +161,33 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         logDebug("onSaveInstanceState()");
+
         if (mData != null) {
-            outState.putIntArray(PREF_TIMES_KEY, mData.getTimes());
-            outState.putBoolean(PREF_MODE_KEY, mData.getMode());
-            outState.putBoolean(PREF_LOCKED_STATE_KEY, mData.getLockedState());
-            outState.putInt(PREF_TIMEOUT_KEY, mData.getTimeout());
-            outState.putInt(PREF_TIMESTAMP_KEY, mData.getTimestamp());
             TimeLine = findViewById(R.id.TimeLine);
-            outState.putInt(PREF_TIMELINE_POSITION_KEY, TimeLine.getProgress());
-            outState.putBoolean(PREF_DATA_SAVED_KEY, true);
-        }
-        if (mMaps != null) {
-            outState.putSerializable(PREF_MAPS_KEY, mMaps);
-            outState.putBoolean(PREF_MAPS_SAVED_KEY, true);
+            mLastImageNumber = TimeLine.getProgress();
+            outState.putInt(PREF_TIMELINE_POSITION_KEY, mLastImageNumber);
         }
     }
 
+    @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         logDebug("onRestoreInstanceState()");
-        if (savedInstanceState.getBoolean(PREF_DATA_SAVED_KEY)) {
-            mData = new RadarTime();
-            mData.setTimes(savedInstanceState.getIntArray(PREF_TIMES_KEY));
-            mData.setMode(savedInstanceState.getBoolean(PREF_MODE_KEY));
-            mData.setLockedState(savedInstanceState.getBoolean(PREF_LOCKED_STATE_KEY));
-            mData.setTimeout(savedInstanceState.getInt(PREF_TIMEOUT_KEY));
-            mData.setTimestamp(savedInstanceState.getInt(PREF_TIMESTAMP_KEY));
-            mLastImageNumber = savedInstanceState.getInt(PREF_TIMELINE_POSITION_KEY);
-            ShowTime();
-        }
-        if (savedInstanceState.getBoolean(PREF_MAPS_SAVED_KEY)) {
-            mMaps = new RadarBitmap[10];
-            mMaps = (RadarBitmap[]) savedInstanceState.getSerializable(PREF_MAPS_KEY);
-        }
+
+        mLastImageNumber = savedInstanceState.getInt(PREF_TIMELINE_POSITION_KEY);
+
     }
 
     private void getData() {
         logDebug("getData()");
+
         StatusText = findViewById(R.id.StatusText);
         StatusText.setVisibility(mData.getMode() ? View.VISIBLE : View.INVISIBLE);
+
         if (!mMaps[mLastImageNumber].isLoaded()) {
             GetImageAsync imageAsync = new GetImageAsync();
             imageAsync.execute(mLastImageNumber);
@@ -195,18 +200,22 @@ public class MainActivity extends AppCompatActivity {
         TimeLine.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-
                 if (!mMaps[i].isLoaded()) {
                     if (isNetworkConnected(getApplicationContext())) {
                         GetImageAsync imageAsync = new GetImageAsync();
                         imageAsync.execute(i);
                     } else {
+                        GetImageAsync imageAsync = new GetImageAsync();
+                        imageAsync.execute(i);
+
                         Toast.makeText(getApplicationContext(),
                                 R.string.no_internet_connection,
                                 Toast.LENGTH_SHORT).show();
-                        logError(getString(R.string.no_internet_connection));
+
                         NoConnectionBitmap = findViewById(R.id.NoConnectionBitmap);
                         NoConnectionBitmap.setVisibility(View.VISIBLE);
+
+                        logError("Internet connection is not available");
                     }
                 } else {
                     showData(i);
@@ -227,18 +236,25 @@ public class MainActivity extends AppCompatActivity {
 
     private void showData(int number) {
         logDebug("showData()");
-        ForegroundMap = findViewById(R.id.ForegroundMap);
-        TimeText = findViewById(R.id.TimeText);
-        TimeText.setText(mMaps[number].getTime());
-        int currentNightMode = getResources().getConfiguration().uiMode
-                & Configuration.UI_MODE_NIGHT_MASK;
-        switch (currentNightMode) {
-            case Configuration.UI_MODE_NIGHT_NO:
-                ForegroundMap.setImageBitmap(mMaps[number].getImage());
-                break;
-            case Configuration.UI_MODE_NIGHT_YES:
-                ForegroundMap.setImageBitmap(mMaps[number].getNightImage());
-                break;
+
+        if (number != -1) {
+            TimeText = findViewById(R.id.TimeText);
+            TimeText.setText(mMaps[number].getTime());
+            ForegroundMap = findViewById(R.id.ForegroundMap);
+            int currentNightMode = getResources().getConfiguration().uiMode
+                    & Configuration.UI_MODE_NIGHT_MASK;
+            switch (currentNightMode) {
+                case Configuration.UI_MODE_NIGHT_NO:
+                    ForegroundMap.setImageBitmap(mMaps[number].getImage());
+                    break;
+                case Configuration.UI_MODE_NIGHT_YES:
+                    ForegroundMap.setImageBitmap(mMaps[number].getNightImage());
+                    break;
+            }
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    R.string.no_server_connection,
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -303,20 +319,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class GetImageAsync extends AsyncTask<Integer, Void, Integer> {
-        Bitmap bitmap;
-
         @Override
         protected Integer doInBackground(Integer... number) {
             int imageNumber = number[0];
             int timestamp = mMaps[imageNumber].getTimestamp();
-            try {
+
+            Bitmap bitmap =
+                    getBitmapFromStorage(getApplicationContext(), Integer.toString(timestamp));
+            if (bitmap == null) {
                 bitmap = getBitmapFromServer(mMaps[imageNumber].getImageLink());
-            } catch (IOException e) {
-                e.printStackTrace();
-                logError("GetImageAsync(): Image " + timestamp + " getting error.");
-                return null;
+                if (bitmap == null)
+                    return -1;
+                logDebug("GetImageAsync(): Image " + timestamp + " has been loaded.");
+
+                saveBitmapToStorage(getApplicationContext(), bitmap, timestamp);
+            } else {
+                logDebug("GetImageAsync(): Image " + timestamp + " already exists.");
             }
-            logDebug("GetImageAsync(): Image " + timestamp + " has been loaded.");
             mMaps[imageNumber].setImage(bitmap);
             return imageNumber;
         }
@@ -325,30 +344,42 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
             showData(result);
-            mMaps[result].setLoaded();
         }
     }
 
     private class GetJsonAsync extends AsyncTask<Void, Void, String> {
-        String jsonString;
+        private boolean forcedUpdate;
+
+        GetJsonAsync(boolean forcedUpdate) {
+            this.forcedUpdate = forcedUpdate;
+        }
 
         @Override
         protected String doInBackground(Void... params) {
-            try {
+            String jsonString = getJsonFromStorage(getApplicationContext(), JSON_CONFIG_FILE_NAME);
+            if (jsonString == null || jsonString.length() == 0 || forcedUpdate) {
                 jsonString = NetUtils.getJsonFromServer();
-            } catch (IOException e) {
-                e.printStackTrace();
-                logError("GetJsonAsync(): Json config getting error.");
+                if (jsonString == null)
+                    return null;
+                logDebug("GetJsonAsync(): New JSON config has been loaded.");
+
+                saveJsonToStorage(getApplicationContext(), jsonString, JSON_CONFIG_FILE_NAME);
+            } else {
+                logDebug("GetJsonAsync(): JSON config already exists.");
             }
-            logDebug("GetJsonAsync(): Json config has been loaded.");
             return jsonString;
         }
 
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+
+            if (result == null) {
+                return;
+            }
+
             RadarTime newData = new Gson().fromJson(result, RadarTime.class);
-            if (mData.getLockedState() == null || mData.getTime(0) != newData.getTime(0)) {
+            if (mData == null || mData.getTime(0) != newData.getTime(0)) {
                 mData = newData;
                 Bitmap bitmap;
                 bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.background);

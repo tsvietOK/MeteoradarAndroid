@@ -27,19 +27,16 @@ class RadarBitmap {
         return mIsLoaded;
     }
 
-    void setLoaded() {
-        mIsLoaded = true;
-    }
-
     Bitmap getImage() {
         return mImage;
     }
 
     void setImage(Bitmap image) {
+        mIsLoaded = true;
         image = RemoveColor(image);
         image = OverlayBitmap(this.mBackgroundImage, image);
-        this.mImage = Bitmap.createBitmap(image, 18, 2, 476, 476);
-        this.mNightImage = InvertBitmap(this.mImage);
+        mImage = Bitmap.createBitmap(image, 18, 2, 476, 476);
+        mNightImage = InvertBitmap(this.mImage);
     }
 
     Bitmap getNightImage() {
