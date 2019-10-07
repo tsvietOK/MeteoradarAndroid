@@ -1,14 +1,22 @@
 package com.tsvietok.meteoradar;
 
+import android.graphics.Bitmap;
+
 public class Location {
     private final String mFullName;
     private final String mCode;
     private final String mCity;
+    private final Bitmap mLocalMap;
 
-    public Location(String mFullName, String mCode, String mCity) {
+    public Location(String mFullName, String mCode, String mCity, Bitmap mLocalMap) {
         this.mFullName = mFullName;
         this.mCode = mCode;
         this.mCity = mCity;
+        this.mLocalMap = mLocalMap;
+    }
+
+    public Bitmap getLocalMap() {
+        return mLocalMap;
     }
 
     String getFullName() {
