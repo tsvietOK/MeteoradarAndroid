@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 
+import com.tsvietok.meteoradar.dev.Location;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,20 +15,22 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import static com.tsvietok.meteoradar.dev.utils.CustomLog.logDebug;
-import static com.tsvietok.meteoradar.dev.utils.CustomLog.logError;
-
 public class NetUtils {
-    private static final String JSON_URL = "http://radar.veg.by/kiev/update.json";
+    private static final String DOMAIN = "http://radar.veg.by";
+    private static final String JSON_FILE_NAME = "update.json";
 
-    public static String getJsonFromServer() {
-        logDebug("getJsonFromServer()");
+    public static String getDomain() {
+        return DOMAIN;
+    }
+
+    public static String getJsonFromServer(Location location) {
+        CustomLog.logDebug("getJsonFromServer()");
 
         URL jsonUrl = null;
         try {
-            jsonUrl = new URL(JSON_URL);
+            jsonUrl = new URL(DOMAIN + "/" + location.getCity() + "/" + JSON_FILE_NAME);
         } catch (MalformedURLException e) {
-            logError("Wrong URL:" + e.getMessage());
+            CustomLog.logError("Wrong URL:" + e.getMessage());
         }
         URLConnection connection = null;
         try {
@@ -34,7 +38,7 @@ public class NetUtils {
                 connection = jsonUrl.openConnection();
             }
         } catch (IOException e) {
-            logError("Can't open connection: " + e.getMessage());
+            CustomLog.logError("Can't open connection: " + e.getMessage());
         }
 
         if (connection != null) {
@@ -49,7 +53,7 @@ public class NetUtils {
                         connection.getInputStream()));
             }
         } catch (IOException e) {
-            logError("Can't get input stream: " + e.getMessage());
+            CustomLog.logError("Can't get input stream: " + e.getMessage());
         }
 
         String input = null;
@@ -58,19 +62,19 @@ public class NetUtils {
                 input = inputStream.readLine();
             }
         } catch (IOException e) {
-            logError("Can't read from stream: " + e.getMessage());
+            CustomLog.logError("Can't read from stream: " + e.getMessage());
         }
         return input;
     }
 
     public static Bitmap getBitmapFromServer(String url) {
-        logDebug("getBitmapFromServer()");
+        CustomLog.logDebug("getBitmapFromServer()");
 
         URL bitmapUrl = null;
         try {
             bitmapUrl = new URL(url);
         } catch (MalformedURLException e) {
-            logError("Wrong URL:" + e.getMessage());
+            CustomLog.logError("Wrong URL:" + e.getMessage());
         }
         URLConnection connection = null;
         try {
@@ -78,7 +82,7 @@ public class NetUtils {
                 connection = bitmapUrl.openConnection();
             }
         } catch (IOException e) {
-            logError("Can't open connection: " + e.getMessage());
+            CustomLog.logError("Can't open connection: " + e.getMessage());
         }
 
         if (connection != null) {
@@ -92,7 +96,7 @@ public class NetUtils {
                 bitmap = BitmapFactory.decodeStream(connection.getInputStream());
             }
         } catch (IOException e) {
-            logError("Can't get or decode input stream: " + e.getMessage());
+            CustomLog.logError("Can't get or decode input stream: " + e.getMessage());
         }
         return bitmap;
     }

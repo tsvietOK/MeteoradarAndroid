@@ -14,7 +14,7 @@ public class SettingsUtils {
 
     public static int getIntSetting(Context context, String key) {
         SharedPreferences sharedPref = context.getSharedPreferences(PREF_NAME, 0);
-        return sharedPref.getInt(key, 0);
+        return sharedPref.getInt(key, -1);
     }
 
     public static void saveBooleanSetting(Context context, String key, boolean value) {

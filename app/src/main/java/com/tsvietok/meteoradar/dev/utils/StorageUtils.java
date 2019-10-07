@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.tsvietok.meteoradar.dev.Location;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,21 +15,22 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.tsvietok.meteoradar.dev.utils.CustomLog.logDebug;
-import static com.tsvietok.meteoradar.dev.utils.CustomLog.logError;
-
 public class StorageUtils {
     private static final String PNG_EXTENSION = ".png";
-    private static final String JSON_EXTENSION = ".json";
+    private static final String JSON_CONFIG_FILE_NAME = "config.json";
 
-    public static Bitmap getBitmapFromStorage(Context context, String fileName) {
-        File file = new File(context.getFilesDir() + "/" + fileName + PNG_EXTENSION);
+    public static Bitmap getBitmapFromStorage(Context context, String fileName, Location location) {
+        File workingDirectory = new File(context.getFilesDir() + File.separator + location.getCity() + File.separator);
+        if (!workingDirectory.exists()) {
+            workingDirectory.mkdir();
+        }
+        File file = new File(workingDirectory, fileName + PNG_EXTENSION);
         if (file.exists()) {
             FileInputStream stream;
             try {
                 stream = new FileInputStream(file);
             } catch (FileNotFoundException e) {
-                logError("File not found: " + e.getMessage());
+                CustomLog.logError("File not found: " + e.getMessage());
                 return null;
             }
 
@@ -35,35 +38,43 @@ public class StorageUtils {
             try {
                 stream.close();
             } catch (IOException e) {
-                logError("Can't close stream: " + e.getMessage());
+                CustomLog.logError("Can't close stream: " + e.getMessage());
             }
             return bitmap;
         }
         return null;
     }
 
-    public static void saveBitmapToStorage(Context context, Bitmap bitmap, int fileName) {
-        File file = new File(context.getFilesDir(), fileName + PNG_EXTENSION);
+    public static void saveBitmapToStorage(Context context, Bitmap bitmap, int fileName, Location location) {
+        File workingDirectory = new File(context.getFilesDir() + File.separator + location.getCity() + File.separator);
+        if (!workingDirectory.exists()) {
+            workingDirectory.mkdir();
+        }
+        File file = new File(workingDirectory, fileName + PNG_EXTENSION);
         FileOutputStream stream = null;
         try {
             stream = new FileOutputStream(file);
         } catch (FileNotFoundException e) {
-            logError("File not found: " + e.getMessage());
+            CustomLog.logError("File not found: " + e.getMessage());
         }
 
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         try {
             if (stream != null) {
-                logDebug("saveBitmapToStorage(): " + file.getAbsolutePath() + " saved.");
+                CustomLog.logDebug("saveBitmapToStorage(): " + file.getAbsolutePath() + " saved.");
                 stream.close();
             }
         } catch (IOException e) {
-            logError("Can't close stream: " + e.getMessage());
+            CustomLog.logError("Can't close stream: " + e.getMessage());
         }
     }
 
-    public static String getJsonFromStorage(Context context, String fileName) {
-        File file = new File(context.getFilesDir() + "/" + fileName + JSON_EXTENSION);
+    public static String getJsonFromStorage(Context context, Location location) {
+        File workingDirectory = new File(context.getFilesDir() + File.separator + location.getCity() + File.separator);
+        if (!workingDirectory.exists()) {
+            workingDirectory.mkdir();
+        }
+        File file = new File(workingDirectory, JSON_CONFIG_FILE_NAME);
         if (file.exists()) {
             StringBuilder text = new StringBuilder();
             try {
@@ -73,38 +84,42 @@ public class StorageUtils {
                 while ((line = br.readLine()) != null) text.append(line);
                 br.close();
             } catch (IOException e) {
-                logError("Can't get JSON config from storage: " + e.getMessage());
+                CustomLog.logError("Can't get JSON config from storage: " + e.getMessage());
             }
             return text.toString();
         }
         return null;
     }
 
-    public static void saveJsonToStorage(Context context, String string, String fileName) {
-        File file = new File(context.getFilesDir(), fileName + JSON_EXTENSION);
+    public static void saveJsonToStorage(Context context, String string, Location location) {
+        File workingDirectory = new File(context.getFilesDir() + File.separator + location.getCity() + File.separator);
+        if (!workingDirectory.exists()) {
+            workingDirectory.mkdir();
+        }
+        File file = new File(workingDirectory, JSON_CONFIG_FILE_NAME);
         FileOutputStream stream = null;
         try {
             stream = new FileOutputStream(file);
         } catch (FileNotFoundException e) {
-            logError("File not found: " + e.getMessage());
+            CustomLog.logError("File not found: " + e.getMessage());
         }
         if (stream != null) {
             try {
                 stream.write(string.getBytes());
             } catch (IOException e) {
-                logError("Can't write to file: " + e.getMessage());
+                CustomLog.logError("Can't write to file: " + e.getMessage());
             }
 
             try {
                 stream.close();
             } catch (IOException e) {
-                logError("Can't close stream: " + e.getMessage());
+                CustomLog.logError("Can't close stream: " + e.getMessage());
             }
         }
     }
 
-    public static void removeUnusedBitmap(Context context, int[] times) {
-        File[] files = new File(context.getFilesDir().toString()).listFiles();
+    public static void removeUnusedBitmap(Context context, int[] times, Location location) {
+        File[] files = new File(context.getFilesDir().toString() + File.separator + location.getCity() + File.separator).listFiles();
         if (files != null) {
             ArrayList<String> filesToRemove = new ArrayList<>();
 
@@ -118,14 +133,27 @@ public class StorageUtils {
             }
 
             for (String fileName : filesToRemove) {
-                File file = new File(context.getFilesDir().toString() + "/" + fileName);
+                File file = new File(context.getFilesDir().toString() + File.separator + location.getCity() + File.separator + fileName);
                 if (file.exists()) {
                     if (file.delete()) {
-                        logDebug("removeUnusedBitmap(): Deleted file: " + file.getPath());
+                        CustomLog.logDebug("removeUnusedBitmap(): Deleted file: " + file.getPath());
                     } else {
-                        logDebug("removeUnusedBitmap(): File not deleted: " + file.getPath());
+                        CustomLog.logDebug("removeUnusedBitmap(): File not deleted: " + file.getPath());
                     }
                 }
+            }
+        }
+    }
+
+    public static void clearStorage(Context context) {
+        File dir = new File(context.getFilesDir().toString());
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            if (children != null) {
+                for (String child : children) {
+                    new File(dir, child).delete();
+                }
+                CustomLog.logDebug("clearStorage(): Storage cleared successfully!");
             }
         }
     }

@@ -1,16 +1,18 @@
 <resources>
     <string name="app_name">Метеорадар Дев</string>
+    <string name="app_name_simple">Метеорадар</string>
     <string name="menu_item_theme">Тема</string>
     <string name="menu_item_exit">Выход</string>
     <string name="updated">Обновлено</string>
     <string name="update">Обновить</string>
     <string name="no_internet_connection">Отсутсвует доступ к Интернету</string>
-    <string name="no_server_connection">Соединение с сервером недоступно</string>
+    <string name="image_not_available">Изображение недоступно</string>
     <string name="status_radar_off">В данный момент радар не работает</string>
     <string name="follow_system_theme">На основе системной темы</string>
     <string name="light_theme">Светлая</string>
     <string name="dark_theme">Тёмная</string>
     <string name="choose_theme">Выберите тему</string>
+    <string name="choose_city">Выберите город</string>
     <string name="no_weather">Нет метеоявлений</string>
     <string name="laminated_clouds">Слоистообразная облачность</string>
     <string name="light_precipitation">Осадки слабые</string>
@@ -30,4 +32,12 @@
     <string name="medium_squall">Шквал умеренный</string>
     <string name="strong_squall">Шквал сильный</string>
     <string name="cancel">Отмена</string>
+    <string name="kiev">Киев (UKBB)</string>
+    <string name="minsk">Минск (UMMN)</string>
+    <string name="brest">Брест (UMBB)</string>
+    <string name="gomel">Гомель (UMGG)</string>
+    <string name="smolensk">Смоленск (RUDL)</string>
+    <string name="bryansk">Брянск (RUDB)</string>
+    <string name="kursk">Курск (RAKU)</string>
+    <string name="velikiye_luki">Великие Луки (RAVL)</string>
 </resources>

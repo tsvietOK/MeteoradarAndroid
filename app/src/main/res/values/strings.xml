@@ -1,16 +1,18 @@
 <resources>
     <string name="app_name">Meteoradar Dev</string>
+    <string name="app_name_simple">Meteoradar</string>
     <string name="menu_item_theme">Theme</string>
     <string name="menu_item_exit">Exit</string>
     <string name="updated">Updated</string>
     <string name="update">Update</string>
     <string name="no_internet_connection">Internet connection is not available</string>
-    <string name="no_server_connection">Server connection not available</string>
+    <string name="image_not_available">Image is not available</string>
     <string name="status_radar_off">Currently radar is not working</string>
     <string name="follow_system_theme">Folow system theme</string>
     <string name="light_theme">Light</string>
     <string name="dark_theme">Dark</string>
     <string name="choose_theme">Choose theme</string>
+    <string name="choose_city">Choose city</string>
     <string name="no_weather">No weather</string>
     <string name="laminated_clouds">Laminated clouds</string>
     <string name="light_precipitation">Light precipitation</string>
@@ -30,4 +32,12 @@
     <string name="medium_squall">Medium squall</string>
     <string name="strong_squall">Strong squall</string>
     <string name="cancel">Cancel</string>
+    <string name="kiev">Kiev (UKBB)</string>
+    <string name="minsk">Minsk (UMMN)</string>
+    <string name="brest">Brest (UMBB)</string>
+    <string name="gomel">Gomel (UMGG)</string>
+    <string name="smolensk">Smolensk (RUDL)</string>
+    <string name="bryansk">Bryansk (RUDB)</string>
+    <string name="kursk">Kursk (RAKU)</string>
+    <string name="velikiye_luki">Velikiye Luki (RAVL)</string>
 </resources>
