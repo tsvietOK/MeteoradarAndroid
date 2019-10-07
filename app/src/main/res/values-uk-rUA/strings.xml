@@ -5,6 +5,7 @@
     <string name="updated">Оновлено</string>
     <string name="update">Оновити</string>
     <string name="no_internet_connection">Відсутній доступ до мережі Інтернет</string>
+    <string name="no_server_connection">Зв\'язок з сервером відсутній</string>
     <string name="status_radar_off">На данный момент радар не працює</string>
     <string name="follow_system_theme">На основі системної теми</string>
     <string name="light_theme">Світла</string>

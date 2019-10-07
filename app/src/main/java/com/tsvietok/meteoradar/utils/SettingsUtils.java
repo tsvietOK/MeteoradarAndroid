@@ -16,4 +16,15 @@ public class SettingsUtils {
         SharedPreferences sharedPref = context.getSharedPreferences(PREF_NAME, 0);
         return sharedPref.getInt(key, 0);
     }
+
+    public static void saveBooleanSetting(Context context, String key, boolean value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREF_NAME, 0).edit();
+        editor.putBoolean(key, value);
+        editor.commit();
+    }
+
+    public static Boolean getBooleanSetting(Context context, String key) {
+        SharedPreferences sharedPref = context.getSharedPreferences(PREF_NAME, 0);
+        return sharedPref.getBoolean(key, true);
+    }
 }
