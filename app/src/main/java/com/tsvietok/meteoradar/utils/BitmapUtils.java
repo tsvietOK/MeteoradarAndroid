@@ -5,9 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 
-import static android.graphics.Bitmap.Config;
-import static android.graphics.Bitmap.createBitmap;
-
 public class BitmapUtils {
     public static Bitmap RemoveColor(Bitmap source) {
         int sourceWidth = source.getWidth();
@@ -25,13 +22,13 @@ public class BitmapUtils {
                 sourcePixels[i] = Color.rgb(222, 222, 222);
             }
         }
-        return createBitmap(sourcePixels, sourceWidth, sourceHeight, Config.ARGB_8888);
+        return Bitmap.createBitmap(sourcePixels, sourceWidth, sourceHeight, Bitmap.Config.ARGB_8888);
     }
 
     public static Bitmap OverlayBitmap(Bitmap lowerLayer, Bitmap upperLayer) {
-        Bitmap bmOverlay = createBitmap(upperLayer.getWidth(),
+        Bitmap bmOverlay = Bitmap.createBitmap(upperLayer.getWidth(),
                 upperLayer.getHeight(),
-                Config.ARGB_8888);
+                Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bmOverlay);
         canvas.drawBitmap(lowerLayer, new Matrix(), null);
         canvas.drawBitmap(upperLayer, new Matrix(), null);
@@ -57,6 +54,6 @@ public class BitmapUtils {
                 sourcePixels[i] = Color.argb(1, 1 - red, 1 - green, 1 - blue);
             }
         }
-        return createBitmap(sourcePixels, sourceWidth, sourceHeight, Config.ARGB_8888);
+        return Bitmap.createBitmap(sourcePixels, sourceWidth, sourceHeight, Bitmap.Config.ARGB_8888);
     }
 }

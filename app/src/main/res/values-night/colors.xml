@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#8AB4F8</color>
     <color name="fabRipple">#80050505</color>
+    <color name="buttonRipple">#80424242</color>
     <color name="colorBlack">#ff010101</color>
     <color name="radarOffTextColor">#EF5350</color>
     <color name="colorWhite">#fff</color>
@@ -30,4 +31,5 @@
     <color name="colorInfoButtonStroke">#4B7C7C7C</color>
     <color name="colorInfoListStroke">#80000000</color>
     <color name="colorCardBackground">#222222</color>
+    <color name="colorFabDayNight">#000000</color>
 </resources>

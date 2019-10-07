@@ -1,6 +1,7 @@
 package com.tsvietok.meteoradar;
 
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -25,88 +27,122 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
+import com.tsvietok.meteoradar.utils.CustomLog;
+import com.tsvietok.meteoradar.utils.LocationUtils;
 import com.tsvietok.meteoradar.utils.NetUtils;
-
-import static com.tsvietok.meteoradar.utils.CustomLog.logDebug;
-import static com.tsvietok.meteoradar.utils.CustomLog.logError;
-import static com.tsvietok.meteoradar.utils.DeviceUtils.getPixelValue;
-import static com.tsvietok.meteoradar.utils.NetUtils.getBitmapFromServer;
-import static com.tsvietok.meteoradar.utils.NetUtils.isNetworkConnected;
-import static com.tsvietok.meteoradar.utils.SettingsUtils.getBooleanSetting;
-import static com.tsvietok.meteoradar.utils.SettingsUtils.getIntSetting;
-import static com.tsvietok.meteoradar.utils.SettingsUtils.saveBooleanSetting;
-import static com.tsvietok.meteoradar.utils.SettingsUtils.saveIntSetting;
-import static com.tsvietok.meteoradar.utils.StorageUtils.getBitmapFromStorage;
-import static com.tsvietok.meteoradar.utils.StorageUtils.getJsonFromStorage;
-import static com.tsvietok.meteoradar.utils.StorageUtils.removeUnusedBitmap;
-import static com.tsvietok.meteoradar.utils.StorageUtils.saveBitmapToStorage;
-import static com.tsvietok.meteoradar.utils.StorageUtils.saveJsonToStorage;
-import static com.tsvietok.meteoradar.utils.ThemeUtils.switchTheme;
+import com.tsvietok.meteoradar.utils.SettingsUtils;
+import com.tsvietok.meteoradar.utils.StorageUtils;
+import com.tsvietok.meteoradar.utils.ThemeUtils;
 
 public class MainActivity extends AppCompatActivity {
     private static final String PREF_SELECTED_THEME_KEY = "selectedTheme";
     private static final String PREF_TIMELINE_POSITION_KEY = "timeLinePosition";
     private static final String PREF_FIRST_RUN_KEY = "firstRun";
-    private static final String JSON_CONFIG_FILE_NAME = "config";
+    private static final String PREF_SELECTED_CITY_KEY = "selectedCity";
+    private static final String PREF_CITY_CHANGED_KEY = "cityChanged";
 
-    ExtendedFloatingActionButton UpdateFab;
-    SeekBar TimeLine;
-    TextView StatusText;
-    ImageView ForegroundMap;
-    TextView TimeText;
-    ImageView NoConnectionBitmap;
-    LinearLayout TimeLayout;
-
+    private Location location;
+    private ExtendedFloatingActionButton UpdateFab;
+    private SeekBar TimeLine;
+    private TextView StatusText;
+    private ImageView ForegroundMap;
+    private TextView TimeText;
+    private ImageView NoConnectionBitmap;
+    private LinearLayout TimeLayout;
     private RadarBitmap[] mMaps;
     private RadarTime mData;
     private int mLastImageNumber;
+    private Context context;
+    private boolean mCityChanged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        logDebug("onCreate()");
+        CustomLog.logDebug("onCreate()");
 
-        switchTheme(getIntSetting(getApplicationContext(), PREF_SELECTED_THEME_KEY));
+        this.context = getApplicationContext();
+
+        ThemeUtils.switchTheme(SettingsUtils.getIntSetting(context, PREF_SELECTED_THEME_KEY));
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mMaps = new RadarBitmap[10];
-        mLastImageNumber = mMaps.length - 1;
+        location = LocationUtils.switchCity(context, SettingsUtils.getIntSetting(context, PREF_SELECTED_CITY_KEY));
+        CustomLog.logDebug("Current city: " + location.getFullName());
+
+        Button changeCityButton = findViewById(R.id.selectedCityButton);
+        changeCityButton.setText(location.getFullName());
+        changeCityButton.setOnClickListener(v -> {
+            int selectedCity = SettingsUtils.getIntSetting(context, PREF_SELECTED_CITY_KEY);
+            final String[] listItems = {
+                    getString(R.string.kiev),
+                    getString(R.string.minsk),
+                    getString(R.string.brest),
+                    getString(R.string.gomel),
+                    getString(R.string.smolensk),
+                    getString(R.string.bryansk),
+                    getString(R.string.kursk),
+                    getString(R.string.velikiye_luki)
+            };
+            MaterialAlertDialogBuilder builder =
+                    new MaterialAlertDialogBuilder(MainActivity.this);
+            builder.setTitle(R.string.choose_city)
+                    .setSingleChoiceItems(listItems, selectedCity,
+                            (dialog, item) -> {
+                                if (selectedCity != item) {
+                                    SettingsUtils.saveIntSetting(context, PREF_SELECTED_CITY_KEY, item);
+                                    changeCityButton.setText(location.getFullName());
+                                    SettingsUtils.saveBooleanSetting(context, PREF_CITY_CHANGED_KEY, true);
+                                    mCityChanged = true;
+
+                                    CustomLog.logDebug("Selected city: " + location.getFullName());
+
+                                    recreate();
+                                }
+                                dialog.dismiss();
+                            })
+                    .setNegativeButton(getString(R.string.cancel),
+                            (dialog, id) -> dialog.cancel());
+            AlertDialog alert = builder.create();
+            alert.show();
+        });
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        logDebug("onDestroy()");
+        CustomLog.logDebug("onDestroy()");
 
-        if (mData != null) removeUnusedBitmap(getApplicationContext(), mData.getTimes());
+        if (mData != null) {
+            StorageUtils.removeUnusedBitmap(context, mData.getTimes(), location);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        logDebug("onResume()");
+        CustomLog.logDebug("onResume()");
 
         GetJsonAsync jsonTask;
 
-        if (getBooleanSetting(getApplicationContext(), PREF_FIRST_RUN_KEY)) {
-            if (isNetworkConnected(getApplicationContext())) {
+        if (SettingsUtils.getBooleanSetting(context, PREF_FIRST_RUN_KEY)) {
+            if (NetUtils.isNetworkConnected(context)) {
                 jsonTask = new GetJsonAsync(true);
                 jsonTask.execute();
 
-                saveBooleanSetting(getApplicationContext(), PREF_FIRST_RUN_KEY, false);
+                SettingsUtils.saveBooleanSetting(context, PREF_FIRST_RUN_KEY, false);
             } else {
-                Toast.makeText(getApplicationContext(),
+                Toast.makeText(context,
                         R.string.no_internet_connection,
                         Toast.LENGTH_SHORT).show();
 
                 NoConnectionBitmap = findViewById(R.id.NoConnectionBitmap);
                 NoConnectionBitmap.setVisibility(View.VISIBLE);
 
-                logError("Internet connection is not available");
+                CustomLog.logError("Internet connection is not available");
             }
         } else {
             jsonTask = new GetJsonAsync(false);
@@ -115,24 +151,24 @@ public class MainActivity extends AppCompatActivity {
 
         UpdateFab = findViewById(R.id.UpdateFab);
         UpdateFab.setOnClickListener(view -> {
-            if (isNetworkConnected(getApplicationContext())) {
+            if (NetUtils.isNetworkConnected(context)) {
                 GetJsonAsync jsonTaskUpdate = new GetJsonAsync(true);
                 jsonTaskUpdate.execute();
 
                 mLastImageNumber = mMaps.length - 1;
 
-                Toast.makeText(getApplicationContext(),
+                Toast.makeText(context,
                         R.string.updated,
                         Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getApplicationContext(),
+                Toast.makeText(context,
                         R.string.no_internet_connection,
                         Toast.LENGTH_SHORT).show();
 
                 NoConnectionBitmap = findViewById(R.id.NoConnectionBitmap);
                 NoConnectionBitmap.setVisibility(View.VISIBLE);
 
-                logError("Internet connection is not available");
+                CustomLog.logError("Internet connection is not available");
             }
         });
         ForegroundMap = findViewById(R.id.ForegroundMap);
@@ -164,11 +200,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        logDebug("onSaveInstanceState()");
+        CustomLog.logDebug("onSaveInstanceState()");
 
         if (mData != null) {
             TimeLine = findViewById(R.id.TimeLine);
-            mLastImageNumber = TimeLine.getProgress();
+            if (mCityChanged) {
+                mLastImageNumber = mMaps.length - 1;
+            } else {
+                mLastImageNumber = TimeLine.getProgress();
+            }
             outState.putInt(PREF_TIMELINE_POSITION_KEY, mLastImageNumber);
         }
     }
@@ -176,14 +216,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        logDebug("onRestoreInstanceState()");
-
+        CustomLog.logDebug("onRestoreInstanceState()");
         mLastImageNumber = savedInstanceState.getInt(PREF_TIMELINE_POSITION_KEY);
 
     }
 
     private void getData() {
-        logDebug("getData()");
+        CustomLog.logDebug("getData()");
 
         StatusText = findViewById(R.id.StatusText);
         StatusText.setVisibility(mData.getMode() ? View.VISIBLE : View.INVISIBLE);
@@ -196,27 +235,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         TimeLine = findViewById(R.id.TimeLine);
+        TimeLine.setMax(mLastImageNumber);
         TimeLine.setProgress(mLastImageNumber, true);
         TimeLine.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 if (!mMaps[i].isLoaded()) {
-                    if (isNetworkConnected(getApplicationContext())) {
-                        GetImageAsync imageAsync = new GetImageAsync();
-                        imageAsync.execute(i);
-                    } else {
-                        GetImageAsync imageAsync = new GetImageAsync();
-                        imageAsync.execute(i);
-
-                        Toast.makeText(getApplicationContext(),
-                                R.string.no_internet_connection,
-                                Toast.LENGTH_SHORT).show();
-
-                        NoConnectionBitmap = findViewById(R.id.NoConnectionBitmap);
-                        NoConnectionBitmap.setVisibility(View.VISIBLE);
-
-                        logError("Internet connection is not available");
-                    }
+                    GetImageAsync imageAsync = new GetImageAsync();
+                    imageAsync.execute(i);
                 } else {
                     showData(i);
                 }
@@ -235,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showData(int number) {
-        logDebug("showData()");
+        CustomLog.logDebug("showData()");
 
         if (number != -1) {
             TimeText = findViewById(R.id.TimeText);
@@ -252,26 +278,36 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         } else {
-            Toast.makeText(getApplicationContext(),
-                    R.string.no_server_connection,
+            Toast.makeText(context,
+                    R.string.image_not_available,
                     Toast.LENGTH_SHORT).show();
+            NoConnectionBitmap = findViewById(R.id.NoConnectionBitmap);
+            NoConnectionBitmap.setVisibility(View.VISIBLE);
         }
     }
 
     private void ShowTime() {
         TimeLayout = findViewById(R.id.TimeLayout);
         TimeLayout.removeAllViews();
-        for (int i = 0; i < mData.getTimes().length; i++) {
-            TextView timeLayoutText = new TextView(getApplicationContext());
+        int timesNumber = mData.getTimes().length;
+        for (int i = 0; i < timesNumber; i++) {
+            MaterialTextView timeLayoutText = new MaterialTextView(context);
             timeLayoutText.setText(mData.getTimeString()[i]);
             timeLayoutText.setTextSize(12);
+
+            double weight = (Math.sin((double) i / (timesNumber - 1) * Math.PI));
+            weight = Math.sin(weight / 0.32);
             LinearLayout.LayoutParams params =
-                    new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-            int pixelValue =
-                    getPixelValue(getApplicationContext(),
-                            getResources().getDimension(R.dimen.time_margin_end));
-            params.setMargins(0, 0, pixelValue, 0);
+                    new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, (float) weight);
+            if (i == 0) {
+                params.setMargins(20, 0, 5, 0);
+            } else if (i == mData.getTimes().length - 1) {
+                params.setMargins(5, 0, 20, 0);
+            } else {
+                params.setMargins(5, 0, 5, 0);
+            }
             timeLayoutText.setLayoutParams(params);
+
             timeLayoutText.setGravity(Gravity.CENTER);
             timeLayoutText.setTypeface(Typeface.MONOSPACE);
             timeLayoutText.setTextColor(getColor(R.color.colorTextDayNight));
@@ -287,14 +323,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        int id = menuItem.getItemId();
 
         if (id == R.id.action_theme) {
-            final int selectedTheme = getIntSetting(getApplicationContext(), PREF_SELECTED_THEME_KEY);
+            int selectedTheme = SettingsUtils.getIntSetting(context, PREF_SELECTED_THEME_KEY);
+            if (selectedTheme == -1) {
+                selectedTheme = 0;
+            }
             final String[] listItems = {
                     getString(R.string.follow_system_theme),
                     getString(R.string.light_theme),
@@ -302,9 +341,9 @@ public class MainActivity extends AppCompatActivity {
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MainActivity.this);
             builder.setTitle(R.string.choose_theme)
                     .setSingleChoiceItems(listItems, selectedTheme,
-                            (dialog, item1) -> {
-                                saveIntSetting(getApplicationContext(), PREF_SELECTED_THEME_KEY, item1);
-                                switchTheme(getIntSetting(getApplicationContext(), PREF_SELECTED_THEME_KEY));
+                            (dialog, item) -> {
+                                SettingsUtils.saveIntSetting(context, PREF_SELECTED_THEME_KEY, item);
+                                ThemeUtils.switchTheme(item);
                                 dialog.dismiss();
                             })
                     .setNegativeButton(getString(R.string.cancel),
@@ -315,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_exit) {
             finish();
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(menuItem);
     }
 
     private class GetImageAsync extends AsyncTask<Integer, Void, Integer> {
@@ -325,16 +364,18 @@ public class MainActivity extends AppCompatActivity {
             int timestamp = mMaps[imageNumber].getTimestamp();
 
             Bitmap bitmap =
-                    getBitmapFromStorage(getApplicationContext(), Integer.toString(timestamp));
+                    StorageUtils.getBitmapFromStorage(context, Integer.toString(timestamp), location);
             if (bitmap == null) {
-                bitmap = getBitmapFromServer(mMaps[imageNumber].getImageLink());
-                if (bitmap == null)
-                    return -1;
-                logDebug("GetImageAsync(): Image " + timestamp + " has been loaded.");
+                bitmap = NetUtils.getBitmapFromServer(mMaps[imageNumber].getImageLink());
 
-                saveBitmapToStorage(getApplicationContext(), bitmap, timestamp);
+                if (bitmap == null) {
+                    return -1;
+                }
+
+                CustomLog.logDebug("GetImageAsync(): Image " + timestamp + " has been loaded.");
+                StorageUtils.saveBitmapToStorage(context, bitmap, timestamp, location);
             } else {
-                logDebug("GetImageAsync(): Image " + timestamp + " already exists.");
+                CustomLog.logDebug("GetImageAsync(): Image " + timestamp + " already exists.");
             }
             mMaps[imageNumber].setImage(bitmap);
             return imageNumber;
@@ -348,7 +389,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class GetJsonAsync extends AsyncTask<Void, Void, String> {
-        private boolean forcedUpdate;
+        private final boolean forcedUpdate;
 
         GetJsonAsync(boolean forcedUpdate) {
             this.forcedUpdate = forcedUpdate;
@@ -356,16 +397,18 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Void... params) {
-            String jsonString = getJsonFromStorage(getApplicationContext(), JSON_CONFIG_FILE_NAME);
+            String jsonString = StorageUtils.getJsonFromStorage(context, location);
             if (jsonString == null || jsonString.length() == 0 || forcedUpdate) {
-                jsonString = NetUtils.getJsonFromServer();
-                if (jsonString == null)
-                    return null;
-                logDebug("GetJsonAsync(): New JSON config has been loaded.");
+                jsonString = NetUtils.getJsonFromServer(location);
 
-                saveJsonToStorage(getApplicationContext(), jsonString, JSON_CONFIG_FILE_NAME);
+                if (jsonString == null) {
+                    return null;
+                }
+
+                CustomLog.logDebug("GetJsonAsync(): New JSON config has been loaded.");
+                StorageUtils.saveJsonToStorage(context, jsonString, location);
             } else {
-                logDebug("GetJsonAsync(): JSON config already exists.");
+                CustomLog.logDebug("GetJsonAsync(): JSON config already exists.");
             }
             return jsonString;
         }
@@ -379,16 +422,28 @@ public class MainActivity extends AppCompatActivity {
             }
 
             RadarTime newData = new Gson().fromJson(result, RadarTime.class);
-            if (mData == null || mData.getTime(0) != newData.getTime(0)) {
-                mData = newData;
-                Bitmap bitmap;
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.background);
-                for (int i = 0; i < mData.getTimes().length; i++) {
-                    mMaps[i] = new RadarBitmap(bitmap);
-                    mMaps[i].setTime(mData.getTime(i));
-                }
-                ShowTime();
+            if (newData.getTimes().length == 0) {
+                NoConnectionBitmap = findViewById(R.id.NoConnectionBitmap);
+                NoConnectionBitmap.setVisibility(View.VISIBLE);
+                return;
             }
+
+            mMaps = new RadarBitmap[newData.getTimes().length];
+            mLastImageNumber = mMaps.length - 1;
+            if (mData == null
+                    || mData.getTime(0) != newData.getTime(0)
+                    || forcedUpdate) {
+                mData = newData;
+            }
+
+            Bitmap bitmap;
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.background);
+            for (int i = 0; i < mData.getTimes().length; i++) {
+                mMaps[i] = new RadarBitmap(bitmap, location);
+                mMaps[i].setTime(mData.getTime(i));
+            }
+
+            ShowTime();
             getData();
         }
     }

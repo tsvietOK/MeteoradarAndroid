@@ -13,9 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/TimeText"
-        android:layout_marginStart="3dp"
         android:layout_marginTop="15dp"
-        android:gravity="center_horizontal"
         android:orientation="horizontal" />
 
     <SeekBar
@@ -24,12 +22,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/TimeLayout"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
-        android:max="9"
-        android:min="0"
-        android:progress="9" />
+        android:min="0" />
 
     <TextView
         android:id="@+id/TimeText"

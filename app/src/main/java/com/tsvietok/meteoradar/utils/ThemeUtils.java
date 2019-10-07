@@ -2,11 +2,12 @@ package com.tsvietok.meteoradar.utils;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
-import static com.tsvietok.meteoradar.utils.CustomLog.logDebug;
-
 public class ThemeUtils {
     public static void switchTheme(int key) {
-        logDebug("switchTheme()");
+        CustomLog.logDebug("switchTheme()");
+        if (key == -1) {
+            key = 0;
+        }
         switch (key) {
             case 0: //System theme
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);

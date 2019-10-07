@@ -2,25 +2,24 @@ package com.tsvietok.meteoradar;
 
 import android.graphics.Bitmap;
 
+import com.tsvietok.meteoradar.utils.BitmapUtils;
+import com.tsvietok.meteoradar.utils.NetUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.tsvietok.meteoradar.utils.BitmapUtils.InvertBitmap;
-import static com.tsvietok.meteoradar.utils.BitmapUtils.OverlayBitmap;
-import static com.tsvietok.meteoradar.utils.BitmapUtils.RemoveColor;
-
 class RadarBitmap {
-    private static final String DOMAIN = "http://radar.veg.by/";
-    private static final String REGION = "ukbb";
+    private final Location mLocation;
+    private final Bitmap mBackgroundImage;
     private boolean mIsLoaded = false;
     private Bitmap mImage;
     private Bitmap mNightImage;
-    private Bitmap mBackgroundImage;
     private String mTime;
     private int mTimestamp;
 
-    RadarBitmap(Bitmap bitmap) {
+    RadarBitmap(Bitmap bitmap, Location location) {
         this.mBackgroundImage = Bitmap.createScaledBitmap(bitmap, 654, 479, true);
+        mLocation = location;
     }
 
     boolean isLoaded() {
@@ -33,10 +32,12 @@ class RadarBitmap {
 
     void setImage(Bitmap image) {
         mIsLoaded = true;
-        image = RemoveColor(image);
-        image = OverlayBitmap(this.mBackgroundImage, image);
+        if (mLocation.getCity().equals("kiev")) {
+            image = BitmapUtils.RemoveColor(image);
+            image = BitmapUtils.OverlayBitmap(this.mBackgroundImage, image);
+        }
         mImage = Bitmap.createBitmap(image, 18, 2, 476, 476);
-        mNightImage = InvertBitmap(this.mImage);
+        mNightImage = BitmapUtils.InvertBitmap(this.mImage);
     }
 
     Bitmap getNightImage() {
@@ -58,6 +59,6 @@ class RadarBitmap {
     }
 
     String getImageLink() {
-        return DOMAIN + "data/" + REGION + "/images/" + mTimestamp + ".png";
+        return NetUtils.getDomain() + "/data/" + mLocation.getCode() + "/images/" + mTimestamp + ".png";
     }
 }
