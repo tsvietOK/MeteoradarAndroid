@@ -291,20 +291,10 @@ public class MainActivity extends AppCompatActivity {
             MaterialTextView timeLayoutText = new MaterialTextView(context);
             timeLayoutText.setText(mData.getTimeString()[i]);
             timeLayoutText.setTextSize(12);
-
-            double weight = (Math.sin((double) i / (timesNumber - 1) * Math.PI));
-            weight = Math.sin(weight / 0.32);
-            LinearLayout.LayoutParams params =
-                    new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, (float) weight);
-            if (i == 0) {
-                params.setMargins(20, 0, 5, 0);
-            } else if (i == mData.getTimes().length - 1) {
-                params.setMargins(5, 0, 20, 0);
-            } else {
-                params.setMargins(5, 0, 5, 0);
-            }
+            LinearLayout.LayoutParams params = new LayoutParams(
+                    LayoutParams.WRAP_CONTENT,
+                    LayoutParams.WRAP_CONTENT, 1f);
             timeLayoutText.setLayoutParams(params);
-
             timeLayoutText.setGravity(Gravity.CENTER);
             timeLayoutText.setTypeface(Typeface.MONOSPACE);
             timeLayoutText.setTextColor(getColor(R.color.colorTextDayNight));
