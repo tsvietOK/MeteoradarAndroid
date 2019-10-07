@@ -1,70 +1,72 @@
 package com.tsvietok.meteoradar;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 class RadarTime {
-    private static final String domain = "http://radar.veg.by/";
-    private int timestamp;
-    private int timeout;
-    private Boolean locked;
-    private Boolean is_down;
-    private int[] times;
+    @SerializedName("timestamp")
+    private int mTimestamp;
+    @SerializedName("timeout")
+    private int mTimeout;
+    @SerializedName("locked")
+    private Boolean mLocked;
+    @SerializedName("is_down")
+    private Boolean mIsDown;
+    @SerializedName("times")
+    private int[] mTimes;
 
     String[] getTimeString() {
-        String[] _times = new String[times.length];
-        for (int i = 0; i < times.length; i++) {
-            Date _time = new Date((long) times[i] * 1000);
-            _times[i] = new SimpleDateFormat("HH:mm").format(_time);
+        String[] times = new String[mTimes.length];
+        for (int i = 0; i < mTimes.length; i++) {
+            Date _time = new Date((long) mTimes[i] * 1000);
+            times[i] = new SimpleDateFormat("HH:mm").format(_time);
         }
-        return _times;
-    }
-
-    int getTimestamp() {
-        return timestamp;
-    }
-
-    void setTimestamp(int timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    int getTimeout() {
-        return timeout;
-    }
-
-    void setTimeout(int timeout) {
-        this.timeout = timeout;
-    }
-
-    Boolean getLockedState() {
-        return locked;
-    }
-
-    void setLockedState(Boolean locked) {
-        this.locked = locked;
-    }
-
-    Boolean getMode() {
-        return is_down;
-    }
-
-    void setMode(Boolean is_down) {
-        this.is_down = is_down;
-    }
-
-    int[] getTimes() {
         return times;
     }
 
-    int getTime(int i) {
-        return times[i];
+    int getTimestamp() {
+        return mTimestamp;
+    }
+
+    void setTimestamp(int timestamp) {
+        this.mTimestamp = timestamp;
+    }
+
+    int getTimeout() {
+        return mTimeout;
+    }
+
+    void setTimeout(int timeout) {
+        this.mTimeout = timeout;
+    }
+
+    Boolean getLockedState() {
+        return mLocked;
+    }
+
+    void setLockedState(Boolean locked) {
+        this.mLocked = locked;
+    }
+
+    Boolean getMode() {
+        return mIsDown;
+    }
+
+    void setMode(Boolean isDown) {
+        this.mIsDown = isDown;
+    }
+
+    int[] getTimes() {
+        return mTimes;
     }
 
     void setTimes(int[] times) {
-        this.times = times;
+        this.mTimes = times;
     }
 
-    String getImageLink(int i) {
-        return domain + "data/ukbb/images/" + times[i] + ".png";
+    int getTime(int i) {
+        return mTimes[i];
     }
 }

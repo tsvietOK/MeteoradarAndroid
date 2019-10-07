@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-import static com.tsvietok.meteoradar.utils.CustomLog.*;
+import static com.tsvietok.meteoradar.utils.CustomLog.logDebug;
 
 public class NetUtils {
     private static final String JSON_URL = "http://radar.veg.by/kiev/update.json";
@@ -46,9 +46,11 @@ public class NetUtils {
     }
 
     public static boolean isNetworkConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm;
+        cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkCapabilities capabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
-        if (capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        if (capabilities != null
+                && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
                 && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
             return true;
         }

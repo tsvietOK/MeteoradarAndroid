@@ -2,8 +2,9 @@ package com.tsvietok.meteoradar.utils;
 
 import android.util.Log;
 
+import static com.tsvietok.meteoradar.BuildConfig.DEBUG;
+
 public class CustomLog {
-    private static final Boolean DEBUG = true;
     private static final String LOG_TAG = "Meteoradar";
 
     public static void logError(String message) {
