@@ -155,8 +155,6 @@ public class MainActivity extends AppCompatActivity {
                 GetJsonAsync jsonTaskUpdate = new GetJsonAsync(true);
                 jsonTaskUpdate.execute();
 
-                mLastImageNumber = mMaps.length - 1;
-
                 Toast.makeText(context,
                         R.string.updated,
                         Toast.LENGTH_SHORT).show();
