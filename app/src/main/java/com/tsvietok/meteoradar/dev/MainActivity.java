@@ -4,7 +4,6 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -434,10 +433,8 @@ public class MainActivity extends AppCompatActivity {
                 mData = newData;
             }
 
-            Bitmap bitmap;
-            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.background);
             for (int i = 0; i < mData.getTimes().length; i++) {
-                mMaps[i] = new RadarBitmap(bitmap, location);
+                mMaps[i] = new RadarBitmap(location);
                 mMaps[i].setTime(mData.getTime(i));
             }
 

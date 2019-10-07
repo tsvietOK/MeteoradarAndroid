@@ -17,8 +17,8 @@ class RadarBitmap {
     private String mTime;
     private int mTimestamp;
 
-    RadarBitmap(Bitmap bitmap, Location location) {
-        this.mBackgroundImage = Bitmap.createScaledBitmap(bitmap, 654, 479, true);
+    RadarBitmap(Location location) {
+        this.mBackgroundImage = Bitmap.createScaledBitmap(location.getLocalMap(), 654, 479, true);
         mLocation = location;
     }
 
@@ -32,10 +32,8 @@ class RadarBitmap {
 
     void setImage(Bitmap image) {
         mIsLoaded = true;
-        if (mLocation.getCity().equals("kiev")) {
-            image = BitmapUtils.RemoveColor(image);
-            image = BitmapUtils.OverlayBitmap(this.mBackgroundImage, image);
-        }
+        image = BitmapUtils.RemoveColor(image);
+        image = BitmapUtils.OverlayBitmap(this.mBackgroundImage, image);
         mImage = Bitmap.createBitmap(image, 18, 2, 476, 476);
         mNightImage = BitmapUtils.InvertBitmap(this.mImage);
     }

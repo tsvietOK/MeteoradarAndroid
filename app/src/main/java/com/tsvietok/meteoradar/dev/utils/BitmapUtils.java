@@ -1,9 +1,15 @@
 package com.tsvietok.meteoradar.dev.utils;
 
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class BitmapUtils {
     public static Bitmap RemoveColor(Bitmap source) {
@@ -55,5 +61,20 @@ public class BitmapUtils {
             }
         }
         return Bitmap.createBitmap(sourcePixels, sourceWidth, sourceHeight, Bitmap.Config.ARGB_8888);
+    }
+
+    static Bitmap getBitmapFromAsset(Context context, String filePath) {
+        AssetManager assetManager = context.getAssets();
+
+        InputStream inputStream;
+        Bitmap bitmap = null;
+        try {
+            inputStream = assetManager.open(filePath);
+            bitmap = BitmapFactory.decodeStream(inputStream);
+        } catch (IOException e) {
+            CustomLog.logError("Can't load bitmap from asset: " + e.getMessage());
+        }
+
+        return bitmap;
     }
 }
