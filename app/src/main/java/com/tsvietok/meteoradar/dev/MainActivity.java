@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private int mLastImageNumber;
     private Context context;
     private boolean mCityChanged;
+    private boolean mFirstActivityStart = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
                                 if (selectedCity != item) {
                                     SettingsUtils.saveIntSetting(context, PREF_SELECTED_CITY_KEY, item);
                                     changeCityButton.setText(location.getFullName());
-                                    SettingsUtils.saveBooleanSetting(context, PREF_CITY_CHANGED_KEY, true);
                                     mCityChanged = true;
 
                                     CustomLog.logDebug("Selected city: " + location.getFullName());
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             StorageUtils.removeUnusedBitmap(context, mData.getTimes(), location);
         }
     }
-
+    
     @Override
     public void onResume() {
         super.onResume();
@@ -200,15 +200,9 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         CustomLog.logDebug("onSaveInstanceState()");
 
-        if (mData != null) {
-            TimeLine = findViewById(R.id.TimeLine);
-            if (mCityChanged) {
-                mLastImageNumber = mMaps.length - 1;
-            } else {
-                mLastImageNumber = TimeLine.getProgress();
-            }
-            outState.putInt(PREF_TIMELINE_POSITION_KEY, mLastImageNumber);
-        }
+        mLastImageNumber = TimeLine.getProgress();
+        outState.putInt(PREF_TIMELINE_POSITION_KEY, mLastImageNumber);
+        outState.putBoolean(PREF_CITY_CHANGED_KEY, mCityChanged);
     }
 
     @Override
@@ -216,7 +210,8 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         CustomLog.logDebug("onRestoreInstanceState()");
         mLastImageNumber = savedInstanceState.getInt(PREF_TIMELINE_POSITION_KEY);
-
+        mFirstActivityStart = false;
+        mCityChanged = savedInstanceState.getBoolean(PREF_CITY_CHANGED_KEY);
     }
 
     private void getData() {
@@ -233,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         TimeLine = findViewById(R.id.TimeLine);
-        TimeLine.setMax(mLastImageNumber);
+        TimeLine.setMax(mMaps.length - 1);
         TimeLine.setProgress(mLastImageNumber, true);
         TimeLine.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -423,7 +418,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
             mMaps = new RadarBitmap[newData.getTimes().length];
-            mLastImageNumber = mMaps.length - 1;
+            if (mFirstActivityStart || mCityChanged) {
+                mLastImageNumber = mMaps.length - 1;
+                mFirstActivityStart = false;
+                mCityChanged = false;
+            }
+
             if (mData == null
                     || mData.getTime(0) != newData.getTime(0)
                     || forcedUpdate) {
