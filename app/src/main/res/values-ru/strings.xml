@@ -2,7 +2,6 @@
     <string name="app_name">Метеорадар Дев</string>
     <string name="app_name_simple">Метеорадар</string>
     <string name="menu_item_theme">Тема</string>
-    <string name="menu_item_exit">Выход</string>
     <string name="updated">Обновлено</string>
     <string name="update">Обновить</string>
     <string name="no_internet_connection">Отсутсвует доступ к Интернету</string>

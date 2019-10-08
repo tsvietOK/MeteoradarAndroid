@@ -6,8 +6,4 @@
         android:id="@+id/action_theme"
         android:title="@string/menu_item_theme"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/action_exit"
-        android:title="@string/menu_item_exit"
-        app:showAsAction="never" />
 </menu>
