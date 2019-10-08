@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.SeekBar;
+import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -286,19 +287,28 @@ public class MainActivity extends AppCompatActivity {
     private void ShowTime() {
         TimeLayout = findViewById(R.id.TimeLayout);
         TimeLayout.removeAllViews();
+
+        LinearLayout.LayoutParams params = new LayoutParams(
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT, 1f);
+        Space sp = new Space(context);
+        sp.setLayoutParams(params);
+        TimeLayout.addView(sp);
+
         int timesNumber = mData.getTimes().length;
         for (int i = 0; i < timesNumber; i++) {
             MaterialTextView timeLayoutText = new MaterialTextView(context);
             timeLayoutText.setText(mData.getTimeString()[i]);
             timeLayoutText.setTextSize(12);
-            LinearLayout.LayoutParams params = new LayoutParams(
-                    LayoutParams.WRAP_CONTENT,
-                    LayoutParams.WRAP_CONTENT, 1f);
             timeLayoutText.setLayoutParams(params);
             timeLayoutText.setGravity(Gravity.CENTER);
             timeLayoutText.setTypeface(Typeface.MONOSPACE);
             timeLayoutText.setTextColor(getColor(R.color.colorTextDayNight));
             TimeLayout.addView(timeLayoutText);
+
+            Space sp1 = new Space(context);
+            sp1.setLayoutParams(params);
+            TimeLayout.addView(sp1);
         }
     }
 
