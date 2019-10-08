@@ -348,9 +348,6 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog alert = builder.create();
             alert.show();
         }
-        if (id == R.id.action_exit) {
-            finish();
-        }
         return super.onOptionsItemSelected(menuItem);
     }
 

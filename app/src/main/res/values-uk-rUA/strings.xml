@@ -2,7 +2,6 @@
     <string name="app_name">Метеорадар</string>
     <string name="app_name_simple">Метеорадар</string>
     <string name="menu_item_theme">Тема</string>
-    <string name="menu_item_exit">Вихід</string>
     <string name="updated">Оновлено</string>
     <string name="update">Оновити</string>
     <string name="no_internet_connection">Відсутній доступ до мережі Інтернет</string>
