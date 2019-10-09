@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             StorageUtils.removeUnusedBitmap(context, mData.getTimes(), location);
         }
     }
-    
+
     @Override
     public void onResume() {
         super.onResume();
@@ -417,22 +417,23 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            mMaps = new RadarBitmap[newData.getTimes().length];
-            if (mFirstActivityStart || mCityChanged) {
-                mLastImageNumber = mMaps.length - 1;
-                mFirstActivityStart = false;
-                mCityChanged = false;
-            }
-
             if (mData == null
                     || mData.getTime(0) != newData.getTime(0)
                     || forcedUpdate) {
                 mData = newData;
             }
 
+            mMaps = new RadarBitmap[mData.getTimes().length];
+
             for (int i = 0; i < mData.getTimes().length; i++) {
                 mMaps[i] = new RadarBitmap(location);
                 mMaps[i].setTime(mData.getTime(i));
+            }
+
+            if (mFirstActivityStart || mCityChanged || forcedUpdate) {
+                mLastImageNumber = mMaps.length - 1;
+                mFirstActivityStart = false;
+                mCityChanged = false;
             }
 
             ShowTime();
