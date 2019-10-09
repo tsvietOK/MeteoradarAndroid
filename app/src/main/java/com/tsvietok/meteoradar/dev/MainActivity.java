@@ -71,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        location = LocationUtils.switchCity(context, SettingsUtils.getIntSetting(context, PREF_SELECTED_CITY_KEY));
+        location = LocationUtils.switchCity(context,
+                SettingsUtils.getIntSetting(context, PREF_SELECTED_CITY_KEY));
         CustomLog.logDebug("Current city: " + location.getFullName());
 
         Button changeCityButton = findViewById(R.id.selectedCityButton);
@@ -94,7 +95,9 @@ public class MainActivity extends AppCompatActivity {
                     .setSingleChoiceItems(listItems, selectedCity,
                             (dialog, item) -> {
                                 if (selectedCity != item) {
-                                    SettingsUtils.saveIntSetting(context, PREF_SELECTED_CITY_KEY, item);
+                                    SettingsUtils.saveIntSetting(context,
+                                            PREF_SELECTED_CITY_KEY,
+                                            item);
                                     changeCityButton.setText(location.getFullName());
                                     mCityChanged = true;
 
@@ -209,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         CustomLog.logDebug("onRestoreInstanceState()");
+
         mLastImageNumber = savedInstanceState.getInt(PREF_TIMELINE_POSITION_KEY);
         mFirstActivityStart = false;
         mCityChanged = savedInstanceState.getBoolean(PREF_CITY_CHANGED_KEY);
@@ -330,11 +334,14 @@ public class MainActivity extends AppCompatActivity {
                     getString(R.string.follow_system_theme),
                     getString(R.string.light_theme),
                     getString(R.string.dark_theme)};
-            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MainActivity.this);
+            MaterialAlertDialogBuilder builder =
+                    new MaterialAlertDialogBuilder(MainActivity.this);
             builder.setTitle(R.string.choose_theme)
                     .setSingleChoiceItems(listItems, selectedTheme,
                             (dialog, item) -> {
-                                SettingsUtils.saveIntSetting(context, PREF_SELECTED_THEME_KEY, item);
+                                SettingsUtils.saveIntSetting(context,
+                                        PREF_SELECTED_THEME_KEY,
+                                        item);
                                 ThemeUtils.switchTheme(item);
                                 dialog.dismiss();
                             })
@@ -352,8 +359,9 @@ public class MainActivity extends AppCompatActivity {
             int imageNumber = number[0];
             int timestamp = mMaps[imageNumber].getTimestamp();
 
-            Bitmap bitmap =
-                    StorageUtils.getBitmapFromStorage(context, Integer.toString(timestamp), location);
+            Bitmap bitmap = StorageUtils.getBitmapFromStorage(context,
+                    Integer.toString(timestamp),
+                    location);
             if (bitmap == null) {
                 bitmap = NetUtils.getBitmapFromServer(mMaps[imageNumber].getImageLink());
 
