@@ -8,47 +8,6 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <LinearLayout
-        android:id="@+id/TimeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/TimeText"
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal" />
-
-    <SeekBar
-        android:id="@+id/TimeLine"
-        style="@android:style/Widget.Material.SeekBar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/TimeLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
-        android:min="0" />
-
-    <TextView
-        android:id="@+id/TimeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ForegroundCardContainer"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
-        android:textSize="24sp" />
-
-    <TextView
-        android:id="@+id/StatusText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/TimeLine"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:text="@string/status_radar_off"
-        android:textColor="@color/radarOffTextColor"
-        android:textSize="16sp"
-        android:visibility="invisible" />
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/ForegroundCardContainer"
         style="@style/Widget.MaterialComponents.CardView"
@@ -110,5 +69,46 @@
             </TableRow>
         </TableLayout>
     </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/TimeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ForegroundCardContainer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:textSize="24sp" />
+
+    <LinearLayout
+        android:id="@+id/TimeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TimeText"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal" />
+
+    <SeekBar
+        android:id="@+id/TimeLine"
+        style="@android:style/Widget.Material.SeekBar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TimeLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:min="0" />
+
+    <TextView
+        android:id="@+id/StatusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TimeLine"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="@string/status_radar_off"
+        android:textColor="@color/radarOffTextColor"
+        android:textSize="16sp"
+        android:visibility="invisible" />
 
 </RelativeLayout>
