@@ -32,41 +32,36 @@
 
         <TableLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:stretchColumns="*">
+            android:layout_height="match_parent">
 
-            <TableRow>
+            <FrameLayout>
 
-                <FrameLayout>
-
-                    <ImageView
-                        android:id="@+id/ForegroundMap"
-                        android:layout_width="match_parent"
-                        android:layout_height="390dp"
-                        android:clickable="true"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        android:scaleType="centerCrop" />
-
-                    <View
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="end|bottom"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/rectangle" />
-                </FrameLayout>
-            </TableRow>
-
-            <TableRow android:background="@color/colorCardBackground">
-
-                <ScrollView
+                <ImageView
+                    android:id="@+id/ForegroundMap"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:theme="@style/OverScrollCustomColor"
-                    android:visibility="visible">
+                    android:layout_height="390dp"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:scaleType="centerCrop" />
 
-                    <include layout="@layout/info_list" />
-                </ScrollView>
-            </TableRow>
+                <View
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="end|bottom"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/info_button_rectangle" />
+            </FrameLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorCardBackground"
+                android:theme="@style/OverScrollCustomColor"
+                android:visibility="visible">
+
+                <include layout="@layout/info_list" />
+            </ScrollView>
+
         </TableLayout>
     </com.google.android.material.card.MaterialCardView>
 
