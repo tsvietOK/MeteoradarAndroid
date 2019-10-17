@@ -4,34 +4,31 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.SeekBar;
-import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
 import com.tsvietok.meteoradar.dev.utils.CustomLog;
 import com.tsvietok.meteoradar.dev.utils.LocationUtils;
 import com.tsvietok.meteoradar.dev.utils.NetUtils;
+import com.tsvietok.meteoradar.dev.utils.ScreenUtils;
 import com.tsvietok.meteoradar.dev.utils.SettingsUtils;
 import com.tsvietok.meteoradar.dev.utils.StorageUtils;
 import com.tsvietok.meteoradar.dev.utils.ThemeUtils;
@@ -42,21 +39,23 @@ public class MainActivity extends AppCompatActivity {
     private static final String PREF_FIRST_RUN_KEY = "firstRun";
     private static final String PREF_SELECTED_CITY_KEY = "selectedCity";
     private static final String PREF_CITY_CHANGED_KEY = "cityChanged";
-
+    private static int firstVisibleInListView;
     private Location location;
     private ExtendedFloatingActionButton UpdateFab;
-    private SeekBar TimeLine;
     private TextView StatusText;
     private ImageView ForegroundMap;
     private TextView TimeText;
     private ImageView NoConnectionBitmap;
-    private LinearLayout TimeLayout;
     private RadarBitmap[] mMaps;
     private RadarTime mData;
-    private int mLastImageNumber;
+    private int mLastSelectedItem = -1;
     private Context context;
     private boolean mCityChanged;
     private boolean mFirstActivityStart = true;
+    private CustomRecyclerView HorizontalPicker;
+    private HorizontalPickerLayoutManager mLayoutManager;
+    private TimeAdapter mAdapter;
+    private LinearSnapHelper mSnapHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog alert = builder.create();
             alert.show();
         });
+
+        setHorizontalPicker();
     }
 
     @Override
@@ -157,10 +158,6 @@ public class MainActivity extends AppCompatActivity {
             if (NetUtils.isNetworkConnected(context)) {
                 GetJsonAsync jsonTaskUpdate = new GetJsonAsync(true);
                 jsonTaskUpdate.execute();
-
-                Toast.makeText(context,
-                        R.string.updated,
-                        Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(context,
                         R.string.no_internet_connection,
@@ -203,8 +200,7 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         CustomLog.logDebug("onSaveInstanceState()");
 
-        mLastImageNumber = TimeLine.getProgress();
-        outState.putInt(PREF_TIMELINE_POSITION_KEY, mLastImageNumber);
+        outState.putInt(PREF_TIMELINE_POSITION_KEY, mLastSelectedItem);
         outState.putBoolean(PREF_CITY_CHANGED_KEY, mCityChanged);
     }
 
@@ -213,48 +209,18 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         CustomLog.logDebug("onRestoreInstanceState()");
 
-        mLastImageNumber = savedInstanceState.getInt(PREF_TIMELINE_POSITION_KEY);
+        mLastSelectedItem = savedInstanceState.getInt(PREF_TIMELINE_POSITION_KEY);
         mFirstActivityStart = false;
         mCityChanged = savedInstanceState.getBoolean(PREF_CITY_CHANGED_KEY);
     }
 
-    private void getData() {
-        CustomLog.logDebug("getData()");
-
-        StatusText = findViewById(R.id.StatusText);
-        StatusText.setVisibility(mData.getMode() ? View.VISIBLE : View.INVISIBLE);
-
-        if (!mMaps[mLastImageNumber].isLoaded()) {
+    private void getMap(int i) {
+        if (!mMaps[i].isLoaded()) {
             GetImageAsync imageAsync = new GetImageAsync();
-            imageAsync.execute(mLastImageNumber);
+            imageAsync.execute(i);
         } else {
-            showData(mLastImageNumber);
+            showData(i);
         }
-
-        TimeLine = findViewById(R.id.TimeLine);
-        TimeLine.setMax(mMaps.length - 1);
-        TimeLine.setProgress(mLastImageNumber, true);
-        TimeLine.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                if (!mMaps[i].isLoaded()) {
-                    GetImageAsync imageAsync = new GetImageAsync();
-                    imageAsync.execute(i);
-                } else {
-                    showData(i);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
     }
 
     private void showData(int number) {
@@ -275,40 +241,59 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         } else {
-            Toast.makeText(context,
-                    R.string.image_not_available,
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.image_not_available, Toast.LENGTH_SHORT).show();
             NoConnectionBitmap = findViewById(R.id.NoConnectionBitmap);
             NoConnectionBitmap.setVisibility(View.VISIBLE);
         }
     }
 
-    private void ShowTime() {
-        TimeLayout = findViewById(R.id.TimeLayout);
-        TimeLayout.removeAllViews();
+    private void setHorizontalPicker() {
+        CustomLog.logDebug("setHorizontalPicker()");
 
-        LinearLayout.LayoutParams params = new LayoutParams(
-                LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT, 1f);
-        Space sp = new Space(context);
-        sp.setLayoutParams(params);
-        TimeLayout.addView(sp);
+        HorizontalPicker = findViewById(R.id.HorizontalPicker);
 
-        int timesNumber = mData.getTimes().length;
-        for (int i = 0; i < timesNumber; i++) {
-            MaterialTextView timeLayoutText = new MaterialTextView(context);
-            timeLayoutText.setText(mData.getTimeString()[i]);
-            timeLayoutText.setTextSize(12);
-            timeLayoutText.setLayoutParams(params);
-            timeLayoutText.setGravity(Gravity.CENTER);
-            timeLayoutText.setTypeface(Typeface.MONOSPACE);
-            timeLayoutText.setTextColor(getColor(R.color.colorTextDayNight));
-            TimeLayout.addView(timeLayoutText);
+        int padding = ScreenUtils.getScreenWidth(this) / 2
+                - ScreenUtils.getPixelValueFromDp(this, 52);
+        HorizontalPicker.setPadding(padding, 0, padding, 0);
 
-            Space sp1 = new Space(context);
-            sp1.setLayoutParams(params);
-            TimeLayout.addView(sp1);
+        if (mLayoutManager == null) {
+            mLayoutManager = new HorizontalPickerLayoutManager(context,
+                    RecyclerView.HORIZONTAL,
+                    false);
+            mLayoutManager.setStackFromEnd(true);
         }
+        HorizontalPicker.setLayoutManager(mLayoutManager);
+
+        mAdapter = new TimeAdapter(context, v -> {
+            int itemPosition = HorizontalPicker.getChildLayoutPosition(v);
+            HorizontalPicker.smoothScrollToPosition(itemPosition);
+        });
+        HorizontalPicker.setAdapter(mAdapter);
+
+        mSnapHelper = new LinearSnapHelper();
+        if (HorizontalPicker.getOnFlingListener() == null) {
+            mSnapHelper.attachToRecyclerView(HorizontalPicker);
+        }
+
+        firstVisibleInListView = mLayoutManager.findFirstVisibleItemPosition();
+        HorizontalPicker.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int currentFirstVisible = mLayoutManager.findFirstVisibleItemPosition();
+                if (currentFirstVisible != firstVisibleInListView) {
+                    getMap(currentFirstVisible);
+                    mLastSelectedItem = currentFirstVisible;
+                }
+                firstVisibleInListView = currentFirstVisible;
+            }
+        });
     }
 
     @Override
@@ -355,6 +340,12 @@ public class MainActivity extends AppCompatActivity {
 
     private class GetImageAsync extends AsyncTask<Integer, Void, Integer> {
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            CustomLog.logDebug("GetImageAsync(): Start");
+        }
+
+        @Override
         protected Integer doInBackground(Integer... number) {
             int imageNumber = number[0];
             int timestamp = mMaps[imageNumber].getTimestamp();
@@ -381,6 +372,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
+            CustomLog.logDebug("GetImageAsync(): End");
             showData(result);
         }
     }
@@ -390,6 +382,12 @@ public class MainActivity extends AppCompatActivity {
 
         GetJsonAsync(boolean forcedUpdate) {
             this.forcedUpdate = forcedUpdate;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            CustomLog.logDebug("GetJsonAsync(): Start");
         }
 
         @Override
@@ -415,6 +413,7 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(result);
 
             if (result == null) {
+                Toast.makeText(context, R.string.no_server_connection, Toast.LENGTH_LONG).show();
                 return;
             }
 
@@ -438,14 +437,32 @@ public class MainActivity extends AppCompatActivity {
                 mMaps[i].setTime(mData.getTime(i));
             }
 
+            mAdapter.refreshData(mData.getTimeString());
+
+            if (mLastSelectedItem == -2 || forcedUpdate || mCityChanged) {
+                mLastSelectedItem = mData.getTimeString().length;
+            }
+            if (forcedUpdate) {
+                HorizontalPicker.smoothScrollToPosition(mLastSelectedItem);
+            } else {
+                HorizontalPicker.scrollToPosition(mLastSelectedItem);
+            }
+
             if (mFirstActivityStart || mCityChanged || forcedUpdate) {
-                mLastImageNumber = mMaps.length - 1;
                 mFirstActivityStart = false;
                 mCityChanged = false;
             }
 
-            ShowTime();
-            getData();
+            TimeText = findViewById(R.id.TimeText);
+            TimeText.setText(mMaps[mData.getTimeString().length - 1].getTime());
+
+            StatusText = findViewById(R.id.StatusText);
+            StatusText.setVisibility(mData.getMode() ? View.VISIBLE : View.INVISIBLE);
+
+            if (forcedUpdate) {
+                Toast.makeText(context, R.string.updated, Toast.LENGTH_SHORT).show();
+            }
+            CustomLog.logDebug("GetJsonAsync(): End");
         }
     }
 }

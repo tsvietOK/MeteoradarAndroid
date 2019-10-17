@@ -20,7 +20,6 @@ public class InterActivity extends AppCompatActivity {
         ThemeUtils.switchTheme(SettingsUtils.getIntSetting(getApplicationContext(), PREF_SELECTED_THEME_KEY));
         setContentView(R.layout.activity_inter);
 
-
         if (SettingsUtils.getBooleanSetting(getApplicationContext(), PREF_FIRST_RUN_KEY) && SettingsUtils.getIntSetting(getApplicationContext(), PREF_SELECTED_CITY_KEY) == -1) {
             Intent intent = new Intent(this, WelcomeActivity.class);
             startActivity(intent);

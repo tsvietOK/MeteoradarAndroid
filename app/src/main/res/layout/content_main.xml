@@ -40,7 +40,6 @@
                     android:id="@+id/ForegroundMap"
                     android:layout_width="match_parent"
                     android:layout_height="390dp"
-                    android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:scaleType="centerCrop" />
 
@@ -71,36 +70,58 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ForegroundCardContainer"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
-        android:textSize="24sp" />
+        android:layout_marginTop="20dp"
+        android:textSize="24sp"
+        tools:text="15.10 21:27" />
 
-    <LinearLayout
-        android:id="@+id/TimeLayout"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/HorizontalPickerContainer"
+        style="@style/Widget.MaterialComponents.CardView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_below="@+id/TimeText"
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal" />
-
-    <SeekBar
-        android:id="@+id/TimeLine"
-        style="@android:style/Widget.Material.SeekBar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/TimeLayout"
-        android:layout_centerHorizontal="true"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
-        android:min="0" />
+        app:cardBackgroundColor="@color/colorHorizontalPickerBg">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            app:cardBackgroundColor="@color/colorDayNightBlackWhite"
+            app:cardElevation="0dp" />
+
+        <com.tsvietok.meteoradar.dev.CustomRecyclerView
+            android:id="@+id/HorizontalPicker"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:clipToPadding="false"
+            android:fadingEdgeLength="100dp"
+            android:orientation="horizontal"
+            android:requiresFadingEdge="horizontal"
+            android:scrollbars="none"
+            app:stackFromEnd="true" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/colorAccent"
+            app:strokeWidth="1dp" />
+
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/StatusText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/TimeLine"
+        android:layout_below="@+id/HorizontalPickerContainer"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:text="@string/status_radar_off"
         android:textColor="@color/radarOffTextColor"
         android:textSize="16sp"

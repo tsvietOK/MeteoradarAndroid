@@ -26,10 +26,12 @@
     <color name="colorLightSquall">#dcaafc</color>
     <color name="colorMediumSquall">#ec5afc</color>
     <color name="colorStrongSquall">#bc1efc</color>
-    <color name="colorTextDayNight">#757575</color>
+    <color name="colorTextDayNight">#3D3D3D</color>
     <color name="colorInfoButtonBackground">#9AFFFFFF</color>
     <color name="colorInfoButtonStroke">#4BB4B4B4</color>
     <color name="colorInfoListStroke">#80868686</color>
     <color name="colorCardBackground">#FFF</color>
     <color name="colorFabDayNight">#FFF</color>
+    <color name="colorHorizontalPickerBg">#f5f5f5</color>
+    <color name="colorDayNightBlackWhite">#FFF</color>
 </resources>
