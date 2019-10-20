@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private TimeAdapter mAdapter;
     private LinearSnapHelper mSnapHelper;
     private int mStartForegroundMapHeight;
+    private int mStartForegroundMapWidth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,13 +178,16 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onGlobalLayout() {
                         if (mStartForegroundMapHeight == 0) {
-                            mStartForegroundMapHeight = ForegroundMap.getHeight();
+                            mStartForegroundMapWidth = ForegroundMap.getWidth();
+                            ForegroundMap.getLayoutParams().height = mStartForegroundMapWidth;
+                            mStartForegroundMapHeight = mStartForegroundMapWidth;
                         }
                     }
                 });
         ForegroundMap.setOnClickListener(v -> {
             if (ForegroundMap.getHeight() == mStartForegroundMapHeight) {
-                ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getHeight(), mStartForegroundMapHeight - 400);
+                ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getHeight(),
+                        mStartForegroundMapHeight - 400);
                 anim.addUpdateListener(valueAnimator -> {
                     int val = (Integer) valueAnimator.getAnimatedValue();
                     ViewGroup.LayoutParams layoutParams = ForegroundMap.getLayoutParams();
@@ -193,7 +197,8 @@ public class MainActivity extends AppCompatActivity {
                 anim.setDuration(250);
                 anim.start();
             } else {
-                ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getHeight(), mStartForegroundMapHeight);
+                ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getHeight(),
+                        mStartForegroundMapHeight);
                 anim.addUpdateListener(valueAnimator -> {
                     int val = (Integer) valueAnimator.getAnimatedValue();
                     ViewGroup.LayoutParams layoutParams = ForegroundMap.getLayoutParams();
