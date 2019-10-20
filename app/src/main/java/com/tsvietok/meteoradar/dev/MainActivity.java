@@ -547,9 +547,6 @@ public class MainActivity extends AppCompatActivity {
                 mCityChanged = false;
             }
 
-            TimeText = findViewById(R.id.TimeText);
-            TimeText.setText(mMaps[mData.getTimeString().length - 1].getTime());
-
             checkRadarStatus();
 
             if (forcedUpdate) {
