@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -406,6 +408,23 @@ public class MainActivity extends AppCompatActivity {
                 getColor(R.color.colorStrongSquall)));
     }
 
+    private void checkRadarStatus() {
+        Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+        Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+        StatusText = findViewById(R.id.StatusText);
+        if (mData.getMode()) {
+            if (StatusText.getVisibility() == View.INVISIBLE) {
+                StatusText.setVisibility(View.VISIBLE);
+                StatusText.startAnimation(slideDown);
+            }
+        } else {
+            if (StatusText.getVisibility() == View.VISIBLE) {
+                StatusText.setVisibility(View.INVISIBLE);
+                StatusText.startAnimation(slideUp);
+            }
+        }
+    }
+
     private class GetImageAsync extends AsyncTask<Integer, Void, Integer> {
         @Override
         protected void onPreExecute() {
@@ -524,8 +543,7 @@ public class MainActivity extends AppCompatActivity {
             TimeText = findViewById(R.id.TimeText);
             TimeText.setText(mMaps[mData.getTimeString().length - 1].getTime());
 
-            StatusText = findViewById(R.id.StatusText);
-            StatusText.setVisibility(mData.getMode() ? View.VISIBLE : View.INVISIBLE);
+            checkRadarStatus();
 
             if (forcedUpdate) {
                 Toast.makeText(context, R.string.updated, Toast.LENGTH_SHORT).show();
