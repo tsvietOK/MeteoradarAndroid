@@ -47,21 +47,21 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="end|bottom"
-                    android:layout_margin="10dp"
+                    android:layout_margin="12dp"
                     android:background="@drawable/info_button_rectangle" />
             </FrameLayout>
 
-            <ScrollView
+            <ListView
+                android:id="@+id/mapInfoList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/colorCardBackground"
-                android:theme="@style/OverScrollCustomColor"
-                android:visibility="visible">
-
-                <include layout="@layout/info_list" />
-            </ScrollView>
+                android:divider="@android:color/transparent"
+                android:listSelector="@android:color/transparent"
+                android:theme="@style/OverScrollCustomColor" />
 
         </TableLayout>
+
     </com.tsvietok.meteoradar.dev.CustomMaterialCardView>
 
     <TextView
