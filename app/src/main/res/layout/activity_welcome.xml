@@ -47,7 +47,7 @@
             app:endIconTint="@color/outline_icon_color"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
-            app:hintTextColor="@color/colorAccent"
+            app:hintTextColor="@color/color_accent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView">
@@ -68,10 +68,10 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorAccent"
+        app:backgroundTint="@color/color_accent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="@color/fabRipple"
+        app:rippleColor="@color/fab_ripple"
         app:srcCompat="@drawable/baseline_done_24"
-        app:tint="@color/colorFabDayNight" />
+        app:tint="@color/fab_day_night_color" />
 </LinearLayout>

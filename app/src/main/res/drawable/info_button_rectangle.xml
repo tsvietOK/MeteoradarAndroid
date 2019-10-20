@@ -4,14 +4,14 @@
         <shape android:id="@+id/listview_background_shape">
             <stroke
                 android:width="0.7dp"
-                android:color="@color/colorInfoButtonStroke" />
+                android:color="@color/button_info_stroke" />
             <padding
                 android:bottom="2dp"
                 android:left="2dp"
                 android:right="2dp"
                 android:top="2dp" />
             <corners android:radius="5dp" />
-            <solid android:color="@color/colorInfoButtonBackground" />
+            <solid android:color="@color/button_info_background" />
         </shape>
     </item>
     <item

@@ -3,7 +3,7 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
         <item name="colorPrimary">?attr/colorSurface</item>
         <item name="colorPrimaryDark">?attr/colorSurface</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/color_accent</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>
         <item name="materialAlertDialogTheme">@style/MaterialAlertDialog</item>
@@ -29,9 +29,9 @@
     </style>
 
     <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textColor">@color/color_accent</item>
         <item name="textAllCaps">false</item>
-        <item name="rippleColor">@color/colorAccent</item>
+        <item name="rippleColor">@color/color_accent</item>
     </style>
 
     <style name="WindowAnimationTransition">
@@ -40,7 +40,7 @@
     </style>
 
     <style name="OverScrollCustomColor">
-        <item name="android:colorEdgeEffect">@color/colorAccent</item>
+        <item name="android:colorEdgeEffect">@color/color_accent</item>
     </style>
 
 </resources>
