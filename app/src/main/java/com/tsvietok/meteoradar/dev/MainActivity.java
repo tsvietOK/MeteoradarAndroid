@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -189,14 +188,11 @@ public class MainActivity extends AppCompatActivity {
         });
         ForegroundMap = findViewById(R.id.ForegroundMap);
         ForegroundMap.getViewTreeObserver()
-                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        if (mStartForegroundMapHeight == 0) {
-                            mStartForegroundMapWidth = ForegroundMap.getWidth();
-                            ForegroundMap.getLayoutParams().height = mStartForegroundMapWidth;
-                            mStartForegroundMapHeight = mStartForegroundMapWidth;
-                        }
+                .addOnGlobalLayoutListener(() -> {
+                    if (mStartForegroundMapHeight == 0) {
+                        mStartForegroundMapWidth = ForegroundMap.getWidth();
+                        ForegroundMap.getLayoutParams().height = mStartForegroundMapWidth;
+                        mStartForegroundMapHeight = mStartForegroundMapWidth;
                     }
                 });
         ForegroundMap.setOnClickListener(v -> {
