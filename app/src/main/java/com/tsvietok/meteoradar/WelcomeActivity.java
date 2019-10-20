@@ -1,38 +1,56 @@
 package com.tsvietok.meteoradar;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.RadioGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tsvietok.meteoradar.utils.SettingsUtils;
 
+import java.util.LinkedList;
+
 public class WelcomeActivity extends AppCompatActivity {
     private static final String PREF_SELECTED_CITY_KEY = "selectedCity";
-    private RadioGroup mCityGroup;
-    private int mSelectedCityId;
+    private int mSelectedCityPosition;
+    private LinkedList<String> mCityList = new LinkedList<>();
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        mCityGroup = findViewById(R.id.cityRadioGroup);
-        mCityGroup.setOnCheckedChangeListener((rGroup, checkedId) -> {
+        mContext = getApplicationContext();
 
-            int radioButtonId = rGroup.getCheckedRadioButtonId();
-            View radioB = rGroup.findViewById(radioButtonId);
-            mSelectedCityId = rGroup.indexOfChild(radioB);
-        });
+        mCityList.add(getString(R.string.kiev));
+        mCityList.add(getString(R.string.minsk));
+        mCityList.add(getString(R.string.brest));
+        mCityList.add(getString(R.string.gomel));
+        mCityList.add(getString(R.string.smolensk));
+        mCityList.add(getString(R.string.bryansk));
+        mCityList.add(getString(R.string.kursk));
+        mCityList.add(getString(R.string.velikiye_luki));
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                R.layout.dropdown_menu_popup_item, mCityList);
 
         FloatingActionButton mSelectCityFab = findViewById(R.id.SelectCityFab);
-        mSelectCityFab.setOnClickListener(view -> {
-            mCityGroup = findViewById(R.id.cityRadioGroup);
 
-            SettingsUtils.saveIntSetting(getApplicationContext(), PREF_SELECTED_CITY_KEY, mSelectedCityId);
+        AutoCompleteTextView autoCompleteTextView = findViewById(R.id.filled_exposed_dropdown);
+        autoCompleteTextView.setInputType(0);
+        autoCompleteTextView.setAdapter(adapter);
+        autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
+            mSelectedCityPosition = position;
+            mSelectCityFab.show();
+        });
+
+        mSelectCityFab.setOnClickListener(view -> {
+            SettingsUtils.saveIntSetting(mContext, PREF_SELECTED_CITY_KEY,
+                    mSelectedCityPosition);
 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
