@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#1a73e9</color>
+    <color name="colorAccent">#1A73E9</color>
     <color name="fabRipple">#80FFFFFF</color>
     <color name="buttonRipple">#77A3E7</color>
     <color name="colorBlack">#ff010101</color>
@@ -34,4 +34,5 @@
     <color name="colorFabDayNight">#FFF</color>
     <color name="colorHorizontalPickerBg">#f5f5f5</color>
     <color name="colorDayNightBlackWhite">#FFF</color>
+    <color name="colorDropdownStroke">#838383</color>
 </resources>

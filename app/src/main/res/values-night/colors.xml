@@ -34,4 +34,5 @@
     <color name="colorFabDayNight">#000000</color>
     <color name="colorHorizontalPickerBg">#0F0F0F</color>
     <color name="colorDayNightBlackWhite">#000</color>
+    <color name="colorDropdownStroke">#838383</color>
 </resources>
