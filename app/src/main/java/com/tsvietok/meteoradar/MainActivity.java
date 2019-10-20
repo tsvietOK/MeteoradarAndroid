@@ -524,7 +524,7 @@ public class MainActivity extends AppCompatActivity {
 
             mAdapter.refreshData(mData.getTimeString());
 
-            if (mLastSelectedItem == -2 || forcedUpdate || mCityChanged) {
+            if (forcedUpdate || mCityChanged) {
                 mLastSelectedItem = mData.getTimeString().length;
             }
             if (forcedUpdate) {
