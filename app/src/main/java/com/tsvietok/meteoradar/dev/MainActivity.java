@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -466,6 +467,7 @@ public class MainActivity extends AppCompatActivity {
 
     private class GetJsonAsync extends AsyncTask<Void, Void, String> {
         private final boolean forcedUpdate;
+        private ProgressBar progressBar;
 
         GetJsonAsync(boolean forcedUpdate) {
             this.forcedUpdate = forcedUpdate;
@@ -475,6 +477,9 @@ public class MainActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             CustomLog.logDebug("GetJsonAsync(): Start");
+
+            progressBar = findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -498,6 +503,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+
+            progressBar.setVisibility(View.INVISIBLE);
 
             if (result == null) {
                 Toast.makeText(context, R.string.no_server_connection, Toast.LENGTH_LONG).show();
