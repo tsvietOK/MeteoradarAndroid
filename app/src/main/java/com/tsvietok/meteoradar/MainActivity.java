@@ -166,8 +166,10 @@ public class MainActivity extends AppCompatActivity {
                 CustomLog.logError("Internet connection is not available");
             }
         } else {
-            jsonTask = new GetJsonAsync(false);
-            jsonTask.execute();
+            if (mData == null) {
+                jsonTask = new GetJsonAsync(false);
+                jsonTask.execute();
+            }
         }
 
         UpdateFab = findViewById(R.id.UpdateFab);
