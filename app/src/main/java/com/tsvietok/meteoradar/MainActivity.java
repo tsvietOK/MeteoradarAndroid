@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private HorizontalPickerLayoutManager mLayoutManager;
     private TimeAdapter mAdapter;
     private LinearSnapHelper mSnapHelper;
+    private int mStartForegroundMapHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,9 +172,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         ForegroundMap = findViewById(R.id.ForegroundMap);
+        ForegroundMap.getViewTreeObserver()
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        if (mStartForegroundMapHeight == 0) {
+                            mStartForegroundMapHeight = ForegroundMap.getHeight();
+                        }
+                    }
+                });
         ForegroundMap.setOnClickListener(v -> {
-            if (ForegroundMap.getMeasuredHeight() == 1024) {
-                ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getMeasuredHeight(), 600);
+            if (ForegroundMap.getHeight() == mStartForegroundMapHeight) {
+                ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getHeight(), mStartForegroundMapHeight - 400);
                 anim.addUpdateListener(valueAnimator -> {
                     int val = (Integer) valueAnimator.getAnimatedValue();
                     ViewGroup.LayoutParams layoutParams = ForegroundMap.getLayoutParams();
@@ -182,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 anim.setDuration(250);
                 anim.start();
             } else {
-                ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getMeasuredHeight(), 1024);
+                ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getHeight(), mStartForegroundMapHeight);
                 anim.addUpdateListener(valueAnimator -> {
                     int val = (Integer) valueAnimator.getAnimatedValue();
                     ViewGroup.LayoutParams layoutParams = ForegroundMap.getLayoutParams();
