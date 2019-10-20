@@ -32,11 +32,11 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     android:textAllCaps="false"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/color_accent"
                     android:textSize="16sp"
                     android:tooltipText="@string/choose_city"
                     android:typeface="serif"
-                    app:rippleColor="@color/buttonRipple"
+                    app:rippleColor="@color/button_ripple"
                     tools:text="@string/choose_city" />
 
             </LinearLayout>
@@ -56,11 +56,11 @@
         android:layout_margin="@dimen/fab_margin"
         android:text="@string/update"
         android:textAllCaps="false"
-        android:textColor="@color/colorFabDayNight"
-        app:backgroundTint="@color/colorAccent"
+        android:textColor="@color/fab_day_night_color"
+        app:backgroundTint="@color/color_accent"
         app:icon="@drawable/baseline_sync_24"
         app:iconSize="18dp"
-        app:iconTint="@color/colorFabDayNight"
-        app:rippleColor="@color/fabRipple" />
+        app:iconTint="@color/fab_day_night_color"
+        app:rippleColor="@color/fab_ripple" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

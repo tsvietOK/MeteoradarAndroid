@@ -363,41 +363,41 @@ public class MainActivity extends AppCompatActivity {
     private void initMapInfoAdapter() {
         mMapInfoList = new ArrayList<>();
         mMapInfoList.add(new MapInfo(getString(R.string.no_weather),
-                getColor(R.color.colorNoWeather)));
+                getColor(R.color.color_no_weather)));
         mMapInfoList.add(new MapInfo(getString(R.string.laminated_clouds),
-                getColor(R.color.colorLaminatedClouds)));
+                getColor(R.color.color_laminated_clouds)));
         mMapInfoList.add(new MapInfo(getString(R.string.light_precipitation),
-                getColor(R.color.colorLightPrecipitation)));
+                getColor(R.color.color_light_precipitation)));
         mMapInfoList.add(new MapInfo(getString(R.string.medium_precipitation),
-                getColor(R.color.colorMediumPrecipitation)));
+                getColor(R.color.color_medium_precipitation)));
         mMapInfoList.add(new MapInfo(getString(R.string.strong_precipitation),
-                getColor(R.color.colorStrongPrecipitation)));
+                getColor(R.color.color_strong_precipitation)));
         mMapInfoList.add(new MapInfo(getString(R.string.convective_clouds),
-                getColor(R.color.colorConvectiveClouds)));
+                getColor(R.color.color_convective_clouds)));
         mMapInfoList.add(new MapInfo(getString(R.string.light_convective_rainfall),
-                getColor(R.color.colorLightConvectiveRainfall)));
+                getColor(R.color.color_light_convective_rainfall)));
         mMapInfoList.add(new MapInfo(getString(R.string.medium_convective_rainfall),
-                getColor(R.color.colorMediumConvectiveRainfall)));
+                getColor(R.color.color_medium_convective_rainfall)));
         mMapInfoList.add(new MapInfo(getString(R.string.strong_convective_rainfall),
-                getColor(R.color.colorStrongConvectiveRainfall)));
+                getColor(R.color.color_strong_convective_rainfall)));
         mMapInfoList.add(new MapInfo(getString(R.string.thunderstorm_30_70),
-                getColor(R.color.colorThunderstorm_30_70)));
+                getColor(R.color.color_thunderstorm_30_70)));
         mMapInfoList.add(new MapInfo(getString(R.string.thunderstorm_70_90),
-                getColor(R.color.colorThunderstorm_70_90)));
+                getColor(R.color.color_thunderstorm_70_90)));
         mMapInfoList.add(new MapInfo(getString(R.string.thunderstorm_90_100),
-                getColor(R.color.colorThunderstorm_90_100)));
+                getColor(R.color.color_thunderstorm_90_100)));
         mMapInfoList.add(new MapInfo(getString(R.string.light_hail),
-                getColor(R.color.colorLightHail)));
+                getColor(R.color.color_light_hail)));
         mMapInfoList.add(new MapInfo(getString(R.string.medium_hail),
-                getColor(R.color.colorMediumHail)));
+                getColor(R.color.color_medium_hail)));
         mMapInfoList.add(new MapInfo(getString(R.string.strong_hail),
-                getColor(R.color.colorStrongHail)));
+                getColor(R.color.color_strong_hail)));
         mMapInfoList.add(new MapInfo(getString(R.string.light_squall),
-                getColor(R.color.colorLightSquall)));
+                getColor(R.color.color_light_squall)));
         mMapInfoList.add(new MapInfo(getString(R.string.medium_squall),
-                getColor(R.color.colorMediumSquall)));
+                getColor(R.color.color_medium_squall)));
         mMapInfoList.add(new MapInfo(getString(R.string.strong_squall),
-                getColor(R.color.colorStrongSquall)));
+                getColor(R.color.color_strong_squall)));
     }
 
     private void checkRadarStatus() {
