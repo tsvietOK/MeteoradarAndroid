@@ -49,6 +49,31 @@
                     android:layout_gravity="end|bottom"
                     android:layout_margin="12dp"
                     android:background="@drawable/info_button_rectangle" />
+
+                <LinearLayout
+                    android:id="@+id/StatusText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:background="@color/translucent_surface_color"
+                    android:orientation="vertical"
+                    android:visibility="invisible">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/status_radar_off"
+                        android:textAlignment="center"
+                        android:textColor="@color/radarOffTextColor"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="0.7dp"
+                        android:background="@color/status_border_color" />
+                </LinearLayout>
             </FrameLayout>
 
             <ListView
@@ -70,7 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ForegroundCardContainer"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:textSize="24sp"
         tools:text="15.10 21:27" />
 
@@ -81,7 +106,7 @@
         android:layout_height="60dp"
         android:layout_below="@+id/TimeText"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         app:cardBackgroundColor="@color/colorHorizontalPickerBg">
 
@@ -114,17 +139,5 @@
             app:strokeWidth="1dp" />
 
     </com.google.android.material.card.MaterialCardView>
-
-    <TextView
-        android:id="@+id/StatusText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/HorizontalPickerContainer"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="@string/status_radar_off"
-        android:textColor="@color/radarOffTextColor"
-        android:textSize="16sp"
-        android:visibility="invisible" />
 
 </RelativeLayout>

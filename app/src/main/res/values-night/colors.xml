@@ -35,4 +35,6 @@
     <color name="colorHorizontalPickerBg">#0F0F0F</color>
     <color name="colorDayNightBlackWhite">#000</color>
     <color name="colorDropdownStroke">#838383</color>
+    <color name="translucent_surface_color">#BF161616</color>
+    <color name="status_border_color">#52424242</color>
 </resources>
