@@ -200,29 +200,22 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         ForegroundMap.setOnClickListener(v -> {
+            ValueAnimator anim;
             if (ForegroundMap.getHeight() == mStartForegroundMapHeight) {
-                ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getHeight(),
+                anim = ValueAnimator.ofInt(ForegroundMap.getHeight(),
                         mStartForegroundMapHeight - 400);
-                anim.addUpdateListener(valueAnimator -> {
-                    int val = (Integer) valueAnimator.getAnimatedValue();
-                    ViewGroup.LayoutParams layoutParams = ForegroundMap.getLayoutParams();
-                    layoutParams.height = val;
-                    ForegroundMap.setLayoutParams(layoutParams);
-                });
-                anim.setDuration(250);
-                anim.start();
             } else {
-                ValueAnimator anim = ValueAnimator.ofInt(ForegroundMap.getHeight(),
+                anim = ValueAnimator.ofInt(ForegroundMap.getHeight(),
                         mStartForegroundMapHeight);
-                anim.addUpdateListener(valueAnimator -> {
-                    int val = (Integer) valueAnimator.getAnimatedValue();
-                    ViewGroup.LayoutParams layoutParams = ForegroundMap.getLayoutParams();
-                    layoutParams.height = val;
-                    ForegroundMap.setLayoutParams(layoutParams);
-                });
-                anim.setDuration(250);
-                anim.start();
             }
+            anim.addUpdateListener(valueAnimator -> {
+                int val = (Integer) valueAnimator.getAnimatedValue();
+                ViewGroup.LayoutParams layoutParams = ForegroundMap.getLayoutParams();
+                layoutParams.height = val;
+                ForegroundMap.setLayoutParams(layoutParams);
+            });
+            anim.setDuration(250);
+            anim.start();
         });
     }
 
