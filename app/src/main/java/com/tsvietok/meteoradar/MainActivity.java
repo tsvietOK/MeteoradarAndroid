@@ -197,20 +197,20 @@ public class MainActivity extends AppCompatActivity {
                         mStartForegroundMapHeight = mStartForegroundMapWidth;
                     }
                 });
-        ForegroundMap.setOnClickListener(v -> {
+        ForegroundMap.setOnClickListener(view -> {
             ValueAnimator anim;
-            if (ForegroundMap.getHeight() == mStartForegroundMapHeight) {
-                anim = ValueAnimator.ofInt(ForegroundMap.getHeight(),
+            if (view.getHeight() == mStartForegroundMapHeight) {
+                anim = ValueAnimator.ofInt(view.getHeight(),
                         mStartForegroundMapHeight - 400);
             } else {
-                anim = ValueAnimator.ofInt(ForegroundMap.getHeight(),
+                anim = ValueAnimator.ofInt(view.getHeight(),
                         mStartForegroundMapHeight);
             }
             anim.addUpdateListener(valueAnimator -> {
                 int val = (Integer) valueAnimator.getAnimatedValue();
-                ViewGroup.LayoutParams layoutParams = ForegroundMap.getLayoutParams();
+                ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
                 layoutParams.height = val;
-                ForegroundMap.setLayoutParams(layoutParams);
+                view.setLayoutParams(layoutParams);
             });
             anim.setDuration(250);
             anim.start();
