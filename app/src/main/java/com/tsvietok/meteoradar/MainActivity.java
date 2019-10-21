@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,8 @@ import com.tsvietok.meteoradar.utils.ScreenUtils;
 import com.tsvietok.meteoradar.utils.SettingsUtils;
 import com.tsvietok.meteoradar.utils.StorageUtils;
 import com.tsvietok.meteoradar.utils.ThemeUtils;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static final String PREF_SELECTED_THEME_KEY = "selectedTheme";
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearSnapHelper mSnapHelper;
     private int mStartForegroundMapHeight;
     private int mStartForegroundMapWidth;
+    private ArrayList<MapInfo> mMapInfoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +118,13 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog alert = builder.create();
             alert.show();
         });
+
+        initMapInfoAdapter();
+
+        MapInfoListAdapter mapInfoListAdapter = new MapInfoListAdapter(this, mMapInfoList);
+
+        ListView mapInfoList = findViewById(R.id.mapInfoList);
+        mapInfoList.setAdapter(mapInfoListAdapter);
 
         setHorizontalPicker();
     }
@@ -352,6 +363,46 @@ public class MainActivity extends AppCompatActivity {
             alert.show();
         }
         return super.onOptionsItemSelected(menuItem);
+    }
+
+    private void initMapInfoAdapter() {
+        mMapInfoList = new ArrayList<>();
+        mMapInfoList.add(new MapInfo(getString(R.string.no_weather),
+                getColor(R.color.colorNoWeather)));
+        mMapInfoList.add(new MapInfo(getString(R.string.laminated_clouds),
+                getColor(R.color.colorLaminatedClouds)));
+        mMapInfoList.add(new MapInfo(getString(R.string.light_precipitation),
+                getColor(R.color.colorLightPrecipitation)));
+        mMapInfoList.add(new MapInfo(getString(R.string.medium_precipitation),
+                getColor(R.color.colorMediumPrecipitation)));
+        mMapInfoList.add(new MapInfo(getString(R.string.strong_precipitation),
+                getColor(R.color.colorStrongPrecipitation)));
+        mMapInfoList.add(new MapInfo(getString(R.string.convective_clouds),
+                getColor(R.color.colorConvectiveClouds)));
+        mMapInfoList.add(new MapInfo(getString(R.string.light_convective_rainfall),
+                getColor(R.color.colorLightConvectiveRainfall)));
+        mMapInfoList.add(new MapInfo(getString(R.string.medium_convective_rainfall),
+                getColor(R.color.colorMediumConvectiveRainfall)));
+        mMapInfoList.add(new MapInfo(getString(R.string.strong_convective_rainfall),
+                getColor(R.color.colorStrongConvectiveRainfall)));
+        mMapInfoList.add(new MapInfo(getString(R.string.thunderstorm_30_70),
+                getColor(R.color.colorThunderstorm_30_70)));
+        mMapInfoList.add(new MapInfo(getString(R.string.thunderstorm_70_90),
+                getColor(R.color.colorThunderstorm_70_90)));
+        mMapInfoList.add(new MapInfo(getString(R.string.thunderstorm_90_100),
+                getColor(R.color.colorThunderstorm_90_100)));
+        mMapInfoList.add(new MapInfo(getString(R.string.light_hail),
+                getColor(R.color.colorLightHail)));
+        mMapInfoList.add(new MapInfo(getString(R.string.medium_hail),
+                getColor(R.color.colorMediumHail)));
+        mMapInfoList.add(new MapInfo(getString(R.string.strong_hail),
+                getColor(R.color.colorStrongHail)));
+        mMapInfoList.add(new MapInfo(getString(R.string.light_squall),
+                getColor(R.color.colorLightSquall)));
+        mMapInfoList.add(new MapInfo(getString(R.string.medium_squall),
+                getColor(R.color.colorMediumSquall)));
+        mMapInfoList.add(new MapInfo(getString(R.string.strong_squall),
+                getColor(R.color.colorStrongSquall)));
     }
 
     private class GetImageAsync extends AsyncTask<Integer, Void, Integer> {
