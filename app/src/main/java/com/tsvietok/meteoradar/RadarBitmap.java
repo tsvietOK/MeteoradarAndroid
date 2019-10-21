@@ -7,6 +7,7 @@ import com.tsvietok.meteoradar.utils.NetUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 class RadarBitmap {
     private final Location mLocation;
@@ -49,7 +50,7 @@ class RadarBitmap {
     void setTime(int timestamp) {
         this.mTimestamp = timestamp;
         Date _time = new Date((long) timestamp * 1000);
-        this.mTime = new SimpleDateFormat("dd.MM HH:mm").format(_time);
+        this.mTime = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(_time);
     }
 
     Integer getTimestamp() {

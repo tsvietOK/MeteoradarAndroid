@@ -36,7 +36,8 @@
                     android:textSize="16sp"
                     android:tooltipText="@string/choose_city"
                     android:typeface="serif"
-                    app:rippleColor="@color/buttonRipple" />
+                    app:rippleColor="@color/buttonRipple"
+                    tools:text="@string/choose_city" />
 
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
