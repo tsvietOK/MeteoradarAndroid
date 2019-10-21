@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
     private TimeAdapter mAdapter;
     private LinearSnapHelper mSnapHelper;
     private int mStartForegroundMapHeight;
-    private int mStartForegroundMapWidth;
     private ArrayList<MapInfo> mMapInfoList;
     private int mSavedForegroundMapHeight;
 
