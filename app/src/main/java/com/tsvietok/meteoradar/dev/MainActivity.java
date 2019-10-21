@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private int mStartForegroundMapHeight;
     private ArrayList<MapInfo> mMapInfoList;
     private int mSavedForegroundMapHeight;
+    private Animation mFadeIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +133,8 @@ public class MainActivity extends AppCompatActivity {
         mapInfoList.setAdapter(mapInfoListAdapter);
 
         setHorizontalPicker();
+
+        mFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
     }
 
     @Override
@@ -262,6 +265,8 @@ public class MainActivity extends AppCompatActivity {
         CustomLog.logDebug("showData()");
 
         if (number != -1) {
+            boolean mapIsEmpty = ForegroundMap.getDrawable() == null;
+
             TimeText = findViewById(R.id.TimeText);
             TimeText.setText(mMaps[number].getTime());
             ForegroundMap = findViewById(R.id.ForegroundMap);
@@ -270,9 +275,17 @@ public class MainActivity extends AppCompatActivity {
             switch (currentNightMode) {
                 case Configuration.UI_MODE_NIGHT_NO:
                     ForegroundMap.setImageBitmap(mMaps[number].getImage());
+
+                    if (mapIsEmpty) {
+                        ForegroundMap.startAnimation(mFadeIn);
+                    }
                     break;
                 case Configuration.UI_MODE_NIGHT_YES:
                     ForegroundMap.setImageBitmap(mMaps[number].getNightImage());
+
+                    if (mapIsEmpty) {
+                        ForegroundMap.startAnimation(mFadeIn);
+                    }
                     break;
             }
         } else {
