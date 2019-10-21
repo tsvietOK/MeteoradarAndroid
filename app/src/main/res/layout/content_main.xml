@@ -77,6 +77,11 @@
                 </LinearLayout>
             </FrameLayout>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.7dp"
+                android:background="@color/text_radar_status_stroke" />
+
             <ListView
                 android:id="@+id/mapInfoList"
                 android:layout_width="match_parent"
