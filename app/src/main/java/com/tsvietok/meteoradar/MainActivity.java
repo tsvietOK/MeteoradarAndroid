@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String PREF_SELECTED_CITY_KEY = "selectedCity";
     private static final String PREF_CITY_CHANGED_KEY = "cityChanged";
     private static final String PREF_FOREGROUND_MAP_HEIGHT_KEY = "foregroundMapHeight";
+    private static final String PREF_STATUS_TEXT_VISIBILITY_KEY = "statusTextVisibility";
     private static int firstVisibleInListView;
     private Location location;
     private ExtendedFloatingActionButton UpdateFab;
@@ -233,6 +234,7 @@ public class MainActivity extends AppCompatActivity {
         if (!mCityChanged) {
             outState.putInt(PREF_FOREGROUND_MAP_HEIGHT_KEY, ForegroundMap.getHeight());
         }
+        outState.putInt(PREF_STATUS_TEXT_VISIBILITY_KEY, StatusText.getVisibility());
     }
 
     @Override
@@ -244,6 +246,8 @@ public class MainActivity extends AppCompatActivity {
         mFirstActivityStart = false;
         mCityChanged = savedInstanceState.getBoolean(PREF_CITY_CHANGED_KEY);
         mSavedForegroundMapHeight = savedInstanceState.getInt(PREF_FOREGROUND_MAP_HEIGHT_KEY);
+        StatusText = findViewById(R.id.StatusText);
+        StatusText.setVisibility(savedInstanceState.getInt(PREF_STATUS_TEXT_VISIBILITY_KEY));
     }
 
     private void getMap(int i) {
@@ -543,12 +547,12 @@ public class MainActivity extends AppCompatActivity {
                 HorizontalPicker.scrollToPosition(mLastSelectedItem);
             }
 
+            checkRadarStatus();
+
             if (mFirstActivityStart || mCityChanged || forcedUpdate) {
                 mFirstActivityStart = false;
                 mCityChanged = false;
             }
-
-            checkRadarStatus();
 
             if (forcedUpdate) {
                 Toast.makeText(context, R.string.updated, Toast.LENGTH_SHORT).show();
