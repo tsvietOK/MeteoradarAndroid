@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String PREF_FIRST_RUN_KEY = "firstRun";
     private static final String PREF_SELECTED_CITY_KEY = "selectedCity";
     private static final String PREF_CITY_CHANGED_KEY = "cityChanged";
+    private static final String PREF_FOREGROUND_MAP_HEIGHT_KEY = "foregroundMapHeight";
     private static int firstVisibleInListView;
     private Location location;
     private ExtendedFloatingActionButton UpdateFab;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private int mStartForegroundMapHeight;
     private int mStartForegroundMapWidth;
     private ArrayList<MapInfo> mMapInfoList;
+    private int mSavedForegroundMapHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,6 +197,10 @@ public class MainActivity extends AppCompatActivity {
                         mStartForegroundMapWidth = ForegroundMap.getWidth();
                         ForegroundMap.getLayoutParams().height = mStartForegroundMapWidth;
                         mStartForegroundMapHeight = mStartForegroundMapWidth;
+                    } else {
+                        if (mSavedForegroundMapHeight != 0) {
+                            ForegroundMap.getLayoutParams().height = mSavedForegroundMapHeight;
+                        }
                     }
                 });
         ForegroundMap.setOnClickListener(view -> {
@@ -224,6 +230,9 @@ public class MainActivity extends AppCompatActivity {
 
         outState.putInt(PREF_TIMELINE_POSITION_KEY, mLastSelectedItem);
         outState.putBoolean(PREF_CITY_CHANGED_KEY, mCityChanged);
+        if (!mCityChanged) {
+            outState.putInt(PREF_FOREGROUND_MAP_HEIGHT_KEY, ForegroundMap.getHeight());
+        }
     }
 
     @Override
@@ -234,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
         mLastSelectedItem = savedInstanceState.getInt(PREF_TIMELINE_POSITION_KEY);
         mFirstActivityStart = false;
         mCityChanged = savedInstanceState.getBoolean(PREF_CITY_CHANGED_KEY);
+        mSavedForegroundMapHeight = savedInstanceState.getInt(PREF_FOREGROUND_MAP_HEIGHT_KEY);
     }
 
     private void getMap(int i) {
