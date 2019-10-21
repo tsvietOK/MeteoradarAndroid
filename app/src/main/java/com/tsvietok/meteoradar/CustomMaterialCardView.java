@@ -21,8 +21,6 @@ public class CustomMaterialCardView extends MaterialCardView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        this.getLayoutParams().height = this.getWidth();
+        super.onMeasure(widthMeasureSpec, widthMeasureSpec);
     }
 }

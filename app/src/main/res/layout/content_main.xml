@@ -11,7 +11,7 @@
     <com.tsvietok.meteoradar.dev.CustomMaterialCardView
         android:id="@+id/ForegroundCardContainer"
         style="@style/Widget.MaterialComponents.CardView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="390dp"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="10dp"
@@ -32,7 +32,7 @@
             android:visibility="invisible" />
 
         <TableLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <FrameLayout>

@@ -193,10 +193,10 @@ public class MainActivity extends AppCompatActivity {
         ForegroundMap = findViewById(R.id.ForegroundMap);
         ForegroundMap.getViewTreeObserver()
                 .addOnGlobalLayoutListener(() -> {
+                    ForegroundMap.getViewTreeObserver().removeOnGlobalLayoutListener(this::onResume);
                     if (mStartForegroundMapHeight == 0) {
-                        mStartForegroundMapWidth = ForegroundMap.getWidth();
-                        ForegroundMap.getLayoutParams().height = mStartForegroundMapWidth;
-                        mStartForegroundMapHeight = mStartForegroundMapWidth;
+                        mStartForegroundMapHeight = ForegroundMap.getWidth();
+                        ForegroundMap.getLayoutParams().height = mStartForegroundMapHeight;
                     } else {
                         if (mSavedForegroundMapHeight != 0) {
                             ForegroundMap.getLayoutParams().height = mSavedForegroundMapHeight;
