@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         CustomLog.logDebug("onCreate()");
 
-        this.context = getApplicationContext();
+        this.context = this;
 
         ThemeUtils.switchTheme(SettingsUtils.getIntSetting(context, PREF_SELECTED_THEME_KEY));
 

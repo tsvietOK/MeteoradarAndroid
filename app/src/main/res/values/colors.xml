@@ -27,7 +27,6 @@
     <color name="color_light_squall">#DCAAFC</color>
     <color name="color_medium_squall">#EC5AFC</color>
     <color name="color_strong_squall">#BC1EFC</color>
-    <color name="color_text_day_night">#3D3D3D</color>
     <color name="button_info_background">#9AFFFFFF</color>
     <color name="button_info_stroke">#4BB4B4B4</color>
     <color name="list_info_stroke">#80868686</color>
