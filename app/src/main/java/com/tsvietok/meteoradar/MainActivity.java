@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
         HorizontalPicker = findViewById(R.id.HorizontalPicker);
 
         int padding = ScreenUtils.getScreenWidth(this) / 2
-                - ScreenUtils.getPixelValueFromDp(this, 52);
+                - ScreenUtils.getPixelValueFromDp(this, 50);
         HorizontalPicker.setPadding(padding, 0, padding, 0);
 
         if (mLayoutManager == null) {
