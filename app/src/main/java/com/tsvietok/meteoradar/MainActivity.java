@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     private RadarBitmap[] mMaps;
     private RadarTime mData;
     private int mLastSelectedItem = -1;
-    private Context context;
     private boolean mCityChanged;
     private boolean mFirstActivityStart = true;
     private CustomRecyclerView HorizontalPicker;
@@ -75,22 +74,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         CustomLog.logDebug("onCreate()");
 
-        this.context = this;
-
-        ThemeUtils.switchTheme(SettingsUtils.getIntSetting(context, PREF_SELECTED_THEME_KEY));
+        ThemeUtils.switchTheme(SettingsUtils.getIntSetting(this, PREF_SELECTED_THEME_KEY));
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        location = LocationUtils.switchCity(context,
-                SettingsUtils.getIntSetting(context, PREF_SELECTED_CITY_KEY));
+        location = LocationUtils.switchCity(this,
+                SettingsUtils.getIntSetting(this, PREF_SELECTED_CITY_KEY));
         CustomLog.logDebug("Current city: " + location.getFullName());
 
         Button changeCityButton = findViewById(R.id.selectedCityButton);
         changeCityButton.setText(location.getFullName());
         changeCityButton.setOnClickListener(v -> {
-            int selectedCity = SettingsUtils.getIntSetting(context, PREF_SELECTED_CITY_KEY);
+            int selectedCity = SettingsUtils.getIntSetting(this, PREF_SELECTED_CITY_KEY);
             final String[] listItems = {
                     getString(R.string.kiev),
                     getString(R.string.minsk),
@@ -107,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     .setSingleChoiceItems(listItems, selectedCity,
                             (dialog, item) -> {
                                 if (selectedCity != item) {
-                                    SettingsUtils.saveIntSetting(context,
+                                    SettingsUtils.saveIntSetting(this,
                                             PREF_SELECTED_CITY_KEY,
                                             item);
                                     changeCityButton.setText(location.getFullName());
@@ -143,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         CustomLog.logDebug("onDestroy()");
 
         if (mData != null) {
-            StorageUtils.removeUnusedBitmap(context, mData.getTimes(), location);
+            StorageUtils.removeUnusedBitmap(this, mData.getTimes(), location);
         }
     }
 
@@ -154,14 +151,14 @@ public class MainActivity extends AppCompatActivity {
 
         GetJsonAsync jsonTask;
 
-        if (SettingsUtils.getBooleanSetting(context, PREF_FIRST_RUN_KEY)) {
-            if (NetUtils.isNetworkConnected(context)) {
-                jsonTask = new GetJsonAsync(true);
+        if (SettingsUtils.getBooleanSetting(this, PREF_FIRST_RUN_KEY)) {
+            if (NetUtils.isNetworkConnected(this)) {
+                jsonTask = new GetJsonAsync(this, true);
                 jsonTask.execute();
 
-                SettingsUtils.saveBooleanSetting(context, PREF_FIRST_RUN_KEY, false);
+                SettingsUtils.saveBooleanSetting(this, PREF_FIRST_RUN_KEY, false);
             } else {
-                Toast.makeText(context,
+                Toast.makeText(this,
                         R.string.no_internet_connection,
                         Toast.LENGTH_SHORT).show();
 
@@ -172,18 +169,18 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             if (mData == null) {
-                jsonTask = new GetJsonAsync(false);
+                jsonTask = new GetJsonAsync(this, false);
                 jsonTask.execute();
             }
         }
 
         UpdateFab = findViewById(R.id.UpdateFab);
         UpdateFab.setOnClickListener(view -> {
-            if (NetUtils.isNetworkConnected(context)) {
-                GetJsonAsync jsonTaskUpdate = new GetJsonAsync(true);
+            if (NetUtils.isNetworkConnected(this)) {
+                GetJsonAsync jsonTaskUpdate = new GetJsonAsync(this, true);
                 jsonTaskUpdate.execute();
             } else {
-                Toast.makeText(context,
+                Toast.makeText(this,
                         R.string.no_internet_connection,
                         Toast.LENGTH_SHORT).show();
 
@@ -254,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getMap(int i) {
         if (!mMaps[i].isLoaded()) {
-            GetImageAsync imageAsync = new GetImageAsync();
+            GetImageAsync imageAsync = new GetImageAsync(this);
             imageAsync.execute(i);
         } else {
             showData(i);
@@ -289,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         } else {
-            Toast.makeText(context, R.string.image_not_available, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.image_not_available, Toast.LENGTH_SHORT).show();
             NoConnectionBitmap = findViewById(R.id.NoConnectionBitmap);
             NoConnectionBitmap.setVisibility(View.VISIBLE);
         }
@@ -305,14 +302,14 @@ public class MainActivity extends AppCompatActivity {
         HorizontalPicker.setPadding(padding, 0, padding, 0);
 
         if (mLayoutManager == null) {
-            mLayoutManager = new HorizontalPickerLayoutManager(context,
+            mLayoutManager = new HorizontalPickerLayoutManager(this,
                     RecyclerView.HORIZONTAL,
                     false);
             mLayoutManager.setStackFromEnd(true);
         }
         HorizontalPicker.setLayoutManager(mLayoutManager);
 
-        mAdapter = new TimeAdapter(context, v -> {
+        mAdapter = new TimeAdapter(this, v -> {
             int itemPosition = HorizontalPicker.getChildLayoutPosition(v);
             HorizontalPicker.smoothScrollToPosition(itemPosition);
         });
@@ -359,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
         int id = menuItem.getItemId();
 
         if (id == R.id.action_theme) {
-            int selectedTheme = SettingsUtils.getIntSetting(context, PREF_SELECTED_THEME_KEY);
+            int selectedTheme = SettingsUtils.getIntSetting(this, PREF_SELECTED_THEME_KEY);
             if (selectedTheme == -1) {
                 selectedTheme = 0;
             }
@@ -372,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
             builder.setTitle(R.string.choose_theme)
                     .setSingleChoiceItems(listItems, selectedTheme,
                             (dialog, item) -> {
-                                SettingsUtils.saveIntSetting(context,
+                                SettingsUtils.saveIntSetting(this,
                                         PREF_SELECTED_THEME_KEY,
                                         item);
                                 ThemeUtils.switchTheme(item);
@@ -444,6 +441,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class GetImageAsync extends AsyncTask<Integer, Void, Integer> {
+        private Context context;
+
+        GetImageAsync(Context context) {
+            this.context = context;
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -484,9 +487,11 @@ public class MainActivity extends AppCompatActivity {
 
     private class GetJsonAsync extends AsyncTask<Void, Void, String> {
         private final boolean forcedUpdate;
+        private Context context;
         private ProgressBar progressBar;
 
-        GetJsonAsync(boolean forcedUpdate) {
+        GetJsonAsync(Context context, boolean forcedUpdate) {
+            this.context = context;
             this.forcedUpdate = forcedUpdate;
         }
 
