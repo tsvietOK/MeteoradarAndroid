@@ -570,6 +570,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+            if (mFirstActivityStart || firstVisibleInListView == mAdapter.getItemCount() - 1) {
+                getMap(mAdapter.getItemCount() - 1);
+            }
+
             checkRadarStatus();
 
             if (mFirstActivityStart || mCityChanged || forcedUpdate) {
