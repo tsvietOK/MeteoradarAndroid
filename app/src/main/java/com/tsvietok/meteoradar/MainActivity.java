@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -331,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                int currentFirstVisible = mLayoutManager.findFirstVisibleItemPosition();
+                int currentFirstVisible = mLayoutManager.findLastVisibleItemPosition();
                 if (currentFirstVisible != firstVisibleInListView) {
                     getMap(currentFirstVisible);
                     mLastSelectedItem = currentFirstVisible;
@@ -556,12 +557,17 @@ public class MainActivity extends AppCompatActivity {
             mAdapter.refreshData(mData.getTimeString());
 
             if (forcedUpdate || mCityChanged) {
-                mLastSelectedItem = mData.getTimeString().length;
+                mLastSelectedItem = mAdapter.getItemCount() - 1;
             }
             if (forcedUpdate) {
                 HorizontalPicker.smoothScrollToPosition(mLastSelectedItem);
             } else {
-                HorizontalPicker.scrollToPosition(mLastSelectedItem);
+                if (mFirstActivityStart || mCityChanged) {
+                    HorizontalPicker.getLayoutManager().smoothScrollToPosition(HorizontalPicker, null, mAdapter.getItemCount() - 1);
+                } else {
+                    HorizontalPicker.scrollToPosition(mLastSelectedItem);
+                    HorizontalPicker.smoothScrollBy(-1, 0, new LinearInterpolator(), 1);
+                }
             }
 
             checkRadarStatus();
