@@ -428,7 +428,7 @@ public class MainActivity extends AppCompatActivity {
         Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
         Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         StatusText = findViewById(R.id.StatusText);
-        if (mData.getMode()) {
+        if (mData.isServerDown()) {
             if (StatusText.getVisibility() == View.INVISIBLE) {
                 StatusText.setVisibility(View.VISIBLE);
                 StatusText.startAnimation(slideDown);

@@ -50,7 +50,7 @@ class RadarTime {
         this.mLocked = locked;
     }
 
-    Boolean getMode() {
+    Boolean isServerDown() {
         return mIsDown;
     }
 
