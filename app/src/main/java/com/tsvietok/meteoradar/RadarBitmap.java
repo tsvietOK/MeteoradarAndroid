@@ -58,6 +58,11 @@ class RadarBitmap {
     }
 
     String getImageLink() {
-        return NetUtils.getDomain() + "/data/" + mLocation.getCode() + "/images/" + mTimestamp + ".png";
+        return NetUtils.getDomain()
+                + "/data/"
+                + mLocation.getCode()
+                + "/images/"
+                + mTimestamp
+                + ".png";
     }
 }

@@ -63,7 +63,8 @@ public class HorizontalPickerLayoutManager extends LinearLayoutManager {
             if (child != null) {
                 childMid = (getDecoratedLeft(child) + getDecoratedRight(child)) / 2.0f;
                 float distanceFromCenter = Math.abs(middle - childMid);
-                float scale = 1 - (float) Math.sqrt((distanceFromCenter / getWidth())) * SCALE_DOWN_FACTOR;
+                float scale = 1 - (float) Math.sqrt((distanceFromCenter / getWidth()))
+                        * SCALE_DOWN_FACTOR;
 
                 child.setScaleX(scale);
                 child.setScaleY(scale);

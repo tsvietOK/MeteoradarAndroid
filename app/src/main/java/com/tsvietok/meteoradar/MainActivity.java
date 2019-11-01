@@ -194,7 +194,9 @@ public class MainActivity extends AppCompatActivity {
         ForegroundMap = findViewById(R.id.ForegroundMap);
         ForegroundMap.getViewTreeObserver()
                 .addOnGlobalLayoutListener(() -> {
-                    ForegroundMap.getViewTreeObserver().removeOnGlobalLayoutListener(this::onResume);
+                    ForegroundMap
+                            .getViewTreeObserver()
+                            .removeOnGlobalLayoutListener(this::onResume);
                     if (mStartForegroundMapHeight == 0) {
                         mStartForegroundMapHeight = ForegroundMap.getWidth();
                         ForegroundMap.getLayoutParams().height = mStartForegroundMapHeight;
@@ -565,7 +567,10 @@ public class MainActivity extends AppCompatActivity {
                 HorizontalPicker.smoothScrollToPosition(mLastSelectedItem);
             } else {
                 if (mFirstActivityStart || mCityChanged) {
-                    HorizontalPicker.getLayoutManager().smoothScrollToPosition(HorizontalPicker, null, mAdapter.getItemCount() - 1);
+                    HorizontalPicker.getLayoutManager()
+                            .smoothScrollToPosition(HorizontalPicker,
+                                    null,
+                                    mAdapter.getItemCount() - 1);
                 } else {
                     HorizontalPicker.scrollToPosition(mLastSelectedItem);
                     HorizontalPicker.smoothScrollBy(-1, 0, new LinearInterpolator(), 1);

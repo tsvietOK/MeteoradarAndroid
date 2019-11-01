@@ -17,10 +17,11 @@ public class InterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ThemeUtils.switchTheme(SettingsUtils.getIntSetting(getApplicationContext(), PREF_SELECTED_THEME_KEY));
+        ThemeUtils.switchTheme(SettingsUtils.getIntSetting(this, PREF_SELECTED_THEME_KEY));
         setContentView(R.layout.activity_inter);
 
-        if (SettingsUtils.getBooleanSetting(getApplicationContext(), PREF_FIRST_RUN_KEY) && SettingsUtils.getIntSetting(getApplicationContext(), PREF_SELECTED_CITY_KEY) == -1) {
+        if (SettingsUtils.getBooleanSetting(this, PREF_FIRST_RUN_KEY)
+                && SettingsUtils.getIntSetting(this, PREF_SELECTED_CITY_KEY) == -1) {
             Intent intent = new Intent(this, WelcomeActivity.class);
             startActivity(intent);
             finish();
