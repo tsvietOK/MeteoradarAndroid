@@ -7,24 +7,28 @@ public class SettingsUtils {
     private static final String PREF_NAME = "com.tsvietok.meteoradar.dev.preferences";
 
     public static void saveIntSetting(Context context, String key, int value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor =
+                context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit();
         editor.putInt(key, value);
         editor.commit();
     }
 
     public static int getIntSetting(Context context, String key) {
-        SharedPreferences sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPref =
+                context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return sharedPref.getInt(key, -1);
     }
 
     public static void saveBooleanSetting(Context context, String key, boolean value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor =
+                context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit();
         editor.putBoolean(key, value);
         editor.commit();
     }
 
     public static Boolean getBooleanSetting(Context context, String key) {
-        SharedPreferences sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPref =
+                context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return sharedPref.getBoolean(key, true);
     }
 }

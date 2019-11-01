@@ -19,8 +19,10 @@ public class StorageUtils {
     private static final String PNG_EXTENSION = ".png";
     private static final String JSON_CONFIG_FILE_NAME = "config.json";
 
-    public static Bitmap getBitmapFromStorage(Context context, String fileName, Location location) {
-        File workingDirectory = new File(context.getFilesDir() + File.separator + location.getCity() + File.separator);
+    public static Bitmap getBitmapFromStorage(Context context,
+                                              String fileName,
+                                              Location location) {
+        File workingDirectory = new File(context.getFilesDir() + location.getCity());
         if (!workingDirectory.exists()) {
             workingDirectory.mkdir();
         }
@@ -45,8 +47,11 @@ public class StorageUtils {
         return null;
     }
 
-    public static void saveBitmapToStorage(Context context, Bitmap bitmap, int fileName, Location location) {
-        File workingDirectory = new File(context.getFilesDir() + File.separator + location.getCity() + File.separator);
+    public static void saveBitmapToStorage(Context context,
+                                           Bitmap bitmap,
+                                           int fileName,
+                                           Location location) {
+        File workingDirectory = new File(context.getFilesDir() + location.getCity());
         if (!workingDirectory.exists()) {
             workingDirectory.mkdir();
         }
@@ -70,7 +75,7 @@ public class StorageUtils {
     }
 
     public static String getJsonFromStorage(Context context, Location location) {
-        File workingDirectory = new File(context.getFilesDir() + File.separator + location.getCity() + File.separator);
+        File workingDirectory = new File(context.getFilesDir() + location.getCity());
         if (!workingDirectory.exists()) {
             workingDirectory.mkdir();
         }
@@ -92,7 +97,7 @@ public class StorageUtils {
     }
 
     public static void saveJsonToStorage(Context context, String string, Location location) {
-        File workingDirectory = new File(context.getFilesDir() + File.separator + location.getCity() + File.separator);
+        File workingDirectory = new File(context.getFilesDir() + location.getCity());
         if (!workingDirectory.exists()) {
             workingDirectory.mkdir();
         }
@@ -119,7 +124,10 @@ public class StorageUtils {
     }
 
     public static void removeUnusedBitmap(Context context, int[] times, Location location) {
-        File[] files = new File(context.getFilesDir().toString() + File.separator + location.getCity() + File.separator).listFiles();
+        String path = context.getFilesDir().toString();
+
+        File[] files = new File(path + location.getCity())
+                .listFiles();
         if (files != null) {
             ArrayList<String> filesToRemove = new ArrayList<>();
 
@@ -133,12 +141,14 @@ public class StorageUtils {
             }
 
             for (String fileName : filesToRemove) {
-                File file = new File(context.getFilesDir().toString() + File.separator + location.getCity() + File.separator + fileName);
+                File file = new File(path + location.getCity() + fileName);
                 if (file.exists()) {
                     if (file.delete()) {
-                        CustomLog.logDebug("removeUnusedBitmap(): Deleted file: " + file.getPath());
+                        CustomLog.logDebug("removeUnusedBitmap(): Deleted file: "
+                                + file.getPath());
                     } else {
-                        CustomLog.logDebug("removeUnusedBitmap(): File not deleted: " + file.getPath());
+                        CustomLog.logDebug("removeUnusedBitmap(): File not deleted: "
+                                + file.getPath());
                     }
                 }
             }

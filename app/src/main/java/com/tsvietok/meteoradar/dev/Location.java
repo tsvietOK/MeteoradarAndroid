@@ -2,6 +2,8 @@ package com.tsvietok.meteoradar.dev;
 
 import android.graphics.Bitmap;
 
+import java.io.File;
+
 public class Location {
     private final String mFullName;
     private final String mCode;
@@ -15,7 +17,7 @@ public class Location {
         this.mLocalMap = mLocalMap;
     }
 
-    public Bitmap getLocalMap() {
+    Bitmap getLocalMap() {
         return mLocalMap;
     }
 
@@ -28,7 +30,8 @@ public class Location {
     }
 
     public String getCity() {
-        return mCity;
+        return File.separator + mCity + File.separator;
     }
+
 }
 
