@@ -1,6 +1,7 @@
 package com.tsvietok.meteoradar;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 
 import com.tsvietok.meteoradar.utils.BitmapUtils;
 import com.tsvietok.meteoradar.utils.NetUtils;
@@ -19,7 +20,7 @@ class RadarBitmap {
     private int mTimestamp;
 
     RadarBitmap(Location location) {
-        this.mBackgroundImage = Bitmap.createScaledBitmap(location.getLocalMap(), 654, 479, true);
+        this.mBackgroundImage = location.getLocalMap();
         mLocation = location;
     }
 
@@ -33,7 +34,17 @@ class RadarBitmap {
 
     void setImage(Bitmap image) {
         mIsLoaded = true;
-        image = BitmapUtils.RemoveColor(image);
+
+        int pixel = image.getPixel(image.getWidth() - 30, image.getHeight() - 30); //get background color
+        int red = Color.red(pixel);
+        int green = Color.green(pixel);
+        int blue = Color.blue(pixel);
+        int backgroundColor = Color.rgb(red, green, blue);
+        image = BitmapUtils.RemoveColor(image, backgroundColor);
+
+        int riverColor = Color.rgb(204, 202, 204);
+        image = BitmapUtils.RemoveColor(image, riverColor);
+
         image = BitmapUtils.OverlayBitmap(this.mBackgroundImage, image);
         mImage = Bitmap.createBitmap(image, 18, 2, 476, 476);
         mNightImage = BitmapUtils.InvertBitmap(this.mImage);
