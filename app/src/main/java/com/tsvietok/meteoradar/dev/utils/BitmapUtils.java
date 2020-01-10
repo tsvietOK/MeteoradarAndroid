@@ -12,19 +12,17 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class BitmapUtils {
-    public static Bitmap RemoveColor(Bitmap source) {
+    public static Bitmap RemoveColor(Bitmap source, int color) {
         int sourceWidth = source.getWidth();
         int sourceHeight = source.getHeight();
         int sourceSize = sourceWidth * sourceHeight;
         int[] sourcePixels = new int[sourceSize];
         source.getPixels(sourcePixels, 0, sourceWidth, 0, 0, sourceWidth, sourceHeight);
         for (int i = 0; i < sourceSize; i++) {
-            if (sourcePixels[i] == Color.rgb(204, 206, 204)
-                    || sourcePixels[i] == Color.rgb(196, 194, 196)
-                    || sourcePixels[i] == Color.rgb(204, 202, 204)) {
+            if (sourcePixels[i] == color) {
                 sourcePixels[i] = Color.TRANSPARENT;
             }
-            if (sourcePixels[i] == Color.rgb(252, 254, 252)) {
+            if (sourcePixels[i] == Color.rgb(252, 254, 252)) { //clouds color correction
                 sourcePixels[i] = Color.rgb(222, 222, 222);
             }
         }
