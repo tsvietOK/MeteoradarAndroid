@@ -16,7 +16,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class NetUtils {
-    private static final String DOMAIN = "http://radar.veg.by";
+    private static final String DOMAIN = "https://radar.veg.by";
     private static final String JSON_FILE_NAME = "update.json";
 
     public static String getDomain() {
