@@ -1,5 +1,5 @@
 <resources>
-    <dimen name="fab_margin">40dp</dimen>
+    <dimen name="fab_margin">28dp</dimen>
     <dimen name="info_text_size">18sp</dimen>
     <dimen name="time_margin_end">1.5dp</dimen>
     <dimen name="info_list_rect_margin">5dp</dimen>

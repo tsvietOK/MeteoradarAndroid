@@ -5,27 +5,34 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
+
+import androidx.renderscript.Allocation;
+import androidx.renderscript.Element;
+import androidx.renderscript.Matrix3f;
+import androidx.renderscript.RenderScript;
+import androidx.renderscript.ScriptIntrinsicColorMatrix;
+
+import com.tsvietok.meteoradar.dev.ScriptC_invert;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 public class BitmapUtils {
-    public static Bitmap RemoveColor(Bitmap source, int color) {
+    public static Bitmap ReplaceColor(Bitmap source, Map<Integer, Integer> colorsHashMap) {
         int sourceWidth = source.getWidth();
         int sourceHeight = source.getHeight();
         int sourceSize = sourceWidth * sourceHeight;
         int[] sourcePixels = new int[sourceSize];
         source.getPixels(sourcePixels, 0, sourceWidth, 0, 0, sourceWidth, sourceHeight);
+
         for (int i = 0; i < sourceSize; i++) {
-            if (sourcePixels[i] == color) {
-                sourcePixels[i] = Color.TRANSPARENT;
-            }
-            if (sourcePixels[i] == Color.rgb(252, 254, 252)) { //clouds color correction
-                sourcePixels[i] = Color.rgb(222, 222, 222);
+            if (colorsHashMap.containsKey(sourcePixels[i])) {
+                sourcePixels[i] = colorsHashMap.get(sourcePixels[i]);
             }
         }
+
         return Bitmap.createBitmap(sourcePixels, sourceWidth, sourceHeight, Bitmap.Config.ARGB_8888);
     }
 
@@ -39,26 +46,61 @@ public class BitmapUtils {
         return bmOverlay;
     }
 
-    public static Bitmap InvertBitmap(Bitmap source) {
-        int sourceWidth = source.getWidth();
-        int sourceHeight = source.getHeight();
-        int sourceSize = sourceWidth * sourceHeight;
-        int[] sourcePixels = new int[sourceSize];
-        source.getPixels(sourcePixels, 0, sourceWidth, 0, 0, sourceWidth, sourceHeight);
-        for (int i = 0; i < sourceSize; i++) {
-            int intValue = sourcePixels[i];
-            Color color = Color.valueOf(intValue);
-            float red = color.red();
-            float green = color.green();
-            float blue = color.blue();
-            int threshold = 10;
-            //filter shades of gray
-            if (Math.abs(red - green)
-                    + Math.abs(green - blue) + Math.abs(red - blue) < threshold / 255.0) {
-                sourcePixels[i] = Color.argb(1, 1 - red, 1 - green, 1 - blue);
-            }
-        }
-        return Bitmap.createBitmap(sourcePixels, sourceWidth, sourceHeight, Bitmap.Config.ARGB_8888);
+    public static Bitmap InvertBitmap(Bitmap source, Context context) {
+        Bitmap outputBitmap = source.copy(source.getConfig(), true);
+
+        RenderScript renderScript = RenderScript.create(context);
+
+        Allocation inputAllocation = Allocation.createFromBitmap(renderScript, outputBitmap);
+        Allocation invertedAllocation =
+                Allocation.createTyped(renderScript, inputAllocation.getType());
+
+        ScriptC_invert invertScript = new ScriptC_invert(renderScript);
+
+        invertScript.forEach_invert(inputAllocation, invertedAllocation);
+        invertedAllocation.copyTo(outputBitmap);
+
+        inputAllocation.destroy();
+        invertedAllocation.destroy();
+        invertScript.destroy();
+        renderScript.destroy();
+
+        return rotateHue(outputBitmap, context, 3.1f);
+    }
+
+    public static Bitmap rotateHue(Bitmap source, Context context, float value) {
+        Bitmap outputBitmap = source.copy(source.getConfig(), true);
+
+        RenderScript renderScript = RenderScript.create(context);
+        Allocation inputAllocation = Allocation.createFromBitmap(renderScript, outputBitmap);
+
+        Allocation hueAllocation = Allocation.createTyped(renderScript, inputAllocation.getType());
+        ScriptIntrinsicColorMatrix scriptIntrinsicColorMatrix =
+                ScriptIntrinsicColorMatrix.create(renderScript, Element.U8_4(renderScript));
+
+        float cos = (float) Math.cos(value);
+        float sin = (float) Math.sin(value);
+        Matrix3f mat = new Matrix3f();
+        mat.set(0, 0, (float) (.299 + .701 * cos + .168 * sin));
+        mat.set(1, 0, (float) (.587 - .587 * cos + .330 * sin));
+        mat.set(2, 0, (float) (.114 - .114 * cos - .497 * sin));
+        mat.set(0, 1, (float) (.299 - .299 * cos - .328 * sin));
+        mat.set(1, 1, (float) (.587 + .413 * cos + .035 * sin));
+        mat.set(2, 1, (float) (.114 - .114 * cos + .292 * sin));
+        mat.set(0, 2, (float) (.299 - .3 * cos + 1.25 * sin));
+        mat.set(1, 2, (float) (.587 - .588 * cos - 1.05 * sin));
+        mat.set(2, 2, (float) (.114 + .886 * cos - .203 * sin));
+
+        scriptIntrinsicColorMatrix.setColorMatrix(mat);
+        scriptIntrinsicColorMatrix.forEach(inputAllocation, hueAllocation);
+        hueAllocation.copyTo(outputBitmap);
+
+        inputAllocation.destroy();
+        hueAllocation.destroy();
+        scriptIntrinsicColorMatrix.destroy();
+        renderScript.destroy();
+
+        return outputBitmap;
     }
 
     static Bitmap getBitmapFromAsset(Context context, String filePath) {

@@ -2,157 +2,165 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/MapContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <com.tsvietok.meteoradar.dev.CustomMaterialCardView
-        android:id="@+id/ForegroundCardContainer"
-        style="@style/Widget.MaterialComponents.CardView"
+    <ImageView
+        android:id="@+id/NoConnectionBitmap"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:animateLayoutChanges="true"
-        app:cardElevation="2dp">
+        android:layout_gravity="center_vertical"
+        android:scaleType="center"
+        android:src="@drawable/baseline_cloud_off_24"
+        android:visibility="invisible" />
 
-        <ImageView
-            android:id="@+id/NoConnectionBitmap"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_gravity="center_vertical"
-            android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:scaleType="fitCenter"
-            android:src="@drawable/baseline_cloud_off_24"
-            android:visibility="invisible" />
+    <com.ortiz.touchview.TouchImageView
+        android:id="@+id/ForegroundMap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/UpdateFab"
+        android:layout_centerHorizontal="true" />
 
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/ControlContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/UpdateFab">
 
-            <FrameLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/TimeText"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/horizontal_picker_background"
+            android:text="@string/default_date"
+            android:textColor="@color/color_accent"
+            android:textSize="16sp"
+            app:rippleColor="@android:color/transparent"
+            tools:text="15.10 21:27" />
 
-                <ImageView
-                    android:id="@+id/ForegroundMap"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:scaleType="centerCrop" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/selectedCityButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/horizontal_picker_background"
+            android:textAllCaps="false"
+            android:textColor="@color/color_accent"
+            android:textSize="16sp"
+            android:tooltipText="@string/choose_city"
+            android:typeface="serif"
+            app:rippleColor="@color/button_ripple"
+            tools:text="@string/choose_city" />
 
-                <View
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="end|bottom"
-                    android:layout_margin="12dp"
-                    android:background="@drawable/info_button_rectangle" />
-
-                <LinearLayout
-                    android:id="@+id/StatusText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:background="@color/surface_translucent_color"
-                    android:orientation="vertical"
-                    android:visibility="invisible">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:text="@string/status_radar_off"
-                        android:textAlignment="center"
-                        android:textColor="@color/text_radar_status"
-                        android:textSize="16sp" />
-
-                    <View
-                        android:layout_width="fill_parent"
-                        android:layout_height="0.7dp"
-                        android:background="@color/text_radar_status_stroke" />
-                </LinearLayout>
-            </FrameLayout>
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="0.7dp"
-                android:background="@color/text_radar_status_stroke" />
-
-            <ListView
-                android:id="@+id/mapInfoList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/card_background"
-                android:divider="@android:color/transparent"
-                android:listSelector="@android:color/transparent"
-                android:theme="@style/OverScrollCustomColor" />
-
-        </TableLayout>
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="@android:style/Widget.Material.ProgressBar.Horizontal"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/StatusText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="-7dp"
-            android:indeterminate="true"
-            android:visibility="invisible" />
-    </com.tsvietok.meteoradar.dev.CustomMaterialCardView>
+            android:layout_above="@+id/HorizontalPickerContainer"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="invisible"
+            app:cardBackgroundColor="@color/horizontal_picker_background"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/horizontal_picker_stroke_color"
+            app:strokeWidth="1dp">
 
-    <TextView
-        android:id="@+id/TimeText"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/status_radar_off"
+                android:textAlignment="center"
+                android:textColor="@color/text_radar_status"
+                android:textSize="16sp"
+                tools:text="@string/status_radar_off" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/HorizontalPickerContainer"
+            style="@style/Widget.MaterialComponents.CardView"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="20dp"
+            android:animateLayoutChanges="true"
+            app:cardBackgroundColor="@color/horizontal_picker_background"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/horizontal_picker_stroke_color"
+            app:strokeWidth="1dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                app:cardBackgroundColor="@color/day_night_black_white_color"
+                app:cardElevation="0dp" />
+
+            <com.tsvietok.meteoradar.dev.CustomRecyclerView
+                android:id="@+id/HorizontalPicker"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:clipToPadding="false"
+                android:fadingEdgeLength="100dp"
+                android:orientation="horizontal"
+                android:requiresFadingEdge="horizontal"
+                android:scrollbars="none"
+                app:stackFromEnd="true" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/color_accent"
+                app:strokeWidth="1dp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="@android:style/Widget.Material.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="-7dp"
+                android:indeterminate="true"
+                android:visibility="invisible" />
+        </com.google.android.material.card.MaterialCardView>
+    </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/UpdateFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ForegroundCardContainer"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:textSize="24sp"
-        tools:text="15.10 21:27" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/HorizontalPickerContainer"
-        style="@style/Widget.MaterialComponents.CardView"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_below="@+id/TimeText"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        app:cardBackgroundColor="@color/horizontal_picker_background">
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            app:cardBackgroundColor="@color/day_night_black_white_color"
-            app:cardElevation="0dp" />
-
-        <com.tsvietok.meteoradar.dev.CustomRecyclerView
-            android:id="@+id/HorizontalPicker"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:clipToPadding="false"
-            android:fadingEdgeLength="100dp"
-            android:orientation="horizontal"
-            android:requiresFadingEdge="horizontal"
-            android:scrollbars="none"
-            app:stackFromEnd="true" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            app:cardBackgroundColor="@android:color/transparent"
-            app:cardElevation="0dp"
-            app:strokeColor="@color/color_accent"
-            app:strokeWidth="1dp" />
-
-    </com.google.android.material.card.MaterialCardView>
-
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="28dp"
+        android:text="@string/update"
+        android:textAllCaps="false"
+        android:textColor="@color/fab_day_night_color"
+        app:backgroundTint="@color/color_accent"
+        app:icon="@drawable/baseline_sync_24"
+        app:iconSize="18dp"
+        app:iconTint="@color/fab_day_night_color"
+        app:rippleColor="@color/fab_ripple" />
 </RelativeLayout>

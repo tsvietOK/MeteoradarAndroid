@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.tsvietok.meteoradar.MainActivity">
     <item
+        android:id="@+id/action_info"
+        android:icon="@drawable/baseline_info_24"
+        android:title="@string/legend_button"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_theme"
         android:title="@string/menu_item_theme"
         app:showAsAction="never" />
