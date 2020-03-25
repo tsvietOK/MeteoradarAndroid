@@ -7,7 +7,7 @@
     <color name="button_ripple">#77A3E7</color>
     <color name="color_black">#ff010101</color>
     <color name="text_radar_status">#EF5350</color>
-    <color name="text_radar_status_stroke">#52BBBBBB</color>
+    <color name="text_radar_status_stroke">#DCDCDC</color>
     <color name="color_white">#FFFFFF</color>
     <color name="color_no_weather">#CFCFCF</color>
     <color name="color_laminated_clouds">#DEDEDE</color>
@@ -32,8 +32,10 @@
     <color name="list_info_stroke">#80868686</color>
     <color name="card_background">#FFF</color>
     <color name="fab_day_night_color">#FFF</color>
-    <color name="horizontal_picker_background">#F5F5F5</color>
+    <color name="horizontal_picker_background">#FAFAFA</color>
     <color name="day_night_black_white_color">#FFF</color>
     <color name="dropdown_stroke">#838383</color>
-    <color name="surface_translucent_color">#DFFFFFFF</color>
+    <color name="surface_translucent_color">#CCFFFFFF</color>
+    <color name="color_grey">#C4C4C4</color>
+    <color name="horizontal_picker_stroke_color">#CCDCDCDC</color>
 </resources>

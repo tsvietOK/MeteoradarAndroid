@@ -1,23 +1,24 @@
 package com.tsvietok.meteoradar;
 
-import android.animation.ValueAnimator;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,9 +29,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.gson.Gson;
+import com.ortiz.touchview.TouchImageView;
 import com.tsvietok.meteoradar.utils.CustomLog;
 import com.tsvietok.meteoradar.utils.LocationUtils;
 import com.tsvietok.meteoradar.utils.NetUtils;
@@ -47,13 +50,12 @@ public class MainActivity extends AppCompatActivity {
     private static final String PREF_FIRST_RUN_KEY = "firstRun";
     private static final String PREF_SELECTED_CITY_KEY = "selectedCity";
     private static final String PREF_CITY_CHANGED_KEY = "cityChanged";
-    private static final String PREF_FOREGROUND_MAP_HEIGHT_KEY = "foregroundMapHeight";
     private static final String PREF_STATUS_TEXT_VISIBILITY_KEY = "statusTextVisibility";
     private static int firstVisibleInListView;
     private Location location;
     private ExtendedFloatingActionButton UpdateFab;
-    private LinearLayout StatusText;
-    private ImageView ForegroundMap;
+    private MaterialCardView StatusText;
+    private TouchImageView ForegroundMap;
     private TextView TimeText;
     private ImageView NoConnectionBitmap;
     private RadarBitmap[] mMaps;
@@ -65,10 +67,10 @@ public class MainActivity extends AppCompatActivity {
     private HorizontalPickerLayoutManager mLayoutManager;
     private TimeAdapter mAdapter;
     private LinearSnapHelper mSnapHelper;
-    private int mStartForegroundMapHeight;
     private ArrayList<MapInfo> mMapInfoList;
-    private int mSavedForegroundMapHeight;
     private Animation mFadeIn;
+    private RelativeLayout ControlContainer;
+    private MapInfoListAdapter mapInfoListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,11 +126,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         initMapInfoAdapter();
-
-        MapInfoListAdapter mapInfoListAdapter = new MapInfoListAdapter(this, mMapInfoList);
-
-        ListView mapInfoList = findViewById(R.id.mapInfoList);
-        mapInfoList.setAdapter(mapInfoListAdapter);
+        mapInfoListAdapter = new MapInfoListAdapter(this, mMapInfoList);
 
         setHorizontalPicker();
 
@@ -191,63 +189,65 @@ public class MainActivity extends AppCompatActivity {
                 CustomLog.logError("Internet connection is not available");
             }
         });
+
         ForegroundMap = findViewById(R.id.ForegroundMap);
-        ForegroundMap.getViewTreeObserver()
-                .addOnGlobalLayoutListener(() -> {
-                    ForegroundMap
-                            .getViewTreeObserver()
-                            .removeOnGlobalLayoutListener(this::onResume);
-                    if (mStartForegroundMapHeight == 0) {
-                        mStartForegroundMapHeight = ForegroundMap.getWidth();
-                        ForegroundMap.getLayoutParams().height = mStartForegroundMapHeight;
-                    } else {
-                        if (mSavedForegroundMapHeight != 0) {
-                            ForegroundMap.getLayoutParams().height = mSavedForegroundMapHeight;
-                        }
-                    }
-                });
-        ForegroundMap.setOnClickListener(view -> {
-            ValueAnimator anim;
-            if (view.getHeight() == mStartForegroundMapHeight) {
-                anim = ValueAnimator.ofInt(view.getHeight(),
-                        mStartForegroundMapHeight - 400);
-            } else {
-                anim = ValueAnimator.ofInt(view.getHeight(),
-                        mStartForegroundMapHeight);
+        ForegroundMap.setDoubleTapScale(2f);
+        ForegroundMap.setMaxZoomRatio(1.8f);
+
+        if (mCityChanged) {
+            ForegroundMap.resetZoom();
+        }
+
+        ControlContainer = findViewById(R.id.ControlContainer);
+        ForegroundMap.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                float controlAlpha = ControlContainer.getAlpha();
+                if (controlAlpha < 1) {
+                    alphaControlAnimation(1f, 500);
+                } else {
+                    alphaControlAnimation(0.5f, 350);
+                }
+
+                return false;
             }
-            anim.addUpdateListener(valueAnimator -> {
-                int val = (Integer) valueAnimator.getAnimatedValue();
-                ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-                layoutParams.height = val;
-                view.setLayoutParams(layoutParams);
-            });
-            anim.setDuration(250);
-            anim.start();
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                if (ForegroundMap.isZoomed()) {
+                    alphaControlAnimation(1f, 500);
+                } else {
+                    alphaControlAnimation(0.5f, 350);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onDoubleTapEvent(MotionEvent e) {
+                return false;
+            }
         });
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         CustomLog.logDebug("onSaveInstanceState()");
 
         outState.putInt(PREF_TIMELINE_POSITION_KEY, mLastSelectedItem);
         outState.putBoolean(PREF_CITY_CHANGED_KEY, mCityChanged);
-        if (!mCityChanged) {
-            outState.putInt(PREF_FOREGROUND_MAP_HEIGHT_KEY, ForegroundMap.getHeight());
-        }
+        StatusText = findViewById(R.id.StatusText);
         outState.putInt(PREF_STATUS_TEXT_VISIBILITY_KEY, StatusText.getVisibility());
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         CustomLog.logDebug("onRestoreInstanceState()");
 
         mLastSelectedItem = savedInstanceState.getInt(PREF_TIMELINE_POSITION_KEY);
         mFirstActivityStart = false;
         mCityChanged = savedInstanceState.getBoolean(PREF_CITY_CHANGED_KEY);
-        mSavedForegroundMapHeight = savedInstanceState.getInt(PREF_FOREGROUND_MAP_HEIGHT_KEY);
         StatusText = findViewById(R.id.StatusText);
         StatusText.setVisibility(savedInstanceState.getInt(PREF_STATUS_TEXT_VISIBILITY_KEY));
     }
@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
                     & Configuration.UI_MODE_NIGHT_MASK;
             switch (currentNightMode) {
                 case Configuration.UI_MODE_NIGHT_NO:
-                    ForegroundMap.setImageBitmap(mMaps[number].getImage());
+                    ForegroundMap.setImageBitmap(mMaps[number].getDayImage());
 
                     if (mapIsEmpty) {
                         ForegroundMap.startAnimation(mFadeIn);
@@ -330,6 +330,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                if (ControlContainer.getAlpha() < 0.6f) {
+                    alphaControlAnimation(1f, 500);
+                }
             }
 
             @Override
@@ -344,6 +347,16 @@ public class MainActivity extends AppCompatActivity {
                 firstVisibleInListView = currentFirstVisible;
             }
         });
+    }
+
+    private void alphaControlAnimation(float targetAlpha, int duration) {
+        ControlContainer.animate().alpha(targetAlpha).setDuration(duration)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                    }
+                });
     }
 
     @Override
@@ -384,6 +397,10 @@ public class MainActivity extends AppCompatActivity {
                             (dialog, id1) -> dialog.cancel());
             AlertDialog alert = builder.create();
             alert.show();
+        } else if (id == R.id.action_info) {
+            BottomNavigationDrawerFragment fragment = new BottomNavigationDrawerFragment();
+            fragment.setAdapter(mapInfoListAdapter);
+            fragment.show(getSupportFragmentManager(), fragment.getTag());
         }
         return super.onOptionsItemSelected(menuItem);
     }
@@ -435,12 +452,12 @@ public class MainActivity extends AppCompatActivity {
         if (mData.isServerDown()) {
             if (StatusText.getVisibility() == View.INVISIBLE) {
                 StatusText.setVisibility(View.VISIBLE);
-                StatusText.startAnimation(slideDown);
+                StatusText.startAnimation(slideUp);
             }
         } else {
             if (StatusText.getVisibility() == View.VISIBLE) {
                 StatusText.setVisibility(View.INVISIBLE);
-                StatusText.startAnimation(slideUp);
+                StatusText.startAnimation(slideDown);
             }
         }
     }
@@ -535,6 +552,8 @@ public class MainActivity extends AppCompatActivity {
 
             if (result == null) {
                 Toast.makeText(context, R.string.no_server_connection, Toast.LENGTH_LONG).show();
+                NoConnectionBitmap = findViewById(R.id.NoConnectionBitmap);
+                NoConnectionBitmap.setVisibility(View.VISIBLE);
                 return;
             }
 
@@ -554,7 +573,7 @@ public class MainActivity extends AppCompatActivity {
             mMaps = new RadarBitmap[mData.getTimes().length];
 
             for (int i = 0; i < mData.getTimes().length; i++) {
-                mMaps[i] = new RadarBitmap(location);
+                mMaps[i] = new RadarBitmap(location, context);
                 mMaps[i].setTime(mData.getTime(i));
             }
 

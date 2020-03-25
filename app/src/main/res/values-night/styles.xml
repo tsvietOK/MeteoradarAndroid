@@ -9,6 +9,7 @@
         <item name="materialAlertDialogTheme">@style/MaterialAlertDialog</item>
         <item name="android:fontFamily">@font/productsans</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="bottomSheetDialogTheme">@style/BaseBottomSheetDialog</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -41,6 +42,15 @@
 
     <style name="OverScrollCustomColor">
         <item name="android:colorEdgeEffect">@color/color_accent</item>
+    </style>
+
+    <style name="BaseBottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_nav_bar_bg</item>
     </style>
 
 </resources>

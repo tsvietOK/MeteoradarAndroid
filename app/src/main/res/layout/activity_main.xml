@@ -17,50 +17,17 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/app_name_simple">
+            app:title="@string/app_name_simple" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/selectedCityButton"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:textAllCaps="false"
-                    android:textColor="@color/color_accent"
-                    android:textSize="16sp"
-                    android:tooltipText="@string/choose_city"
-                    android:typeface="serif"
-                    app:rippleColor="@color/button_ripple"
-                    tools:text="@string/choose_city" />
-
-            </LinearLayout>
-        </androidx.appcompat.widget.Toolbar>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="bottom"
+            android:background="@color/text_radar_status_stroke" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_main" />
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/UpdateFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="bottom|center"
-        android:layout_margin="@dimen/fab_margin"
-        android:text="@string/update"
-        android:textAllCaps="false"
-        android:textColor="@color/fab_day_night_color"
-        app:backgroundTint="@color/color_accent"
-        app:icon="@drawable/baseline_sync_24"
-        app:iconSize="18dp"
-        app:iconTint="@color/fab_day_night_color"
-        app:rippleColor="@color/fab_ripple" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

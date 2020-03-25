@@ -40,4 +40,6 @@
     <string name="bryansk">Брянськ (RUDB)</string>
     <string name="kursk">Курськ (RAKU)</string>
     <string name="velikiye_luki">Великі Луки (RAVL)</string>
+    <string name="legend_button">Легенда</string>
+    <string name="default_date">00.00.0000</string>
 </resources>
