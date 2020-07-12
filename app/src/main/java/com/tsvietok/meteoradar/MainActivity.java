@@ -3,6 +3,7 @@ package com.tsvietok.meteoradar;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -34,6 +35,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.gson.Gson;
 import com.ortiz.touchview.TouchImageView;
+import com.tsvietok.meteoradar.dev.test.ColorTestActivity;
 import com.tsvietok.meteoradar.utils.CustomLog;
 import com.tsvietok.meteoradar.utils.LocationUtils;
 import com.tsvietok.meteoradar.utils.NetUtils;
@@ -363,6 +365,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        if (BuildConfig.DEBUG) {
+            MenuItem colorTestItem = menu.findItem(R.id.action_test);
+            colorTestItem.setVisible(true);
+        }
+
         return true;
     }
 
@@ -401,6 +409,10 @@ public class MainActivity extends AppCompatActivity {
             BottomNavigationDrawerFragment fragment = new BottomNavigationDrawerFragment();
             fragment.setAdapter(mapInfoListAdapter);
             fragment.show(getSupportFragmentManager(), fragment.getTag());
+        } else if (id == R.id.action_test) {
+            Intent intent = new Intent(this, ColorTestActivity.class);
+            startActivity(intent);
+            finish();
         }
         return super.onOptionsItemSelected(menuItem);
     }
