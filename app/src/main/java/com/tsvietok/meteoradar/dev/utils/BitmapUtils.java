@@ -17,9 +17,19 @@ import com.tsvietok.meteoradar.dev.ScriptC_invert;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Map;
 
 public class BitmapUtils {
+    public static Bitmap CreateBitmap(int width, int height, int color) {
+        int sourceSize = width * height;
+        int[] sourcePixels = new int[sourceSize];
+
+        Arrays.fill(sourcePixels, 0, sourceSize, color);
+
+        return Bitmap.createBitmap(sourcePixels, width, height, Bitmap.Config.ARGB_8888);
+    }
+
     public static Bitmap ReplaceColor(Bitmap source, Map<Integer, Integer> colorsHashMap) {
         int sourceWidth = source.getWidth();
         int sourceHeight = source.getHeight();
@@ -65,7 +75,12 @@ public class BitmapUtils {
         invertScript.destroy();
         renderScript.destroy();
 
-        return rotateHue(outputBitmap, context, 3.1f);
+
+        int value = 100;
+        final float max = (float) Math.PI;
+        final float min = (float) -Math.PI;
+        float f = (float) ((max - min) * (value / 100.0) + min);
+        return rotateHue(outputBitmap, context, f);
     }
 
     public static Bitmap rotateHue(Bitmap source, Context context, float value) {
