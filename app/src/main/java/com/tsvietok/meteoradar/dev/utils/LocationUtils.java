@@ -65,6 +65,12 @@ public class LocationUtils {
                 location = new Location(resources.getString(R.string.velikiye_luki),
                         "ravl", "luki", backgroundMap);
                 break;
+            case 8:
+                backgroundMap = BitmapUtils
+                        .getBitmapFromAsset(context, "zaporozhye" + DEFAULT_PART_FILE_NAME);
+                location = new Location(resources.getString(R.string.zaporozhye),
+                        "ukde", "zaporozhye", backgroundMap);
+                break;
             default:
                 break;
         }
