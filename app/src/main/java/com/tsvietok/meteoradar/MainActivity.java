@@ -101,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
                     getString(R.string.smolensk),
                     getString(R.string.bryansk),
                     getString(R.string.kursk),
-                    getString(R.string.velikiye_luki)
+                    getString(R.string.velikiye_luki),
+                    getString(R.string.zaporozhye)
             };
             MaterialAlertDialogBuilder builder =
                     new MaterialAlertDialogBuilder(MainActivity.this);

@@ -34,6 +34,7 @@ public class WelcomeActivity extends AppCompatActivity {
         mCityList.add(getString(R.string.bryansk));
         mCityList.add(getString(R.string.kursk));
         mCityList.add(getString(R.string.velikiye_luki));
+        mCityList.add(getString(R.string.zaporozhye));
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 R.layout.dropdown_menu_popup_item, mCityList);
