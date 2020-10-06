@@ -49,6 +49,7 @@ class RadarBitmap {
         replaceColorsMap.put(Color.rgb(204, 202, 202), Color.TRANSPARENT);
         replaceColorsMap.put(Color.rgb(204, 202, 204), Color.TRANSPARENT);
         replaceColorsMap.put(Color.rgb(204, 203, 204), Color.TRANSPARENT);
+        replaceColorsMap.put(Color.rgb(204, 203, 202), Color.TRANSPARENT);
         replaceColorsMap.put(Color.rgb(212, 210, 212), Color.TRANSPARENT);
         replaceColorsMap.put(Color.rgb(204, 206, 204), Color.TRANSPARENT);
         replaceColorsMap.put(Color.rgb(212, 212, 211), Color.TRANSPARENT);
