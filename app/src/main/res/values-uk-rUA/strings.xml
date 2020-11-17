@@ -7,7 +7,7 @@
     <string name="no_internet_connection">Відсутній доступ до мережі Інтернет</string>
     <string name="no_server_connection">Сервер недоступний</string>
     <string name="image_not_available">Зображення недоступне</string>
-    <string name="status_radar_off">На данный момент радар не працює</string>
+    <string name="status_radar_off">На даний момент радар не працює</string>
     <string name="follow_system_theme">На основі системної теми</string>
     <string name="light_theme">Світла</string>
     <string name="dark_theme">Темна</string>
