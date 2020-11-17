@@ -4,7 +4,7 @@
     <string name="menu_item_theme">Тема</string>
     <string name="updated">Обновлено</string>
     <string name="update">Обновить</string>
-    <string name="no_internet_connection">Отсутсвует доступ к Интернету</string>
+    <string name="no_internet_connection">Отсутствует доступ к Интернету</string>
     <string name="no_server_connection">Сервер недоступен</string>
     <string name="image_not_available">Изображение недоступно</string>
     <string name="status_radar_off">В данный момент радар не работает</string>
