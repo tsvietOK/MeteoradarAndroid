@@ -586,7 +586,11 @@ public class MainActivity extends AppCompatActivity {
             mMaps = new RadarBitmap[mData.getTimes().length];
 
             for (int i = 0; i < mData.getTimes().length; i++) {
-                mMaps[i] = new RadarBitmap(location, context);
+                if (location.getCode().equals("ukbb")){
+                    mMaps[i] = new RadarBitmapKiev(location, context);
+                } else {
+                    mMaps[i] = new RadarBitmap(location, context);
+                }
                 mMaps[i].setTime(mData.getTime(i));
             }
 

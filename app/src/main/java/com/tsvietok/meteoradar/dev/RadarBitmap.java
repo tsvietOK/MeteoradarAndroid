@@ -16,10 +16,10 @@ import java.util.Map;
 class RadarBitmap {
     private final Location mLocation;
     private final Bitmap mBackgroundImage;
-    private Context mContext;
+    protected Context mContext;
     private boolean mIsLoaded = false;
-    private Bitmap mImage;
-    private Bitmap mNightImage;
+    protected Bitmap mImage;
+    protected Bitmap mNightImage;
     private String mTime;
     private int mTimestamp;
 
