@@ -1,9 +1,9 @@
-package com.tsvietok.meteoradar.dev;
+package com.tsvietok.meteoradar;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 
-import com.tsvietok.meteoradar.dev.utils.BitmapUtils;
+import com.tsvietok.meteoradar.utils.BitmapUtils;
 
 public class RadarBitmapKiev extends RadarBitmap {
     RadarBitmapKiev(Location location, Context context) {
