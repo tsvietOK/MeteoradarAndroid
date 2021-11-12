@@ -35,7 +35,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.gson.Gson;
 import com.ortiz.touchview.TouchImageView;
-import com.tsvietok.meteoradar.dev.test.ColorTestActivity;
+import com.tsvietok.meteoradar.test.ColorTestActivity;
 import com.tsvietok.meteoradar.utils.CustomLog;
 import com.tsvietok.meteoradar.utils.LocationUtils;
 import com.tsvietok.meteoradar.utils.NetUtils;
@@ -102,7 +102,9 @@ public class MainActivity extends AppCompatActivity {
                     getString(R.string.bryansk),
                     getString(R.string.kursk),
                     getString(R.string.velikiye_luki),
-                    getString(R.string.zaporozhye)
+                    getString(R.string.zaporozhye),
+                    getString(R.string.grodno),
+                    getString(R.string.vitebsk)
             };
             MaterialAlertDialogBuilder builder =
                     new MaterialAlertDialogBuilder(MainActivity.this);
@@ -586,11 +588,7 @@ public class MainActivity extends AppCompatActivity {
             mMaps = new RadarBitmap[mData.getTimes().length];
 
             for (int i = 0; i < mData.getTimes().length; i++) {
-                if (location.getCode().equals("ukbb")){
-                    mMaps[i] = new RadarBitmapKiev(location, context);
-                } else {
-                    mMaps[i] = new RadarBitmap(location, context);
-                }
+                mMaps[i] = location.getRadarBitmap(context);
                 mMaps[i].setTime(mData.getTime(i));
             }
 

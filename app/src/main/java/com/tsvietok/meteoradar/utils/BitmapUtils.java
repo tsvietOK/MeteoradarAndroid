@@ -46,16 +46,6 @@ public class BitmapUtils {
         return Bitmap.createBitmap(sourcePixels, sourceWidth, sourceHeight, Bitmap.Config.ARGB_8888);
     }
 
-    public static Bitmap OverlayBitmap(Bitmap lowerLayer, Bitmap upperLayer) {
-        Bitmap bmOverlay = Bitmap.createBitmap(upperLayer.getWidth(),
-                upperLayer.getHeight(),
-                Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bmOverlay);
-        canvas.drawBitmap(lowerLayer, new Matrix(), null);
-        canvas.drawBitmap(upperLayer, new Matrix(), null);
-        return bmOverlay;
-    }
-
     public static Bitmap InvertBitmap(Bitmap source, Context context) {
         Bitmap outputBitmap = source.copy(source.getConfig(), true);
 
@@ -76,7 +66,7 @@ public class BitmapUtils {
         renderScript.destroy();
 
 
-        int value = 100;
+        int value = 0;
         final float max = (float) Math.PI;
         final float min = (float) -Math.PI;
         float f = (float) ((max - min) * (value / 100.0) + min);
@@ -116,20 +106,5 @@ public class BitmapUtils {
         renderScript.destroy();
 
         return outputBitmap;
-    }
-
-    static Bitmap getBitmapFromAsset(Context context, String filePath) {
-        AssetManager assetManager = context.getAssets();
-
-        InputStream inputStream;
-        Bitmap bitmap = null;
-        try {
-            inputStream = assetManager.open(filePath);
-            bitmap = BitmapFactory.decodeStream(inputStream);
-        } catch (IOException e) {
-            CustomLog.logError("Can't load bitmap from asset: " + e.getMessage());
-        }
-
-        return bitmap;
     }
 }

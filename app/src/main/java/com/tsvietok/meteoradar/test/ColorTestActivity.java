@@ -1,4 +1,4 @@
-package com.tsvietok.meteoradar.dev.test;
+package com.tsvietok.meteoradar.test;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
