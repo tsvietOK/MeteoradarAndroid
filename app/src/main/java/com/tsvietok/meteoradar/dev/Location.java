@@ -1,37 +1,36 @@
 package com.tsvietok.meteoradar.dev;
 
-import android.graphics.Bitmap;
-
-import java.io.File;
+import android.content.Context;
 
 public class Location {
     private final String mFullName;
-    private final String mCode;
     private final String mCity;
-    private final Bitmap mLocalMap;
+    private final RadarMapType mType;
 
-    public Location(String mFullName, String mCode, String mCity, Bitmap mLocalMap) {
-        this.mFullName = mFullName;
-        this.mCode = mCode;
-        this.mCity = mCity;
-        this.mLocalMap = mLocalMap;
+    public Location(String mFullName, String mCity) {
+        this(mFullName, mCity, RadarMapType.NEW);
     }
 
-    Bitmap getLocalMap() {
-        return mLocalMap;
+    public Location(String mFullName, String mCity, RadarMapType mType) {
+        this.mFullName = mFullName;
+        this.mCity = mCity;
+        this.mType = mType;
     }
 
     String getFullName() {
         return mFullName;
     }
 
-    String getCode() {
-        return mCode;
+    public String getCity() {
+        return mCity;
     }
 
-    public String getCity() {
-        return File.separator + mCity + File.separator;
+    public RadarBitmap getRadarBitmap(Context context) {
+        if (mType == RadarMapType.KIEV) {
+            return new RadarBitmapKiev(mCity, context);
+        } else if (mType == RadarMapType.NEW) {
+            return new RadarBitmapNew(mCity, context);
+        } else return new RadarBitmap(mCity, context);
     }
 
 }
-

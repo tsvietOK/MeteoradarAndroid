@@ -14,18 +14,16 @@ import java.util.Locale;
 import java.util.Map;
 
 class RadarBitmap {
-    private final Location mLocation;
-    private final Bitmap mBackgroundImage;
+    private final String mCity;
     protected Context mContext;
-    private boolean mIsLoaded = false;
+    protected boolean mIsLoaded = false;
     protected Bitmap mImage;
     protected Bitmap mNightImage;
     private String mTime;
     private int mTimestamp;
 
-    RadarBitmap(Location location, Context context) {
-        this.mBackgroundImage = location.getLocalMap();
-        mLocation = location;
+    RadarBitmap(String city, Context context) {
+        mCity = city;
         mContext = context;
     }
 
@@ -59,7 +57,6 @@ class RadarBitmap {
                 Color.rgb(222, 222, 222));
         image = BitmapUtils.ReplaceColor(image, replaceColorsMap);
 
-        image = BitmapUtils.OverlayBitmap(mBackgroundImage, image);
         mImage = Bitmap.createBitmap(image, 18, 2, 476, 476);
         mImage = Bitmap.createScaledBitmap(mImage, 952, 952, false);
         mNightImage = BitmapUtils.InvertBitmap(mImage, mContext);
@@ -88,11 +85,6 @@ class RadarBitmap {
     }
 
     String getImageLink() {
-        return NetUtils.getDomain()
-                + "/data/"
-                + mLocation.getCode()
-                + "/images/"
-                + mTimestamp
-                + ".png";
+        return NetUtils.getDomain() + "/data/" + mCity + "/images/" + mTimestamp + ".png";
     }
 }

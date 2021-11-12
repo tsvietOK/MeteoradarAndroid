@@ -2,74 +2,50 @@ package com.tsvietok.meteoradar.dev.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 
 import com.tsvietok.meteoradar.dev.Location;
 import com.tsvietok.meteoradar.dev.R;
+import com.tsvietok.meteoradar.dev.RadarMapType;
 
 public class LocationUtils {
-    private final static String DEFAULT_PART_FILE_NAME = "_background.png";
-
     public static Location switchCity(Context context, int key) {
         CustomLog.logDebug("switchCity()");
 
         Resources resources = context.getResources();
-        Bitmap backgroundMap;
         Location location = null;
         switch (key) {
             case 0:
-                backgroundMap = BitmapUtils
-                        .getBitmapFromAsset(context, "kiev" + DEFAULT_PART_FILE_NAME);
-                location = new Location(resources.getString(R.string.kiev),
-                        "ukbb", "kiev", backgroundMap);
+                location = new Location(resources.getString(R.string.kiev), "kiev", RadarMapType.KIEV);
                 break;
             case 1:
-                backgroundMap = BitmapUtils
-                        .getBitmapFromAsset(context, "minsk" + DEFAULT_PART_FILE_NAME);
-                location = new Location(resources.getString(R.string.minsk),
-                        "ummn", "minsk", backgroundMap);
+                location = new Location(resources.getString(R.string.minsk), "minsk");
                 break;
             case 2:
-                backgroundMap = BitmapUtils
-                        .getBitmapFromAsset(context, "brest" + DEFAULT_PART_FILE_NAME);
-                location = new Location(resources.getString(R.string.brest),
-                        "umbb", "brest", backgroundMap);
+                location = new Location(resources.getString(R.string.brest), "brest");
                 break;
             case 3:
-                backgroundMap = BitmapUtils
-                        .getBitmapFromAsset(context, "gomel" + DEFAULT_PART_FILE_NAME);
-                location = new Location(resources.getString(R.string.gomel),
-                        "umgg", "gomel", backgroundMap);
+                location = new Location(resources.getString(R.string.gomel), "gomel");
                 break;
             case 4:
-                backgroundMap = BitmapUtils
-                        .getBitmapFromAsset(context, "smolensk" + DEFAULT_PART_FILE_NAME);
-                location = new Location(resources.getString(R.string.smolensk),
-                        "rudl", "smolensk", backgroundMap);
+                location = new Location(resources.getString(R.string.smolensk), "smolensk");
                 break;
             case 5:
-                backgroundMap = BitmapUtils
-                        .getBitmapFromAsset(context, "bryansk" + DEFAULT_PART_FILE_NAME);
-                location = new Location(resources.getString(R.string.bryansk),
-                        "rudb", "bryansk", backgroundMap);
+                location = new Location(resources.getString(R.string.bryansk), "bryansk");
                 break;
             case 6:
-                backgroundMap = BitmapUtils
-                        .getBitmapFromAsset(context, "kursk" + DEFAULT_PART_FILE_NAME);
-                location = new Location(resources.getString(R.string.kursk),
-                        "raku", "kursk", backgroundMap);
+                location = new Location(resources.getString(R.string.kursk), "kursk");
                 break;
             case 7:
-                backgroundMap = BitmapUtils
-                        .getBitmapFromAsset(context, "luki" + DEFAULT_PART_FILE_NAME);
-                location = new Location(resources.getString(R.string.velikiye_luki),
-                        "ravl", "luki", backgroundMap);
+                location = new Location(resources.getString(R.string.velikiye_luki), "vluki");
                 break;
             case 8:
-                backgroundMap = BitmapUtils
-                        .getBitmapFromAsset(context, "zaporozhye" + DEFAULT_PART_FILE_NAME);
-                location = new Location(resources.getString(R.string.zaporozhye),
-                        "ukde", "zaporozhye", backgroundMap);
+                location = new Location(resources.getString(R.string.zaporozhye), "zaporozhye");
+                break;
+            case 9:
+                location = new Location(resources.getString(R.string.vitebsk), "vitebsk");
+                break;
+            case 10:
+                location = new Location(resources.getString(R.string.grodno), "grodno");
                 break;
             default:
                 break;

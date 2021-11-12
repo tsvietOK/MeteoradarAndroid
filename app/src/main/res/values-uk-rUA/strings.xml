@@ -32,15 +32,17 @@
     <string name="medium_squall">Шквал помірний</string>
     <string name="strong_squall">Шквал сильний</string>
     <string name="cancel">Скасувати</string>
-    <string name="kiev">Київ (UKBB)</string>
-    <string name="minsk">Мінськ (UMMN)</string> 
-    <string name="brest">Брест (UMBB)</string>
-    <string name="gomel">Гомель (UMGG)</string>
-    <string name="smolensk">Смоленськ (RUDL)</string>
-    <string name="bryansk">Брянськ (RUDB)</string>
-    <string name="kursk">Курськ (RAKU)</string>
-    <string name="velikiye_luki">Великі Луки (RAVL)</string>
-    <string name="zaporozhye">Запоріжжя (UKDE)</string>
+    <string name="kiev">Київ</string>
+    <string name="minsk">Мінськ</string>
+    <string name="brest">Брест</string>
+    <string name="gomel">Гомель</string>
+    <string name="smolensk">Смоленськ</string>
+    <string name="bryansk">Брянськ</string>
+    <string name="kursk">Курськ</string>
+    <string name="velikiye_luki">Великі Луки</string>
+    <string name="zaporozhye">Запоріжжя</string>
+    <string name="grodno">Гродно</string>
+    <string name="vitebsk">Вітебськ</string>
     <string name="legend_button">Легенда</string>
     <string name="default_date">00.00.0000</string>
 </resources>
