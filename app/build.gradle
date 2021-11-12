@@ -15,11 +15,11 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId "com.tsvietok.meteoradar"
         minSdkVersion 27
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 3
         versionName '1.9'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
